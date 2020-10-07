@@ -259,7 +259,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/07/intervals-distribution/" class="post-title-link" itemprop="url">intervals-distribution</a>
+            <a href="/2020/10/07/intervals-distribution/" class="post-title-link" itemprop="url">语言统计分析：长数字序列相邻相同数字间的距离分布</a>
         </h2>
 
         <div class="post-meta-container">
@@ -271,7 +271,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-10-07 00:52:28 / 修改时间：11:34:07" itemprop="dateCreated datePublished" datetime="2020-10-07T00:52:28+08:00">2020-10-07</time>
+      <time title="创建时间：2020-10-07 00:52:28 / 修改时间：12:16:53" itemprop="dateCreated datePublished" datetime="2020-10-07T00:52:28+08:00">2020-10-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -293,8 +293,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="语言统计分析长数字序列相邻相同数字间的距离分布">语言统计分析：长数字序列相邻相同数字间的距离分布</h1>
-<h3 id="简述">1. 简述</h3>
+          <h3 id="简述">1. 简述</h3>
 <p>《语言统计分析》的第一次作业：统计在一个长的无规律的数字序列（无理数的小数点后若干位，如<span class="math inline">\(\pi,e,\sqrt{2}, \ln{2}\)</span>等等无理数小数点后10^(5)位以上）中，相邻相同数字间的距离分布。</p>
 <h3 id="得到数据">2. 得到数据</h3>
 <p>首先使用<code>python</code>来获取距离数据。 读入数字序列文件并且转换成列表来便于统计： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 读入文件，并转换成其中所有数字的列表</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&quot;1bypi.txt&quot;</span>,<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    content = f.read()</span><br><span class="line">lines = content.split(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">digits = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">    digits += line</span><br><span class="line"><span class="comment">## 获得一个间距序列intervals_of_0</span></span><br><span class="line">position_of_0 = <span class="number">-1</span></span><br><span class="line">intervals_of_0 = []</span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(digits)):</span><br><span class="line">    <span class="keyword">if</span> digits[index] == <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">        <span class="keyword">if</span> position_of_0 != <span class="number">-1</span>:</span><br><span class="line">            intervals_of_0.append(index - position_of_0)</span><br><span class="line">        position_of_0 = index</span><br></pre></td></tr></table></figure> 这样在数组<code>position_0f_0</code>中就储存了所有的间隔距离。</p>
