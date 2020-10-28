@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="内容一：任务完成情况 任务完成列表    Exercise1 Exercise2 Exercise3 Exercise4     Y Y Y Y">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统lab1——线程实验报告">
+<meta property="og:url" content="http://tyfeld.github.io/2020/10/28/nachos-lab1/index.html">
+<meta property="og:site_name" content="Saoirse">
+<meta property="og:description" content="内容一：任务完成情况 任务完成列表    Exercise1 Exercise2 Exercise3 Exercise4     Y Y Y Y">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-28T06:14:45.000Z">
+<meta property="article:modified_time" content="2020-10-28T06:25:06.060Z">
+<meta property="article:author" content="Martin Feld">
+<meta property="article:tag" content="cpp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://tyfeld.github.io/2020/10/28/nachos-lab1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统lab1——线程实验报告 | Saoirse</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Saoirse</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E4%B8%80%E4%BB%BB%E5%8A%A1%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5"><span class="nav-text">内容一：任务完成情况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%AE%8C%E6%88%90%E5%88%97%E8%A1%A8"><span class="nav-text">任务完成列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93exercise%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5"><span class="nav-text">具体Exercise完成情况</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#exercise-1-%E8%B0%83%E7%A0%94"><span class="nav-text">Exercise 1 调研</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#linux%E4%B8%AD%E7%9A%84pcb"><span class="nav-text">linux中的PCB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nachos%E4%B8%AD%E7%9A%84pcb"><span class="nav-text">Nachos中的PCB</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exercise-2-%E6%BA%90%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-text">Exercise 2 源代码阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#main.cc"><span class="nav-text">1.main.cc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#threads.h"><span class="nav-text">2.threads.h</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#threads.cc"><span class="nav-text">3.threads.cc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#threadstest.cc"><span class="nav-text">4.threadstest.cc</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exercise-3-%E6%89%A9%E5%B1%95%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">Exercise 3 扩展线程的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#thread.h"><span class="nav-text">1.thread.h</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#system.h"><span class="nav-text">2.system.h</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#system.cc"><span class="nav-text">3.system.cc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#thread.cc"><span class="nav-text">4.thread.cc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#threadtest.cc"><span class="nav-text">5.threadtest.cc</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exercise-4-%E5%A2%9E%E5%8A%A0%E5%85%A8%E5%B1%80%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-text">Exercise 4 增加全局线程管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80%E5%9C%A8thread.cc%E4%B8%AD%E6%94%B9%E8%BF%9Bpidallocate%E5%87%BD%E6%95%B0"><span class="nav-text">问题一：在thread.cc中改进pidAllocate()函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%BA%8C%E5%A2%9E%E5%8A%A0ts%E5%91%BD%E4%BB%A4"><span class="nav-text">问题二：增加TS命令</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E4%BA%8C%E9%81%87%E5%88%B0%E7%9A%84%E5%9B%B0%E9%9A%BE%E4%BB%A5%E5%8F%8A%E6%94%B6%E8%8E%B7"><span class="nav-text">内容二：遇到的困难以及收获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E4%B8%89%E5%AF%B9%E8%AF%BE%E7%A8%8B%E6%88%96lab%E7%9A%84%E6%84%8F%E8%A7%81%E5%92%8C%E5%BB%BA%E8%AE%AE"><span class="nav-text">内容三：对课程或Lab的意见和建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E5%9B%9B%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-text">内容四：参考文献</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Martin Feld"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Martin Feld</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tyfeld" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tyfeld" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/tyfeld2" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;tyfeld2" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tyfeld.github.io/2020/10/28/nachos-lab1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Martin Feld">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saoirse">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统lab1——线程实验报告
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-10-28 14:14:45 / 修改时间：14:25:06" itemprop="dateCreated datePublished" datetime="2020-10-28T14:14:45+08:00">2020-10-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="内容一任务完成情况">内容一：任务完成情况</h2>
+<h3 id="任务完成列表">任务完成列表</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Exercise1</th>
+<th style="text-align: center;">Exercise2</th>
+<th style="text-align: center;">Exercise3</th>
+<th style="text-align: center;">Exercise4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+<td style="text-align: center;">Y</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h3 id="具体exercise完成情况">具体Exercise完成情况</h3>
+<h4 id="exercise-1-调研">Exercise 1 调研</h4>
+<h5 id="linux中的pcb">linux中的PCB</h5>
+<p>Linux内核通过一个被称为进程描述符的task_struct结构体来管理进程，这个结构体包含了一个进程所需的所有信息。它定义在include/linux/sched.h文件中。<br />
+其中包含的部分重要进程信息如下：<br />
+1、 进程状态。Linux通过定义<code>state</code>成员来制定每个进程的状态。这些<code>define</code>中包括正在运行、正在被阻塞、处于中断、僵尸进程等等常见的状态。举例如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_RUNNING		0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_INTERRUPTIBLE 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_UNINTERRUPTIBLE	2</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TASK_STOPPED		4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TASK_TRACED		8</span></span><br><span class="line"><span class="comment">/* in tsk-&gt;exit_state */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EXIT_ZOMBIE		16</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EXIT_DEAD		32</span></span><br><span class="line"><span class="comment">/* in tsk-&gt;state again */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_DEAD		64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_WAKEKILL		128</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASK_WAKING		256</span></span><br></pre></td></tr></table></figure>
+<p>2、进程标识符（PID）<br />
+包括<code>pid</code>和<code>tgid</code>。其中前者是指每个进程或者线程的id，而对于同一个父进程的所有子线程，其编号是相同的，因此一个线程组中的所有线程使用和该线程组的领头线程（该组中的第一个轻量级进程）相同的PID，并被存放在tgid成员中。<br />
+3、进程内核栈<br />
+由<code>void *stack;</code>定义。<br />
+即内核为这个进程所分配的独立的内核栈的指针。<br />
+4、标记flag<br />
+表示进程的状态值。<br />
+5、表示进程亲属关系的成员<br />
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">real_parent</span>;</span> <span class="comment">/* real parent process */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">parent</span>;</span> <span class="comment">/* recipient of SIGCHLD, wait4() reports */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">children</span>;</span>	<span class="comment">/* list of my children */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">sibling</span>;</span>	<span class="comment">/* linkage in my parent&#x27;s children list */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">group_leader</span>;</span>	<span class="comment">/* threadgroup leader */</span></span><br></pre></td></tr></table></figure></p>
+<p>如注释，这些指针标记了这个进程和其他进程之间的亲属关系。</p>
+<p>6、进程调度<br />
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">int</span> prio, static_prio, normal_prio;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> rt_priority;</span><br><span class="line"><span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sched_class</span> *<span class="title">sched_class</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sched_entity</span> <span class="title">se</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sched_rt_entity</span> <span class="title">rt</span>;</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> policy;</span><br><span class="line"><span class="keyword">cpumask_t</span> cpus_allowed;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>prio, static_prio, normal_prio</code>分别表示动态优先级、静态优先级、和在当前调度策略下的优先级。 <code>policy</code>表示当前调度策略，包括<code>FIFO</code>、<code>RR</code>等实时调度策略。</p>
+<h5 id="nachos中的pcb">Nachos中的PCB</h5>
+<p>Nachos中的PCB定义的内容非常少，在<code>threads.h</code>中可以发现其结构体的一些主体存储信息：<br />
+1、进程状态。<br />
+只有四个状态值：<code>&#123; JUST_CREATED, RUNNING, READY, BLOCKED &#125;</code>。<br />
+2、进程内核栈<br />
+同样包含了内核为其分配的栈指针<code>int* stackTop</code>。<br />
+3、线程名字<br />
+类似linux中pid的名字:<code>char* name;</code>。用来作为标识。 可以看到，对比linux，nachos中进程的PCB含有的信息大量减少，都统一在了线程的头函数中。状态量少，调度函数简单、缺少亲属关系等。</p>
+<h4 id="exercise-2-源代码阅读">Exercise 2 源代码阅读</h4>
+<h5 id="main.cc">1.main.cc</h5>
+<p>初始化系统内核的main函数。初始化所有的数据结构并且启动一个用户程序。<br />
+提供了众多的命令接口供调试。</p>
+<h5 id="threads.h">2.threads.h</h5>
+<p>控制线程结构和函数的头文件。在其中定义了PCB，每一个进程的状态、栈顶和栈底指针等私有和共有数据结构。声明了一些列重要的线程操作函数，如<code>Fork()</code>,<code>Yield()</code>,<code>Sleep()</code>,<code>Finish(）</code>等。</p>
+<h5 id="threads.cc">3.threads.cc</h5>
+<p>主要包括线程<code>Thread</code>对象的创建、析构函数以及上述的四个主要线程函数的具体定义。<br />
+以及<code>StackAllocate()</code>,<code>Checkoverflow()</code>等需要的函数具体内容定义。</p>
+<h5 id="threadstest.cc">4.threadstest.cc</h5>
+<p>一个对于线程调度的简单测试函数。简单来说就是创建两个线程，让他们不断自我执行<code>Yield()</code>函数，使得上下文在两个不同的线程中切换。</p>
+<h4 id="exercise-3-扩展线程的数据结构">Exercise 3 扩展线程的数据结构</h4>
+<h5 id="thread.h">1.<code>thread.h</code></h5>
+<p>增加数据结构需要现在头文件声明。在<code>thread.h</code>中添加两个私有变量表示线程id和用户id，以及两个公有函数<code>getPID(),getUID()</code>和一个分配各个进程id的<code>pidAllocate()</code>函数。 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// add pid and uid</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> pid;</span><br><span class="line">    <span class="keyword">int</span> uid;</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// add functions that get uid and pid</span></span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getpid</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getuid</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pidAllocate</span><span class="params">()</span></span>;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
+<h5 id="system.h">2.<code>system.h</code></h5>
+<p>由于增加了进程id，并且需要分配，因此最好设定最大进程数，方便分配id。结合Exercise 4的需求，设定最高的同时运行线程数为128。 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//add max threads and initialize</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MaxThreads 128</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> pids[MaxThreads];</span><br></pre></td></tr></table></figure></p>
+<h5 id="system.cc">3.<code>system.cc</code></h5>
+<p>对每一个线程的id进行初始化。 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> pids[MaxThreads];</span><br><span class="line"><span class="comment">//add threads id initialization</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MaxThreads; ++i)&#123;</span><br><span class="line">    pids[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="thread.cc">4.<code>thread.cc</code></h5>
+<p>具体定义上述三个函数。其中获得用户id可以直接调用cpp<code>unistd.h</code>库中的<code>getuid()</code>函数。<code>pidAllocate</code>函数遍历之前初始化的线程数组，找到其中一个值为0的索引设为pid，并将值设为1。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;unistd.h&quot;</span>  <span class="comment">//add getuid() function</span></span></span><br><span class="line">...</span><br><span class="line">Thread::Thread(<span class="keyword">char</span>* threadName)</span><br><span class="line">    <span class="comment">//initialize pid,uid</span></span><br><span class="line">    pid = pidAllocate();</span><br><span class="line">    uid = getuid();</span><br><span class="line">...</span><br><span class="line">Thread::~Thread()</span><br><span class="line">    <span class="comment">//clean pid</span></span><br><span class="line">    pids[pid] = <span class="number">0</span>;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Thread::getpid</span></span><br><span class="line"><span class="comment">// Get the process id of the current thread.</span></span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> </span><br><span class="line">Thread::getpid()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> pid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Thread::getuid</span></span><br><span class="line"><span class="comment">// Get the process id of the current thread.</span></span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> </span><br><span class="line">Thread::getuid()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> uid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Thread::pidAllocate</span></span><br><span class="line"><span class="comment">// Allocate a certain pid to the current thread.</span></span><br><span class="line"><span class="comment">//----------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">Thread::pidAllocate()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MaxThreads; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (pids[i] == <span class="number">0</span>)&#123;</span><br><span class="line">            pids[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="threadtest.cc">5.<code>threadtest.cc</code></h5>
+<p>在测试的打印信息中增加pid和uid，执行结果如下： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:&#x2F;home&#x2F;code&#x2F;threads# .&#x2F;nachos</span><br><span class="line">*** thread 0 looped 0 time pid: 0, uid: 0</span><br><span class="line">*** thread 1 looped 0 time pid: 1, uid: 0</span><br><span class="line">*** thread 0 looped 1 time pid: 0, uid: 0</span><br><span class="line">*** thread 1 looped 1 time pid: 1, uid: 0</span><br><span class="line">*** thread 0 looped 2 time pid: 0, uid: 0</span><br><span class="line">*** thread 1 looped 2 time pid: 1, uid: 0</span><br><span class="line">*** thread 0 looped 3 time pid: 0, uid: 0</span><br><span class="line">*** thread 1 looped 3 time pid: 1, uid: 0</span><br><span class="line">*** thread 0 looped 4 time pid: 0, uid: 0</span><br><span class="line">*** thread 1 looped 4 time pid: 1, uid: 0</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 130, idle 0, system 130, user 0</span><br><span class="line">Disk I&#x2F;O: reads 0, writes 0</span><br><span class="line">Console I&#x2F;O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I&#x2F;O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure> 可以看到生成了对应的pid和uid。</p>
+<h4 id="exercise-4-增加全局线程管理机制">Exercise 4 增加全局线程管理机制</h4>
+<h5 id="问题一在thread.cc中改进pidallocate函数">问题一：在<code>thread.cc</code>中改进<code>pidAllocate()</code>函数</h5>
+<p>增加一个判定，判断线程数是否已经达到上限。输出警告提示。 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">Thread::pidAllocate()</span><br><span class="line">&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;No more threads can be created.  Limit: %d\n&quot;</span>, MaxThreads);</span><br><span class="line">    ASSERT(i&lt;MaxThreads);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 测试函数增加一个对应的测试： <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestMax()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= MaxThreads; i++)&#123;</span><br><span class="line">        Thread *t = <span class="keyword">new</span> Thread(<span class="string">&quot;for test&quot;</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;*** thread %d created\n&quot;</span>, t-&gt;getpid());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 测试结果如下： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:&#x2F;home&#x2F;code&#x2F;threads# .&#x2F;nachos -q 3</span><br><span class="line">*** thread 1 created</span><br><span class="line">*** thread 2 created</span><br><span class="line">*** thread 3 created</span><br><span class="line">*** thread 4 created</span><br><span class="line">*** thread 5 created</span><br><span class="line">*** thread 6 created</span><br><span class="line">...</span><br><span class="line">*** thread 125 created</span><br><span class="line">*** thread 126 created</span><br><span class="line">*** thread 127 created</span><br><span class="line">No more threads can be created.  Limit: 128</span><br><span class="line">Assertion failed: line 368, file &quot;..&#x2F;threads&#x2F;thread.cc&quot;</span><br><span class="line">Aborted</span><br></pre></td></tr></table></figure></p>
+<h5 id="问题二增加ts命令">问题二：增加TS命令</h5>
+<p>首先在<code>main.cc</code>中增加对该命令的识别： <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (argc--, argv++; argc &gt; <span class="number">0</span>; argc -= argCount, argv += argCount) &#123;</span><br><span class="line">     ...</span><br><span class="line">	  <span class="comment">// add command &quot;TS&quot;</span></span><br><span class="line">	  <span class="keyword">case</span> <span class="string">&#x27;S&#x27;</span>:</span><br><span class="line">	  	<span class="keyword">if</span> (argv[<span class="number">0</span>][<span class="number">0</span>]==<span class="string">&#x27;T&#x27;</span>)&#123;</span><br><span class="line">			testnum = <span class="number">2</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	...</span><br></pre></td></tr></table></figure> 注意到所有的进程包括就绪队列中的进程和目前正在运行的线程。那么对于正在运行的进程，打印出其信息，并且加上就绪队列<code>readylist</code>中所有进程的信息即可。其中后者可以直接调用<code>scheduler-&gt;Print()</code>函数来打印全部就绪线程信息。之后在<code>Thread::Print()</code>函数中调整输出格式即可。</p>
+<p><code>thread.h</code>: <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> ThreadStatusChar[] = &#123;<span class="string">&quot;JUST_CREATED&quot;</span>,<span class="string">&quot;RUNNING&quot;</span>,<span class="string">&quot;READY&quot;</span>,<span class="string">&quot;BLOCKED&quot;</span>&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>&#123;</span><br><span class="line">      <span class="comment">//printf(&quot;Thread pid: %d name: %s, uid: %d, status: %s\n&quot;, pid, name, uid,  ThreadStatusChar[status]);</span></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d \t %s \t %d \t %s\n&quot;</span>, pid, name, uid,  ThreadStatusChar[status]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>threadtest.cc</code>： 增加四个线程轮换的过程，方便看到更具有实际意义的进程信息表： <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">SimpleThreadTS(<span class="keyword">int</span> which)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Thread %d yielding...\n&quot;</span>, currentThread-&gt;getpid());</span><br><span class="line">    currentThread-&gt;Print();</span><br><span class="line">    scheduler-&gt;Print();</span><br><span class="line">    currentThread-&gt;Yield();   </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestTS()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;PID \t NAME     \t UID \t STATUS\n&quot;</span>);</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread&quot;</span>);</span><br><span class="line">    Thread *t2 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread&quot;</span>);    </span><br><span class="line">    Thread *t3 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread&quot;</span>);</span><br><span class="line">    Thread *t4 = <span class="keyword">new</span> Thread(<span class="string">&quot;forked thread&quot;</span>);</span><br><span class="line">    t1-&gt;Fork(SimpleThreadTS, <span class="number">0</span>);</span><br><span class="line">    t2-&gt;Fork(SimpleThreadTS, <span class="number">0</span>);</span><br><span class="line">    t3-&gt;Fork(SimpleThreadTS, <span class="number">0</span>);</span><br><span class="line">    t4-&gt;Fork(SimpleThreadTS, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//scheduler-&gt;Print();</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 输出结果如下： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:&#x2F;home&#x2F;code&#x2F;threads# .&#x2F;nachos TS</span><br><span class="line">PID 	 NAME     	 UID 	 STATUS</span><br><span class="line">Thread 1 yielding...1 	 forked thread 	 0 	 RUNNING</span><br><span class="line">2 	 forked thread 	 0 	 READY</span><br><span class="line">3 	 forked thread 	 0 	 READY</span><br><span class="line">4 	 forked thread 	 0 	 READY</span><br><span class="line">Thread 2 yielding...2 	 forked thread 	 0 	 RUNNING</span><br><span class="line">3 	 forked thread 	 0 	 READY</span><br><span class="line">4 	 forked thread 	 0 	 READY</span><br><span class="line">1 	 forked thread 	 0 	 READY</span><br><span class="line">Thread 3 yielding...3 	 forked thread 	 0 	 RUNNING</span><br><span class="line">4 	 forked thread 	 0 	 READY</span><br><span class="line">1 	 forked thread 	 0 	 READY</span><br><span class="line">2 	 forked thread 	 0 	 READY</span><br><span class="line">Thread 4 yielding...4 	 forked thread 	 0 	 RUNNING</span><br><span class="line">1 	 forked thread 	 0 	 READY</span><br><span class="line">2 	 forked thread 	 0 	 READY</span><br><span class="line">3 	 forked thread 	 0 	 READY</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 130, idle 0, system 130, user 0</span><br><span class="line">Disk I&#x2F;O: reads 0, writes 0</span><br><span class="line">Console I&#x2F;O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I&#x2F;O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure> 可以看到完成了打印信息的需求。</p>
+<h2 id="内容二遇到的困难以及收获">内容二：遇到的困难以及收获</h2>
+<p>困难：主要体现在c++的结构上。头文件.h和.cc文件之间的函数定义关系、头文件定义时各种不同数据结构的定义方式等不太明确。以及寻找需要的函数时需要仔细研读文档。</p>
+<p>收获：积累了c++编写操作系统的经验，对线程创建、分配、消亡等基础进程有了更深入的理解。</p>
+<h2 id="内容三对课程或lab的意见和建议">内容三：对课程或Lab的意见和建议</h2>
+<p>课程讲解细致深入，非常满意。 Lab的要求不是非常明确、希望能有更详细的guide。 老师讲的很好，也学到了很多，但是课程任务量个人感觉实在是太大，特别是书面作业的书写量每周过于庞大。</p>
+<h2 id="内容四参考文献">内容四：参考文献</h2>
+<ol type="1">
+<li>Nachos中文教程</li>
+<li>博客：<a target="_blank" rel="noopener" href="https://www.shangmayuan.com/a/42b0aa2d756a4e83905c92df.html" class="uri">https://www.shangmayuan.com/a/42b0aa2d756a4e83905c92df.html</a></li>
+<li>博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/superli90/article/details/29369909" class="uri">https://blog.csdn.net/superli90/article/details/29369909</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cpp/" rel="tag"># cpp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/07/intervals-distribution/" rel="prev" title="语言统计分析：长数字序列相邻相同数字间的距离分布">
+                  <i class="fa fa-chevron-left"></i> 语言统计分析：长数字序列相邻相同数字间的距离分布
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Martin Feld</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
