@@ -30,7 +30,7 @@
 <meta property="og:description" content="内容一：任务完成情况   任务完成列表      Exercise1   Exercise2   Exercise3   Challenge 1       Y   Y   Y   Y">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-03T12:56:40.000Z">
-<meta property="article:modified_time" content="2020-11-03T13:00:08.625Z">
+<meta property="article:modified_time" content="2020-11-05T08:45:46.841Z">
 <meta property="article:author" content="Martin Feld">
 <meta property="article:tag" content="cpp">
 <meta name="twitter:card" content="summary">
@@ -307,10 +307,16 @@ Challenge 1 线程调度算法扩展
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-11-03 20:56:40 / 修改时间：21:00:08" itemprop="dateCreated datePublished" datetime="2020-11-03T20:56:40+08:00">2020-11-03</time>
+      <time title="创建时间：2020-11-03 20:56:40" itemprop="dateCreated datePublished" datetime="2020-11-03T20:56:40+08:00">2020-11-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-05 16:45:46" itemprop="dateModified" datetime="2020-11-05T16:45:46+08:00">2020-11-05</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -506,133 +512,30 @@ Exercise 3 线程调度算法扩展
 <p>
 实现基于优先级的抢占式调度算法。<br/> 首先在<code>thread.h</code>、<code>thread.cc</code>中，对于进程类定义一个新变量：优先级<code>priority</code>。提供相关的获取、初始化函数。
 </p>
-<pre class="line-numbers"><code class="language-cpp">thread.h:
-...
-Thread(char* debugName, int pri = 0);
-int getPriority();
-int priority;
-...
-thread.cc:
-Thread::Thread(char* threadName, int pri)&#123;
-    priority = pri;
-&#125;
-int
-Thread::getPriority()
-&#123;
-    return priority;
-&#125;
-...
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">thread.h:</span><br><span class="line">...</span><br><span class="line">Thread(<span class="keyword">char</span>* debugName, <span class="keyword">int</span> pri = <span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getPriority</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">int</span> priority;</span><br><span class="line">...</span><br><span class="line">thread.cc:</span><br><span class="line">Thread::Thread(<span class="keyword">char</span>* threadName, <span class="keyword">int</span> pri)&#123;</span><br><span class="line">    priority = pri;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">Thread::getPriority()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> priority;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>
 随后，由于要实现通过优先级调度。在调度函数<code>ReadyToRun</code>中，改变原有的将线程增加进就绪队列的方法。每次插入新线程时，通过原有的<code>SortedInsert</code>方法，按照优先级加入就绪队列。这样每次取出新线程时，能够按优先级取出。<br/> 同时加入抢占式算法。由于每次会在使用<code>Fork</code>创建新线程时，调用<code>ReadyToRun</code>函数，因此创建新线程后可以直接在这里检查优先级，如果正在运行的线程优先级较低，则放弃CPU的占用，达到抢占的目的。
 </p>
-<pre class="line-numbers"><code class="language-cpp">void
-Scheduler::ReadyToRun (Thread *thread)&#123;
-    readyList-&gt;SortedInsert((void*) thread, thread-&gt;getPriority());
-
-    //add Preemptive algo
-    if(thread != currentThread &amp;&amp; (thread-&gt;getPriority() &lt; currentThread-&gt;getPriority()))
-    &#123;
-        currentThread-&gt;Yield();
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Scheduler::ReadyToRun (Thread *thread)&#123;</span><br><span class="line">    readyList-&amp;gt;SortedInsert((<span class="keyword">void</span>*) thread, thread-&amp;gt;getPriority());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//add Preemptive algo</span></span><br><span class="line">    <span class="keyword">if</span>(thread != currentThread &amp;amp;&amp;amp; (thread-&amp;gt;getPriority() &amp;lt; currentThread-&amp;gt;getPriority()))</span><br><span class="line">    &#123;</span><br><span class="line">        currentThread-&amp;gt;Yield();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>
 随后在<code>threadtest.cc</code>中测试相关功能。<br/> 首先测试fork多个优先级不同的进程时，输出的信息。
 </p>
-<pre class="line-numbers"><code class="language-text">void 
-ThreadTestPri()
-&#123;
-    Thread *t1 = new Thread(&quot;for test&quot;, 3);
-    t1-&gt;Fork(SimpleThread,0);
-    Thread *t2 = new Thread(&quot;for test&quot;, 7);
-    t2-&gt;Fork(SimpleThread,0);
-    Thread *t3 = new Thread(&quot;for test&quot;, 5);
-    t3-&gt;Fork(SimpleThread,0);
-&#125;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestPri()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">3</span>);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">    Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">7</span>);</span><br><span class="line">    t2-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">    Thread *t3 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">5</span>);</span><br><span class="line">    t3-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>
 测试结果如下：
 </p>
-<pre class="line-numbers"><code class="language-text">root@56618acc2196:/home/code/threads# ./nachos -q 4
-*** thread 1 looped 0 time, priority: 3
-*** thread 1 looped 1 time, priority: 3
-*** thread 1 looped 2 time, priority: 3
-*** thread 1 looped 3 time, priority: 3
-*** thread 1 looped 4 time, priority: 3
-*** thread 3 looped 0 time, priority: 5
-*** thread 3 looped 1 time, priority: 5
-*** thread 3 looped 2 time, priority: 5
-*** thread 3 looped 3 time, priority: 5
-*** thread 3 looped 4 time, priority: 5
-*** thread 2 looped 0 time, priority: 7
-*** thread 2 looped 1 time, priority: 7
-*** thread 2 looped 2 time, priority: 7
-*** thread 2 looped 3 time, priority: 7
-*** thread 2 looped 4 time, priority: 7
-No threads ready or runnable, and no pending interrupts.
-Assuming the program completed.
-Machine halting!
-
-Ticks: total 70, idle 0, system 70, user 0
-Disk I/O: reads 0, writes 0
-Console I/O: reads 0, writes 0
-Paging: faults 0
-Network I/O: packets received 0, sent 0
-
-Cleaning up...
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 4</span></span><br><span class="line">*** thread 1 looped 0 time, priority: 3</span><br><span class="line">*** thread 1 looped 1 time, priority: 3</span><br><span class="line">*** thread 1 looped 2 time, priority: 3</span><br><span class="line">*** thread 1 looped 3 time, priority: 3</span><br><span class="line">*** thread 1 looped 4 time, priority: 3</span><br><span class="line">*** thread 3 looped 0 time, priority: 5</span><br><span class="line">*** thread 3 looped 1 time, priority: 5</span><br><span class="line">*** thread 3 looped 2 time, priority: 5</span><br><span class="line">*** thread 3 looped 3 time, priority: 5</span><br><span class="line">*** thread 3 looped 4 time, priority: 5</span><br><span class="line">*** thread 2 looped 0 time, priority: 7</span><br><span class="line">*** thread 2 looped 1 time, priority: 7</span><br><span class="line">*** thread 2 looped 2 time, priority: 7</span><br><span class="line">*** thread 2 looped 3 time, priority: 7</span><br><span class="line">*** thread 2 looped 4 time, priority: 7</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 70, idle 0, system 70, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
 <p>
 可以看到，生成的不同优先级的进程，按照优先级依次被调度。
 </p>
 <p>
 之后测试抢占功能：
 </p>
-<pre class="line-numbers"><code class="language-cpp">void 
-ThreadTestPree()
-&#123;
-    Thread *t1 = new Thread(&quot;for test&quot;, 3);
-    t1-&gt;Fork(SimpleThreadPree,0);
-&#125;
-void
-SimpleThreadPree(int which)
-&#123;
-    int num;
-    for (num = 0; num &lt; 5; num++)&#123;
-        if (num==0)&#123;
-            Thread *t2 = new Thread(&quot;for test&quot;, 1);
-            t2-&gt;Fork(SimpleThread,0);
-        &#125;
-        printf(&quot;*** thread %d looped %d time, priority: %d\n&quot;, currentThread-&gt;getpid(), num, currentThread-&gt;getPriority());
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestPree()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">3</span>);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThreadPree,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">SimpleThreadPree(<span class="keyword">int</span> which)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &amp;lt; <span class="number">5</span>; num++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (num==<span class="number">0</span>)&#123;</span><br><span class="line">            Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">1</span>);</span><br><span class="line">            t2-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(&amp;quot;*** thread %d looped %d time, priority: %d\n&amp;quot;, currentThread-&amp;gt;getpid(), num, currentThread-&amp;gt;getPriority());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>
 即测试先fork一个优先级为3的进程，在进程创建过程中又fork优先级为1的进程，输出结果如下：
 </p>
-<pre class="line-numbers"><code class="language-text">root@56618acc2196:/home/code/threads# ./nachos -q 5
-*** thread 2 looped 0 time, priority: 1
-*** thread 2 looped 1 time, priority: 1
-*** thread 2 looped 2 time, priority: 1
-*** thread 2 looped 3 time, priority: 1
-*** thread 2 looped 4 time, priority: 1
-*** thread 1 looped 0 time, priority: 3
-*** thread 1 looped 1 time, priority: 3
-*** thread 1 looped 2 time, priority: 3
-*** thread 1 looped 3 time, priority: 3
-*** thread 1 looped 4 time, priority: 3
-No threads ready or runnable, and no pending interrupts.
-Assuming the program completed.
-Machine halting!
-
-Ticks: total 50, idle 0, system 50, user 0
-Disk I/O: reads 0, writes 0
-Console I/O: reads 0, writes 0
-Paging: faults 0
-Network I/O: packets received 0, sent 0
-
-Cleaning up...
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 5</span></span><br><span class="line">*** thread 2 looped 0 time, priority: 1</span><br><span class="line">*** thread 2 looped 1 time, priority: 1</span><br><span class="line">*** thread 2 looped 2 time, priority: 1</span><br><span class="line">*** thread 2 looped 3 time, priority: 1</span><br><span class="line">*** thread 2 looped 4 time, priority: 1</span><br><span class="line">*** thread 1 looped 0 time, priority: 3</span><br><span class="line">*** thread 1 looped 1 time, priority: 3</span><br><span class="line">*** thread 1 looped 2 time, priority: 3</span><br><span class="line">*** thread 1 looped 3 time, priority: 3</span><br><span class="line">*** thread 1 looped 4 time, priority: 3</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 50, idle 0, system 50, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
 <p>
 可以看到实现了抢占式算法。
 </p>
@@ -642,89 +545,11 @@ Challenge 1 线程调度算法扩展
 <p>
 扩展实现时间片轮转算法。<br/> Nachos作为分时系统，本身就有时间片轮转的思想所在。因此需要充分利用内部的类和函数来构造时间片轮转。<br/> 在<code>system.cc</code>中，定义了一个<code>timer</code>类，可以在一段时间后产生时钟中断。将其模拟成时间片轮转的时间点，需要首先创建一个非随机的<code>timer</code>类，随后在<code>stats.h</code>中定义的<code>TimerTicks</code>就可看作为时间片。<br/> 原系统的<code>TimerTicks</code>定义为100，因此每当时间点到达100的整数倍会触发系统中断，实现进程轮转调度。<br/> 同时，对于fork的进程，要使它的运行增加系统时钟，需要调用<code>interrupt-&gt;SetLevel(IntOn),interrupt-&gt;SetLevel(IntOff);</code>函数。每次执行中断，会使得系统时间增加<code>SystemTic=10</code>，这个值同样定义在<code>stats.h</code>中。<br/> 通过以上分析构造测试函数，每个fork的进程执行15次中断。
 </p>
-<pre class="line-numbers"><code class="language-cpp">void
-ThreadTestRR()
-&#123;
-    Thread *t1 = new Thread(&quot;test RR&quot;);
-    Thread *t2 = new Thread(&quot;test RR&quot;);
-    Thread *t3 = new Thread(&quot;test RR&quot;);
-    t1-&gt;Fork(SimpleThreadRR,0);
-    t2-&gt;Fork(SimpleThreadRR,0);
-    t3-&gt;Fork(SimpleThreadRR,0);
-&#125;
-void
-SimpleThreadRR(int which)
-&#123;
-    int num;
-    for (num = 0; num &lt; 15; num++)&#123;
-        printf(&quot;*** thread %d looped %d time, priority: %d, time: %d\n&quot;, 
-        currentThread-&gt;getpid(), num, currentThread-&gt;getPriority(), stats-&gt;totalTicks);
-        interrupt-&gt;SetLevel(IntOn);
-        interrupt-&gt;SetLevel(IntOff);
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">ThreadTestRR()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    Thread *t3 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">    t2-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">    t3-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">SimpleThreadRR(<span class="keyword">int</span> which)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &amp;lt; <span class="number">15</span>; num++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(&amp;quot;*** thread %d looped %d time, priority: %d, time: %d\n&amp;quot;, </span><br><span class="line">        currentThread-&amp;gt;getpid(), num, currentThread-&amp;gt;getPriority(), stats-&amp;gt;totalTicks);</span><br><span class="line">        interrupt-&amp;gt;SetLevel(IntOn);</span><br><span class="line">        interrupt-&amp;gt;SetLevel(IntOff);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>
 编译运行得到结果：
 </p>
-<pre class="line-numbers"><code class="language-text">root@56618acc2196:/home/code/threads# ./nachos -q 6
-*** thread 1 looped 0 time, priority: 0, time: 50
-*** thread 1 looped 1 time, priority: 0, time: 50
-*** thread 1 looped 2 time, priority: 0, time: 60
-*** thread 1 looped 3 time, priority: 0, time: 70
-*** thread 1 looped 4 time, priority: 0, time: 80
-*** thread 1 looped 5 time, priority: 0, time: 90
-*** thread 2 looped 0 time, priority: 0, time: 110
-*** thread 2 looped 1 time, priority: 0, time: 110
-*** thread 2 looped 2 time, priority: 0, time: 120
-*** thread 2 looped 3 time, priority: 0, time: 130
-*** thread 2 looped 4 time, priority: 0, time: 140
-*** thread 2 looped 5 time, priority: 0, time: 150
-*** thread 2 looped 6 time, priority: 0, time: 160
-*** thread 2 looped 7 time, priority: 0, time: 170
-*** thread 2 looped 8 time, priority: 0, time: 180
-*** thread 2 looped 9 time, priority: 0, time: 190
-*** thread 3 looped 0 time, priority: 0, time: 210
-*** thread 3 looped 1 time, priority: 0, time: 210
-*** thread 3 looped 2 time, priority: 0, time: 220
-*** thread 3 looped 3 time, priority: 0, time: 230
-*** thread 3 looped 4 time, priority: 0, time: 240
-*** thread 3 looped 5 time, priority: 0, time: 250
-*** thread 3 looped 6 time, priority: 0, time: 260
-*** thread 3 looped 7 time, priority: 0, time: 270
-*** thread 3 looped 8 time, priority: 0, time: 280
-*** thread 3 looped 9 time, priority: 0, time: 290
-*** thread 1 looped 6 time, priority: 0, time: 310
-*** thread 1 looped 7 time, priority: 0, time: 320
-*** thread 1 looped 8 time, priority: 0, time: 330
-*** thread 1 looped 9 time, priority: 0, time: 340
-*** thread 1 looped 10 time, priority: 0, time: 350
-*** thread 1 looped 11 time, priority: 0, time: 360
-*** thread 1 looped 12 time, priority: 0, time: 370
-*** thread 1 looped 13 time, priority: 0, time: 380
-*** thread 1 looped 14 time, priority: 0, time: 390
-*** thread 2 looped 10 time, priority: 0, time: 410
-*** thread 2 looped 11 time, priority: 0, time: 420
-*** thread 2 looped 12 time, priority: 0, time: 430
-*** thread 2 looped 13 time, priority: 0, time: 440
-*** thread 2 looped 14 time, priority: 0, time: 450
-*** thread 3 looped 10 time, priority: 0, time: 470
-*** thread 3 looped 11 time, priority: 0, time: 480
-*** thread 3 looped 12 time, priority: 0, time: 490
-*** thread 3 looped 13 time, priority: 0, time: 520
-*** thread 3 looped 14 time, priority: 0, time: 530
-No threads ready or runnable, and no pending interrupts.
-Assuming the program completed.
-Machine halting!
-
-Ticks: total 600, idle 60, system 540, user 0
-Disk I/O: reads 0, writes 0
-Console I/O: reads 0, writes 0
-Paging: faults 0
-Network I/O: packets received 0, sent 0
-
-Cleaning up...
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 6</span></span><br><span class="line">*** thread 1 looped 0 time, priority: 0, time: 50</span><br><span class="line">*** thread 1 looped 1 time, priority: 0, time: 50</span><br><span class="line">*** thread 1 looped 2 time, priority: 0, time: 60</span><br><span class="line">*** thread 1 looped 3 time, priority: 0, time: 70</span><br><span class="line">*** thread 1 looped 4 time, priority: 0, time: 80</span><br><span class="line">*** thread 1 looped 5 time, priority: 0, time: 90</span><br><span class="line">*** thread 2 looped 0 time, priority: 0, time: 110</span><br><span class="line">*** thread 2 looped 1 time, priority: 0, time: 110</span><br><span class="line">*** thread 2 looped 2 time, priority: 0, time: 120</span><br><span class="line">*** thread 2 looped 3 time, priority: 0, time: 130</span><br><span class="line">*** thread 2 looped 4 time, priority: 0, time: 140</span><br><span class="line">*** thread 2 looped 5 time, priority: 0, time: 150</span><br><span class="line">*** thread 2 looped 6 time, priority: 0, time: 160</span><br><span class="line">*** thread 2 looped 7 time, priority: 0, time: 170</span><br><span class="line">*** thread 2 looped 8 time, priority: 0, time: 180</span><br><span class="line">*** thread 2 looped 9 time, priority: 0, time: 190</span><br><span class="line">*** thread 3 looped 0 time, priority: 0, time: 210</span><br><span class="line">*** thread 3 looped 1 time, priority: 0, time: 210</span><br><span class="line">*** thread 3 looped 2 time, priority: 0, time: 220</span><br><span class="line">*** thread 3 looped 3 time, priority: 0, time: 230</span><br><span class="line">*** thread 3 looped 4 time, priority: 0, time: 240</span><br><span class="line">*** thread 3 looped 5 time, priority: 0, time: 250</span><br><span class="line">*** thread 3 looped 6 time, priority: 0, time: 260</span><br><span class="line">*** thread 3 looped 7 time, priority: 0, time: 270</span><br><span class="line">*** thread 3 looped 8 time, priority: 0, time: 280</span><br><span class="line">*** thread 3 looped 9 time, priority: 0, time: 290</span><br><span class="line">*** thread 1 looped 6 time, priority: 0, time: 310</span><br><span class="line">*** thread 1 looped 7 time, priority: 0, time: 320</span><br><span class="line">*** thread 1 looped 8 time, priority: 0, time: 330</span><br><span class="line">*** thread 1 looped 9 time, priority: 0, time: 340</span><br><span class="line">*** thread 1 looped 10 time, priority: 0, time: 350</span><br><span class="line">*** thread 1 looped 11 time, priority: 0, time: 360</span><br><span class="line">*** thread 1 looped 12 time, priority: 0, time: 370</span><br><span class="line">*** thread 1 looped 13 time, priority: 0, time: 380</span><br><span class="line">*** thread 1 looped 14 time, priority: 0, time: 390</span><br><span class="line">*** thread 2 looped 10 time, priority: 0, time: 410</span><br><span class="line">*** thread 2 looped 11 time, priority: 0, time: 420</span><br><span class="line">*** thread 2 looped 12 time, priority: 0, time: 430</span><br><span class="line">*** thread 2 looped 13 time, priority: 0, time: 440</span><br><span class="line">*** thread 2 looped 14 time, priority: 0, time: 450</span><br><span class="line">*** thread 3 looped 10 time, priority: 0, time: 470</span><br><span class="line">*** thread 3 looped 11 time, priority: 0, time: 480</span><br><span class="line">*** thread 3 looped 12 time, priority: 0, time: 490</span><br><span class="line">*** thread 3 looped 13 time, priority: 0, time: 520</span><br><span class="line">*** thread 3 looped 14 time, priority: 0, time: 530</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 600, idle 60, system 540, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
 <p>
 可以看到，线程的运行过程中，时钟值每达到100会触发系统中断实现线程调度。改变<code>TimerTicks</code>值即可更改时间片大小。
 </p>
