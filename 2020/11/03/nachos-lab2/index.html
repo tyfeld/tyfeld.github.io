@@ -1,743 +1,740 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.1.1">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Martin Feld">
+  <meta name="keywords" content="">
+  <title>操作系统lab2——线程调度报告 - Harmon</title>
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-
-<script class="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","scheme":"Pisces","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
-  </script>
-
-  <meta name="description" content="内容一：任务完成情况   任务完成列表      Exercise1   Exercise2   Exercise3   Challenge 1       Y   Y   Y   Y">
-<meta property="og:type" content="article">
-<meta property="og:title" content="操作系统lab2——线程调度报告">
-<meta property="og:url" content="http://tyfeld.github.io/2020/11/03/nachos-lab2/index.html">
-<meta property="og:site_name" content="Harmon">
-<meta property="og:description" content="内容一：任务完成情况   任务完成列表      Exercise1   Exercise2   Exercise3   Challenge 1       Y   Y   Y   Y">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-03T12:56:40.000Z">
-<meta property="article:modified_time" content="2020-11-05T08:45:46.841Z">
-<meta property="article:author" content="Martin Feld">
-<meta property="article:tag" content="cpp">
-<meta name="twitter:card" content="summary">
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
 
-<link rel="canonical" href="http://tyfeld.github.io/2020/11/03/nachos-lab2/">
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/atom-one-light.min.css" />
+    
+  
 
-<script class="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>操作系统lab2——线程调度报告 | Harmon</title>
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
   
 
 
 
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
 
 
 
-  <noscript>
-  <style>
-  body { margin-top: 2rem; }
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
 
-  .use-motion .menu-item,
-  .use-motion .sidebar,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header {
-    visibility: visible;
-  }
 
-  .use-motion .header,
-  .use-motion .site-brand-container .toggle,
-  .use-motion .footer { opacity: initial; }
+<link  rel="stylesheet" href="/css/main.css" />
 
-  .use-motion .site-title,
-  .use-motion .site-subtitle,
-  .use-motion .custom-logo-image {
-    opacity: initial;
-    top: initial;
-  }
+<!-- 自定义样式保持在最底部 -->
 
-  .use-motion .logo-line {
-    transform: scaleX(1);
-  }
 
-  .search-pop-overlay, .sidebar-nav { display: none; }
-  .sidebar-panel { display: block; }
-  </style>
-</noscript>
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","version":"1.8.5","typing":{"enable":false,"typeSpeed":30,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
 
-</head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Harmon's Blog</strong>&nbsp;</a>
 
-  <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">Harmon</h1>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
 </nav>
 
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="操作系统lab2——线程调度报告">
+              
+                操作系统lab2——线程调度报告
+              
+            </span>
 
-
-
-</div>
-        
+            
+              <div class="mt-3">
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#toc_1"><span class="nav-text">
-内容一：任务完成情况
-</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#toc_2"><span class="nav-text">
-任务完成列表
-</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toc_3"><span class="nav-text">
-具体Exercise完成情况
-</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#toc_4"><span class="nav-text">
-Exercise 1 调研
-</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_5"><span class="nav-text">
-SCHED_OTHER
-</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_6"><span class="nav-text">
-SCHED_FIFO
-</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_7"><span class="nav-text">
-SCHED_RR
-</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toc_8"><span class="nav-text">
-Exercise 2 源代码阅读
-</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_9"><span class="nav-text">
-code&#x2F;threads&#x2F;scheduler.和code&#x2F;threads&#x2F;scheduler.cc
-</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_10"><span class="nav-text">
-code&#x2F;threads&#x2F;switch.s
-</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#toc_11"><span class="nav-text">
-code&#x2F;machine&#x2F;timer.h和code&#x2F;machine&#x2F;timer.cc
-</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toc_12"><span class="nav-text">
-Exercise 3 线程调度算法扩展
-</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toc_13"><span class="nav-text">
-Challenge 1 线程调度算法扩展
-</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toc_14"><span class="nav-text">
-内容二：遇到的困难以及收获
-</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toc_15"><span class="nav-text">
-内容三：对课程或Lab的意见和建议
-</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toc_16"><span class="nav-text">
-内容四：参考文献
-</span></a></li></ol></div>
-      </section>
-      <!--/noindex-->
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Martin Feld"
-      src="/images/avatar.jpeg">
-  <p class="site-author-name" itemprop="name">Martin Feld</p>
-  <div class="site-description" itemprop="description"></div>
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-03 20:56" pubdate>
+        2020年11月3日 晚上
+      </time>
+    </span>
+  
 </div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">4</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/tyfeld" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tyfeld" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/tyfeld2" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;tyfeld2" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
-      </span>
-  </div>
 
-
-
-      </section>
-    </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
-
+<div class="mt-1">
+  
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-    <div class="main-inner post posts-expand">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-
       
+      45
+       分钟
+    </span>
+  
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tyfeld.github.io/2020/11/03/nachos-lab2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="Martin Feld">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Harmon">
-    </span>
-
-    
-    
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          操作系统lab2——线程调度报告
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-03 20:56:40" itemprop="dateCreated datePublished" datetime="2020-11-03T20:56:40+08:00">2020-11-03</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-05 16:45:46" itemprop="dateModified" datetime="2020-11-05T16:45:46+08:00">2020-11-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操统</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span id="busuanzi_value_page_pv"></span>
-    </span>
 </div>
 
+            
+          </div>
+
+          
         </div>
-      </header>
+      </div>
+    </div>
+  </header>
 
+  <main>
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h2 id="toc_1">
-内容一：任务完成情况
-</h2>
-<h3 id="toc_2">
-任务完成列表
-</h3>
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">操作系统lab2——线程调度报告</h1>
+            
+            <div class="markdown-body">
+              <h2 id="toc_1">内容一：任务完成情况</h2>
+<h3 id="toc_2">任务完成列表</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: center">
-Exercise1
-</th>
-<th style="text-align: center">
-Exercise2
-</th>
-<th style="text-align: center">
-Exercise3
-</th>
-<th style="text-align: center">
-Challenge 1
-</th>
+<th style="text-align: center">Exercise1</th>
+<th style="text-align: center">Exercise2</th>
+<th style="text-align: center">Exercise3</th>
+<th style="text-align: center">Challenge 1</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center">
-Y
-</td>
-<td style="text-align: center">
-Y
-</td>
-<td style="text-align: center">
-Y
-</td>
-<td style="text-align: center">
-Y
-</td>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">Y</td>
 </tr>
 </tbody>
 </table>
 <a id="more"></a>
-<h3 id="toc_3">
-具体Exercise完成情况
-</h3>
-<h4 id="toc_4">
-Exercise 1 调研
-</h4>
-<p>
-调研Linux中的线程调度算法：
-</p>
-<p>
-从Linux 2.6.23开始，默认的调度器为CFS，即"完全公平调度器"(Completely Fair Scheduler)。CFS调度器取代了之前的"O(1)"调度器。相关的代码在 <code>kernel/sched_fair.c</code>中。<br/> CFS算法中，每个进程都有一个“虚拟运行时间”表 示该进程运行了“多长时间”，而调度器会选择虚拟运行时间最小的进程来运行；虚拟运行时间的计算与进程实际运行时间成正比， 而与进程优先级成反比；CFS以虚拟运行时间作为键值构造一棵红黑树，从而实现了快速更新和删除。
-</p>
-<p>
-除此之外，Linux系统支持普通和实时两种进程。与此相对应的，Linux有两种进程调度策略：普通进程调度和实时进程调度。因此，在每个进程的进程控制块中都有一个域policy，用来指明该进程为何种进程，应该使用何种调度策略。
-</p>
-<h5 id="toc_5">
-SCHED_OTHER
-</h5>
-<p>
-如果进程控制块的policy的值为SCHED_OTHER，则该进程为普通进程，适用于普通进程调度策略。该策略是是默认的Linux分时调度（time-sharing scheduling）策略，其调度优先级sched_priority是不起作用的，即可以看成其调度优先级为0。对于该策略列表上的线程，调度器是基于动态优先级（dynamic priority）来调度的，动态优先级是跟nice中相关(nice值可以由接口nice, setpriority,sched_setattr来设置)，该值会随着线程的运行时间而动态改变，以确保所有具有SCHED_OTHER策略的线程公平运行。
-</p>
-<h5 id="toc_6">
-SCHED_FIFO
-</h5>
-<p>
-凡是进程控制块的policy的值为SCHED_FIFO或SCHED_RR的进程，调度器都将其视为实时进程。<br/> 进程控制块中的域rt_pripority就是实时进程的优先级，其范围为1~99。<br/> FIFO是典型的先来先服务调度。即在同一级别的队列中，先就绪的进程先入队，后就绪的进程后入队。调度器在选择运行进程时，就以优先级rt_pripority为序查询各个队列，当发现队列中有就绪进程时，就运行处于队列头位置的进程。
-</p>
-<h5 id="toc_7">
-SCHED_RR
-</h5>
-<p>
-时间片轮转调度，同样属于实时进程的调度策略。<br/> 时间片轮转。当进程的时间片用完，系统将重新分配时间片，并置于就绪队列。放在队尾保证了所有具有相同优先级的轮转任务的调度公平。
-</p>
-<h4 id="toc_8">
-Exercise 2 源代码阅读
-</h4>
-<h5 id="toc_9">
-code/threads/scheduler.和code/threads/scheduler.cc
-</h5>
-<p>
-在<code>scheduler.h</code>中，定义了调度器<code>scheduler</code>类。其中维护一个私有的描述就绪线程队列的<code>readyList</code>指针。以及一众共有的构造函数、析构函数，以及与线程调度相关的<code>ReadyToRun</code>,<code>FindNextToRun</code>,<code>Run</code>,<code>Print</code>函数。<br/> 在<code>scheduler.cc</code>中，具体定义了这些函数的行为。<br/> 可以看到Nachos只有一种最简单的调度策略：FIFO先入先出。
-</p>
+<h3 id="toc_3">具体Exercise完成情况</h3>
+<h4 id="toc_4">Exercise 1  调研</h4>
+<p>调研Linux中的线程调度算法：</p>
+<p>从Linux 2.6.23开始，默认的调度器为CFS，即&quot;完全公平调度器&quot;(Completely Fair Scheduler)。CFS调度器取代了之前的&quot;O(1)&quot;调度器。相关的代码在 <code>kernel/sched_fair.c</code>中。<br/>
+CFS算法中，每个进程都有一个“虚拟运行时间”表 示该进程运行了“多长时间”，而调度器会选择虚拟运行时间最小的进程来运行；虚拟运行时间的计算与进程实际运行时间成正比， 而与进程优先级成反比；CFS以虚拟运行时间作为键值构造一棵红黑树，从而实现了快速更新和删除。</p>
+<p>除此之外，Linux系统支持普通和实时两种进程。与此相对应的，Linux有两种进程调度策略：普通进程调度和实时进程调度。因此，在每个进程的进程控制块中都有一个域policy，用来指明该进程为何种进程，应该使用何种调度策略。</p>
+<h5 id="toc_5">SCHED_OTHER</h5>
+<p>如果进程控制块的policy的值为SCHED_OTHER，则该进程为普通进程，适用于普通进程调度策略。该策略是是默认的Linux分时调度（time-sharing scheduling）策略，其调度优先级sched_priority是不起作用的，即可以看成其调度优先级为0。对于该策略列表上的线程，调度器是基于动态优先级（dynamic priority）来调度的，动态优先级是跟nice中相关(nice值可以由接口nice, setpriority,sched_setattr来设置)，该值会随着线程的运行时间而动态改变，以确保所有具有SCHED_OTHER策略的线程公平运行。</p>
+<h5 id="toc_6">SCHED_FIFO</h5>
+<p>凡是进程控制块的policy的值为SCHED_FIFO或SCHED_RR的进程，调度器都将其视为实时进程。<br/>
+进程控制块中的域rt_pripority就是实时进程的优先级，其范围为1~99。<br/>
+FIFO是典型的先来先服务调度。即在同一级别的队列中，先就绪的进程先入队，后就绪的进程后入队。调度器在选择运行进程时，就以优先级rt_pripority为序查询各个队列，当发现队列中有就绪进程时，就运行处于队列头位置的进程。</p>
+<h5 id="toc_7">SCHED_RR</h5>
+<p>时间片轮转调度，同样属于实时进程的调度策略。<br/>
+时间片轮转。当进程的时间片用完，系统将重新分配时间片，并置于就绪队列。放在队尾保证了所有具有相同优先级的轮转任务的调度公平。</p>
+<h4 id="toc_8">Exercise 2  源代码阅读</h4>
+<h5 id="toc_9">code/threads/scheduler.和code/threads/scheduler.cc</h5>
+<p>在<code>scheduler.h</code>中，定义了调度器<code>scheduler</code>类。其中维护一个私有的描述就绪线程队列的<code>readyList</code>指针。以及一众共有的构造函数、析构函数，以及与线程调度相关的<code>ReadyToRun</code>,<code>FindNextToRun</code>,<code>Run</code>,<code>Print</code>函数。<br/>
+在<code>scheduler.cc</code>中，具体定义了这些函数的行为。<br/>
+可以看到Nachos只有一种最简单的调度策略：FIFO先入先出。</p>
 <ul>
-<li>
-<code>ReadyToRun (Thread *thread)</code>:将传递的线程的状态更改为<code>Ready</code>。
-</li>
-<li>
-<code>FindNextToRun</code>:直接在就绪队列中移出首位元素。
-</li>
-<li>
-<code>Run (Thread *nextThread)</code>:将cpu调度给下一个进程，包括以下步骤：
+<li><code>ReadyToRun (Thread *thread)</code>:将传递的线程的状态更改为<code>Ready</code>。</li>
+<li><code>FindNextToRun</code>:直接在就绪队列中移出首位元素。</li>
+<li><code>Run (Thread *nextThread)</code>:将cpu调度给下一个进程，包括以下步骤：
 <ul>
-<li>
-保存当前线程为旧线程并检查是否有堆栈溢出。
-</li>
-<li>
-将下一个进程设定为当前进程并改为运行态。
-</li>
-<li>
-使用<code>SWITCH</code>切换新旧线程的上下文。
-</li>
-<li>
-判断threadToBeDestroyed，如果不为空则将其删除。
-</li>
+<li>保存当前线程为旧线程并检查是否有堆栈溢出。</li>
+<li>将下一个进程设定为当前进程并改为运行态。</li>
+<li>使用<code>SWITCH</code>切换新旧线程的上下文。</li>
+<li>判断threadToBeDestroyed，如果不为空则将其删除。</li>
+</ul></li>
+<li><code>Print()</code>：调用<code>ThreadPrint</code>打印出就绪队列中的所有线程。</li>
 </ul>
-</li>
-<li>
-<code>Print()</code>：调用<code>ThreadPrint</code>打印出就绪队列中的所有线程。
-</li>
-</ul>
-<h5 id="toc_10">
-code/threads/switch.s
-</h5>
-<p>
-switch.s中包含对于四个架构分别定义的两个函数：<code>ThreadRoot(InitialPC, InitialArg, WhenDonePC, StartupPC),SWITCH(oldThread, newThread)</code>。<br/> 其中前者用来在创建第一个线程的时候被<code>SWITCH</code>调用。<br/> 后者是切换新旧线程上下文的关键函数。其中包括以下主要步骤：
-</p>
+<h5 id="toc_10">code/threads/switch.s</h5>
+<p>switch.s中包含对于四个架构分别定义的两个函数：<code>ThreadRoot(InitialPC, InitialArg, WhenDonePC, StartupPC),SWITCH(oldThread, newThread)</code>。<br/>
+其中前者用来在创建第一个线程的时候被<code>SWITCH</code>调用。<br/>
+后者是切换新旧线程上下文的关键函数。其中包括以下主要步骤：</p>
 <ul>
-<li>
-将当前CPU寄存器的信息保存到旧线程的machineState中
-</li>
-<li>
-将保存的寄存器信息加载到新线程的相关寄存器中<br/> 这样就将cpu的上下文切换到了新进程的栈空间中，切换为新进程运行。
-</li>
+<li>将当前CPU寄存器的信息保存到旧线程的machineState中</li>
+<li>将保存的寄存器信息加载到新线程的相关寄存器中<br/>
+这样就将cpu的上下文切换到了新进程的栈空间中，切换为新进程运行。</li>
 </ul>
-<h5 id="toc_11">
-code/machine/timer.h和code/machine/timer.cc
-</h5>
-<p>
-在<code>timer.h</code>中，定义了模拟硬件计时器的数据结构<code>Timer</code>。其中包含：
-</p>
+<h5 id="toc_11">code/machine/timer.h和code/machine/timer.cc</h5>
+<p>在<code>timer.h</code>中，定义了模拟硬件计时器的数据结构<code>Timer</code>。其中包含：</p>
 <ul>
-<li>
-构造、析构函数
-</li>
-<li>
-每当时钟中断时调用的函数<code>TimerExpired()</code>
-</li>
-<li>
-计算下一次时钟中断的时间函数<code>TimeOfNextInterrupt()</code>
-</li>
-<li>
-私有变量 <code>randomize</code>：标志是否使用随机中断
-</li>
-<li>
-私有函数<code>handler</code>：中断处理函数
-</li>
-<li>
-私有变量<code>arg</code>：传给中断处理函数的参数
-</li>
+<li>构造、析构函数</li>
+<li>每当时钟中断时调用的函数<code>TimerExpired()</code></li>
+<li>计算下一次时钟中断的时间函数<code>TimeOfNextInterrupt()</code></li>
+<li>私有变量 <code>randomize</code>：标志是否使用随机中断</li>
+<li>私有函数<code>handler</code>：中断处理函数</li>
+<li>私有变量<code>arg</code>：传给中断处理函数的参数</li>
 </ul>
-<p>
-在<code>timer.cc</code>中，具体定义了以上函数的行为。
-</p>
+<p>在<code>timer.cc</code>中，具体定义了以上函数的行为。</p>
 <ul>
-<li>
-构造函数在初始化完成后将一个时钟中断插入等待处理的中断队列。
-</li>
-<li>
-当时钟中断时，<code>TimerHandler</code>会被调用，它又会调用<code>TimerExpired</code>函数。这个函数通过<code>TimeOfNextInterrupt</code>函数计算下一个时钟中断发生的时间并将下一个时钟中断插入等待处理的中断队列，之后调用时钟中断处理函数。<br/> 从而使得系统时间逐步增加。
-</li>
+<li>构造函数在初始化完成后将一个时钟中断插入等待处理的中断队列。</li>
+<li>当时钟中断时，<code>TimerHandler</code>会被调用，它又会调用<code>TimerExpired</code>函数。这个函数通过<code>TimeOfNextInterrupt</code>函数计算下一个时钟中断发生的时间并将下一个时钟中断插入等待处理的中断队列，之后调用时钟中断处理函数。<br/>
+从而使得系统时间逐步增加。</li>
 </ul>
-<h4 id="toc_12">
-Exercise 3 线程调度算法扩展
-</h4>
-<p>
-实现基于优先级的抢占式调度算法。<br/> 首先在<code>thread.h</code>、<code>thread.cc</code>中，对于进程类定义一个新变量：优先级<code>priority</code>。提供相关的获取、初始化函数。
-</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">thread.h:</span><br><span class="line">...</span><br><span class="line">Thread(<span class="keyword">char</span>* debugName, <span class="keyword">int</span> pri = <span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getPriority</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">int</span> priority;</span><br><span class="line">...</span><br><span class="line">thread.cc:</span><br><span class="line">Thread::Thread(<span class="keyword">char</span>* threadName, <span class="keyword">int</span> pri)&#123;</span><br><span class="line">    priority = pri;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">Thread::getPriority()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> priority;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>
-随后，由于要实现通过优先级调度。在调度函数<code>ReadyToRun</code>中，改变原有的将线程增加进就绪队列的方法。每次插入新线程时，通过原有的<code>SortedInsert</code>方法，按照优先级加入就绪队列。这样每次取出新线程时，能够按优先级取出。<br/> 同时加入抢占式算法。由于每次会在使用<code>Fork</code>创建新线程时，调用<code>ReadyToRun</code>函数，因此创建新线程后可以直接在这里检查优先级，如果正在运行的线程优先级较低，则放弃CPU的占用，达到抢占的目的。
-</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Scheduler::ReadyToRun (Thread *thread)&#123;</span><br><span class="line">    readyList-&amp;gt;SortedInsert((<span class="keyword">void</span>*) thread, thread-&amp;gt;getPriority());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//add Preemptive algo</span></span><br><span class="line">    <span class="keyword">if</span>(thread != currentThread &amp;amp;&amp;amp; (thread-&amp;gt;getPriority() &amp;lt; currentThread-&amp;gt;getPriority()))</span><br><span class="line">    &#123;</span><br><span class="line">        currentThread-&amp;gt;Yield();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>
-随后在<code>threadtest.cc</code>中测试相关功能。<br/> 首先测试fork多个优先级不同的进程时，输出的信息。
-</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestPri()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">3</span>);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">    Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">7</span>);</span><br><span class="line">    t2-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">    Thread *t3 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">5</span>);</span><br><span class="line">    t3-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>
-测试结果如下：
-</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 4</span></span><br><span class="line">*** thread 1 looped 0 time, priority: 3</span><br><span class="line">*** thread 1 looped 1 time, priority: 3</span><br><span class="line">*** thread 1 looped 2 time, priority: 3</span><br><span class="line">*** thread 1 looped 3 time, priority: 3</span><br><span class="line">*** thread 1 looped 4 time, priority: 3</span><br><span class="line">*** thread 3 looped 0 time, priority: 5</span><br><span class="line">*** thread 3 looped 1 time, priority: 5</span><br><span class="line">*** thread 3 looped 2 time, priority: 5</span><br><span class="line">*** thread 3 looped 3 time, priority: 5</span><br><span class="line">*** thread 3 looped 4 time, priority: 5</span><br><span class="line">*** thread 2 looped 0 time, priority: 7</span><br><span class="line">*** thread 2 looped 1 time, priority: 7</span><br><span class="line">*** thread 2 looped 2 time, priority: 7</span><br><span class="line">*** thread 2 looped 3 time, priority: 7</span><br><span class="line">*** thread 2 looped 4 time, priority: 7</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 70, idle 0, system 70, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
-<p>
-可以看到，生成的不同优先级的进程，按照优先级依次被调度。
-</p>
-<p>
-之后测试抢占功能：
-</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">ThreadTestPree()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">3</span>);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThreadPree,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">SimpleThreadPree(<span class="keyword">int</span> which)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &amp;lt; <span class="number">5</span>; num++)&#123;</span><br><span class="line">        <span class="keyword">if</span> (num==<span class="number">0</span>)&#123;</span><br><span class="line">            Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;<span class="keyword">for</span> test&amp;quot;, <span class="number">1</span>);</span><br><span class="line">            t2-&amp;gt;Fork(SimpleThread,<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(&amp;quot;*** thread %d looped %d time, priority: %d\n&amp;quot;, currentThread-&amp;gt;getpid(), num, currentThread-&amp;gt;getPriority());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>
-即测试先fork一个优先级为3的进程，在进程创建过程中又fork优先级为1的进程，输出结果如下：
-</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 5</span></span><br><span class="line">*** thread 2 looped 0 time, priority: 1</span><br><span class="line">*** thread 2 looped 1 time, priority: 1</span><br><span class="line">*** thread 2 looped 2 time, priority: 1</span><br><span class="line">*** thread 2 looped 3 time, priority: 1</span><br><span class="line">*** thread 2 looped 4 time, priority: 1</span><br><span class="line">*** thread 1 looped 0 time, priority: 3</span><br><span class="line">*** thread 1 looped 1 time, priority: 3</span><br><span class="line">*** thread 1 looped 2 time, priority: 3</span><br><span class="line">*** thread 1 looped 3 time, priority: 3</span><br><span class="line">*** thread 1 looped 4 time, priority: 3</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 50, idle 0, system 50, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
-<p>
-可以看到实现了抢占式算法。
-</p>
-<h4 id="toc_13">
-Challenge 1 线程调度算法扩展
-</h4>
-<p>
-扩展实现时间片轮转算法。<br/> Nachos作为分时系统，本身就有时间片轮转的思想所在。因此需要充分利用内部的类和函数来构造时间片轮转。<br/> 在<code>system.cc</code>中，定义了一个<code>timer</code>类，可以在一段时间后产生时钟中断。将其模拟成时间片轮转的时间点，需要首先创建一个非随机的<code>timer</code>类，随后在<code>stats.h</code>中定义的<code>TimerTicks</code>就可看作为时间片。<br/> 原系统的<code>TimerTicks</code>定义为100，因此每当时间点到达100的整数倍会触发系统中断，实现进程轮转调度。<br/> 同时，对于fork的进程，要使它的运行增加系统时钟，需要调用<code>interrupt-&gt;SetLevel(IntOn),interrupt-&gt;SetLevel(IntOff);</code>函数。每次执行中断，会使得系统时间增加<code>SystemTic=10</code>，这个值同样定义在<code>stats.h</code>中。<br/> 通过以上分析构造测试函数，每个fork的进程执行15次中断。
-</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">ThreadTestRR()</span><br><span class="line">&#123;</span><br><span class="line">    Thread *t1 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    Thread *t2 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    Thread *t3 = <span class="keyword">new</span> Thread(&amp;quot;test RR&amp;quot;);</span><br><span class="line">    t1-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">    t2-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">    t3-&amp;gt;Fork(SimpleThreadRR,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">SimpleThreadRR(<span class="keyword">int</span> which)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &amp;lt; <span class="number">15</span>; num++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(&amp;quot;*** thread %d looped %d time, priority: %d, time: %d\n&amp;quot;, </span><br><span class="line">        currentThread-&amp;gt;getpid(), num, currentThread-&amp;gt;getPriority(), stats-&amp;gt;totalTicks);</span><br><span class="line">        interrupt-&amp;gt;SetLevel(IntOn);</span><br><span class="line">        interrupt-&amp;gt;SetLevel(IntOff);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>
-编译运行得到结果：
-</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">root@56618acc2196:/home/code/threads<span class="comment"># ./nachos -q 6</span></span><br><span class="line">*** thread 1 looped 0 time, priority: 0, time: 50</span><br><span class="line">*** thread 1 looped 1 time, priority: 0, time: 50</span><br><span class="line">*** thread 1 looped 2 time, priority: 0, time: 60</span><br><span class="line">*** thread 1 looped 3 time, priority: 0, time: 70</span><br><span class="line">*** thread 1 looped 4 time, priority: 0, time: 80</span><br><span class="line">*** thread 1 looped 5 time, priority: 0, time: 90</span><br><span class="line">*** thread 2 looped 0 time, priority: 0, time: 110</span><br><span class="line">*** thread 2 looped 1 time, priority: 0, time: 110</span><br><span class="line">*** thread 2 looped 2 time, priority: 0, time: 120</span><br><span class="line">*** thread 2 looped 3 time, priority: 0, time: 130</span><br><span class="line">*** thread 2 looped 4 time, priority: 0, time: 140</span><br><span class="line">*** thread 2 looped 5 time, priority: 0, time: 150</span><br><span class="line">*** thread 2 looped 6 time, priority: 0, time: 160</span><br><span class="line">*** thread 2 looped 7 time, priority: 0, time: 170</span><br><span class="line">*** thread 2 looped 8 time, priority: 0, time: 180</span><br><span class="line">*** thread 2 looped 9 time, priority: 0, time: 190</span><br><span class="line">*** thread 3 looped 0 time, priority: 0, time: 210</span><br><span class="line">*** thread 3 looped 1 time, priority: 0, time: 210</span><br><span class="line">*** thread 3 looped 2 time, priority: 0, time: 220</span><br><span class="line">*** thread 3 looped 3 time, priority: 0, time: 230</span><br><span class="line">*** thread 3 looped 4 time, priority: 0, time: 240</span><br><span class="line">*** thread 3 looped 5 time, priority: 0, time: 250</span><br><span class="line">*** thread 3 looped 6 time, priority: 0, time: 260</span><br><span class="line">*** thread 3 looped 7 time, priority: 0, time: 270</span><br><span class="line">*** thread 3 looped 8 time, priority: 0, time: 280</span><br><span class="line">*** thread 3 looped 9 time, priority: 0, time: 290</span><br><span class="line">*** thread 1 looped 6 time, priority: 0, time: 310</span><br><span class="line">*** thread 1 looped 7 time, priority: 0, time: 320</span><br><span class="line">*** thread 1 looped 8 time, priority: 0, time: 330</span><br><span class="line">*** thread 1 looped 9 time, priority: 0, time: 340</span><br><span class="line">*** thread 1 looped 10 time, priority: 0, time: 350</span><br><span class="line">*** thread 1 looped 11 time, priority: 0, time: 360</span><br><span class="line">*** thread 1 looped 12 time, priority: 0, time: 370</span><br><span class="line">*** thread 1 looped 13 time, priority: 0, time: 380</span><br><span class="line">*** thread 1 looped 14 time, priority: 0, time: 390</span><br><span class="line">*** thread 2 looped 10 time, priority: 0, time: 410</span><br><span class="line">*** thread 2 looped 11 time, priority: 0, time: 420</span><br><span class="line">*** thread 2 looped 12 time, priority: 0, time: 430</span><br><span class="line">*** thread 2 looped 13 time, priority: 0, time: 440</span><br><span class="line">*** thread 2 looped 14 time, priority: 0, time: 450</span><br><span class="line">*** thread 3 looped 10 time, priority: 0, time: 470</span><br><span class="line">*** thread 3 looped 11 time, priority: 0, time: 480</span><br><span class="line">*** thread 3 looped 12 time, priority: 0, time: 490</span><br><span class="line">*** thread 3 looped 13 time, priority: 0, time: 520</span><br><span class="line">*** thread 3 looped 14 time, priority: 0, time: 530</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 600, idle 60, system 540, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
-<p>
-可以看到，线程的运行过程中，时钟值每达到100会触发系统中断实现线程调度。改变<code>TimerTicks</code>值即可更改时间片大小。
-</p>
-<h2 id="toc_14">
-内容二：遇到的困难以及收获
-</h2>
-<p>
-困难：
-</p>
+<h4 id="toc_12">Exercise 3  线程调度算法扩展</h4>
+<p>实现基于优先级的抢占式调度算法。<br/>
+首先在<code>thread.h</code>、<code>thread.cc</code>中，对于进程类定义一个新变量：优先级<code>priority</code>。提供相关的获取、初始化函数。</p>
+<pre><code class="hljs cpp">thread.h:
+...
+Thread(<span class="hljs-keyword">char</span>* debugName, <span class="hljs-keyword">int</span> pri = <span class="hljs-number">0</span>);
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getPriority</span><span class="hljs-params">()</span></span>;
+<span class="hljs-keyword">int</span> priority;
+...
+thread.cc:
+Thread::Thread(<span class="hljs-keyword">char</span>* threadName, <span class="hljs-keyword">int</span> pri)&#123;
+    priority = pri;
+&#125;
+<span class="hljs-keyword">int</span>
+Thread::getPriority()
+&#123;
+    <span class="hljs-keyword">return</span> priority;
+&#125;
+...</code></pre>
+<p>随后，由于要实现通过优先级调度。在调度函数<code>ReadyToRun</code>中，改变原有的将线程增加进就绪队列的方法。每次插入新线程时，通过原有的<code>SortedInsert</code>方法，按照优先级加入就绪队列。这样每次取出新线程时，能够按优先级取出。<br/>
+同时加入抢占式算法。由于每次会在使用<code>Fork</code>创建新线程时，调用<code>ReadyToRun</code>函数，因此创建新线程后可以直接在这里检查优先级，如果正在运行的线程优先级较低，则放弃CPU的占用，达到抢占的目的。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
+Scheduler::ReadyToRun (Thread *thread)&#123;
+    readyList-&gt;SortedInsert((<span class="hljs-keyword">void</span>*) thread, thread-&gt;getPriority());
+
+    <span class="hljs-comment">//add Preemptive algo</span>
+    <span class="hljs-keyword">if</span>(thread != currentThread &amp;&amp; (thread-&gt;getPriority() &lt; currentThread-&gt;getPriority()))
+    &#123;
+        currentThread-&gt;Yield();
+    &#125;
+&#125;</code></pre>
+<p>随后在<code>threadtest.cc</code>中测试相关功能。<br/>
+首先测试fork多个优先级不同的进程时，输出的信息。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
+ThreadTestPri()
+&#123;
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
+    t1-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+    Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">7</span>);
+    t2-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+    Thread *t3 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">5</span>);
+    t3-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+&#125;</code></pre>
+<p>测试结果如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 4</span>
+*** thread 1 looped 0 time, priority: 3
+*** thread 1 looped 1 time, priority: 3
+*** thread 1 looped 2 time, priority: 3
+*** thread 1 looped 3 time, priority: 3
+*** thread 1 looped 4 time, priority: 3
+*** thread 3 looped 0 time, priority: 5
+*** thread 3 looped 1 time, priority: 5
+*** thread 3 looped 2 time, priority: 5
+*** thread 3 looped 3 time, priority: 5
+*** thread 3 looped 4 time, priority: 5
+*** thread 2 looped 0 time, priority: 7
+*** thread 2 looped 1 time, priority: 7
+*** thread 2 looped 2 time, priority: 7
+*** thread 2 looped 3 time, priority: 7
+*** thread 2 looped 4 time, priority: 7
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+
+Ticks: total 70, idle 0, system 70, user 0
+Disk I/O: reads 0, writes 0
+Console I/O: reads 0, writes 0
+Paging: faults 0
+Network I/O: packets received 0, sent 0
+
+Cleaning up...</code></pre>
+<p>可以看到，生成的不同优先级的进程，按照优先级依次被调度。</p>
+<p>之后测试抢占功能：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
+ThreadTestPree()
+&#123;
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
+    t1-&gt;Fork(SimpleThreadPree,<span class="hljs-number">0</span>);
+&#125;
+<span class="hljs-keyword">void</span>
+SimpleThreadPree(<span class="hljs-keyword">int</span> which)
+&#123;
+    <span class="hljs-keyword">int</span> num;
+    <span class="hljs-keyword">for</span> (num = <span class="hljs-number">0</span>; num &lt; <span class="hljs-number">5</span>; num++)&#123;
+        <span class="hljs-keyword">if</span> (num==<span class="hljs-number">0</span>)&#123;
+            Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">1</span>);
+            t2-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+        &#125;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread %d looped %d time, priority: %d\n&quot;</span>, currentThread-&gt;getpid(), num, currentThread-&gt;getPriority());
+    &#125;
+&#125;</code></pre>
+<p>即测试先fork一个优先级为3的进程，在进程创建过程中又fork优先级为1的进程，输出结果如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 5</span>
+*** thread 2 looped 0 time, priority: 1
+*** thread 2 looped 1 time, priority: 1
+*** thread 2 looped 2 time, priority: 1
+*** thread 2 looped 3 time, priority: 1
+*** thread 2 looped 4 time, priority: 1
+*** thread 1 looped 0 time, priority: 3
+*** thread 1 looped 1 time, priority: 3
+*** thread 1 looped 2 time, priority: 3
+*** thread 1 looped 3 time, priority: 3
+*** thread 1 looped 4 time, priority: 3
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+
+Ticks: total 50, idle 0, system 50, user 0
+Disk I/O: reads 0, writes 0
+Console I/O: reads 0, writes 0
+Paging: faults 0
+Network I/O: packets received 0, sent 0
+
+Cleaning up...</code></pre>
+<p>可以看到实现了抢占式算法。</p>
+<h4 id="toc_13">Challenge 1  线程调度算法扩展</h4>
+<p>扩展实现时间片轮转算法。<br/>
+Nachos作为分时系统，本身就有时间片轮转的思想所在。因此需要充分利用内部的类和函数来构造时间片轮转。<br/>
+在<code>system.cc</code>中，定义了一个<code>timer</code>类，可以在一段时间后产生时钟中断。将其模拟成时间片轮转的时间点，需要首先创建一个非随机的<code>timer</code>类，随后在<code>stats.h</code>中定义的<code>TimerTicks</code>就可看作为时间片。<br/>
+原系统的<code>TimerTicks</code>定义为100，因此每当时间点到达100的整数倍会触发系统中断，实现进程轮转调度。<br/>
+同时，对于fork的进程，要使它的运行增加系统时钟，需要调用<code>interrupt-&gt;SetLevel(IntOn),interrupt-&gt;SetLevel(IntOff);</code>函数。每次执行中断，会使得系统时间增加<code>SystemTic=10</code>，这个值同样定义在<code>stats.h</code>中。<br/>
+通过以上分析构造测试函数，每个fork的进程执行15次中断。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
+ThreadTestRR()
+&#123;
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
+    Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
+    Thread *t3 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
+    t1-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
+    t2-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
+    t3-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
+&#125;
+<span class="hljs-keyword">void</span>
+SimpleThreadRR(<span class="hljs-keyword">int</span> which)
+&#123;
+    <span class="hljs-keyword">int</span> num;
+    <span class="hljs-keyword">for</span> (num = <span class="hljs-number">0</span>; num &lt; <span class="hljs-number">15</span>; num++)&#123;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread %d looped %d time, priority: %d, time: %d\n&quot;</span>, 
+        currentThread-&gt;getpid(), num, currentThread-&gt;getPriority(), stats-&gt;totalTicks);
+        interrupt-&gt;SetLevel(IntOn);
+        interrupt-&gt;SetLevel(IntOff);
+    &#125;
+&#125;</code></pre>
+<p>编译运行得到结果：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 6</span>
+*** thread 1 looped 0 time, priority: 0, time: 50
+*** thread 1 looped 1 time, priority: 0, time: 50
+*** thread 1 looped 2 time, priority: 0, time: 60
+*** thread 1 looped 3 time, priority: 0, time: 70
+*** thread 1 looped 4 time, priority: 0, time: 80
+*** thread 1 looped 5 time, priority: 0, time: 90
+*** thread 2 looped 0 time, priority: 0, time: 110
+*** thread 2 looped 1 time, priority: 0, time: 110
+*** thread 2 looped 2 time, priority: 0, time: 120
+*** thread 2 looped 3 time, priority: 0, time: 130
+*** thread 2 looped 4 time, priority: 0, time: 140
+*** thread 2 looped 5 time, priority: 0, time: 150
+*** thread 2 looped 6 time, priority: 0, time: 160
+*** thread 2 looped 7 time, priority: 0, time: 170
+*** thread 2 looped 8 time, priority: 0, time: 180
+*** thread 2 looped 9 time, priority: 0, time: 190
+*** thread 3 looped 0 time, priority: 0, time: 210
+*** thread 3 looped 1 time, priority: 0, time: 210
+*** thread 3 looped 2 time, priority: 0, time: 220
+*** thread 3 looped 3 time, priority: 0, time: 230
+*** thread 3 looped 4 time, priority: 0, time: 240
+*** thread 3 looped 5 time, priority: 0, time: 250
+*** thread 3 looped 6 time, priority: 0, time: 260
+*** thread 3 looped 7 time, priority: 0, time: 270
+*** thread 3 looped 8 time, priority: 0, time: 280
+*** thread 3 looped 9 time, priority: 0, time: 290
+*** thread 1 looped 6 time, priority: 0, time: 310
+*** thread 1 looped 7 time, priority: 0, time: 320
+*** thread 1 looped 8 time, priority: 0, time: 330
+*** thread 1 looped 9 time, priority: 0, time: 340
+*** thread 1 looped 10 time, priority: 0, time: 350
+*** thread 1 looped 11 time, priority: 0, time: 360
+*** thread 1 looped 12 time, priority: 0, time: 370
+*** thread 1 looped 13 time, priority: 0, time: 380
+*** thread 1 looped 14 time, priority: 0, time: 390
+*** thread 2 looped 10 time, priority: 0, time: 410
+*** thread 2 looped 11 time, priority: 0, time: 420
+*** thread 2 looped 12 time, priority: 0, time: 430
+*** thread 2 looped 13 time, priority: 0, time: 440
+*** thread 2 looped 14 time, priority: 0, time: 450
+*** thread 3 looped 10 time, priority: 0, time: 470
+*** thread 3 looped 11 time, priority: 0, time: 480
+*** thread 3 looped 12 time, priority: 0, time: 490
+*** thread 3 looped 13 time, priority: 0, time: 520
+*** thread 3 looped 14 time, priority: 0, time: 530
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+
+Ticks: total 600, idle 60, system 540, user 0
+Disk I/O: reads 0, writes 0
+Console I/O: reads 0, writes 0
+Paging: faults 0
+Network I/O: packets received 0, sent 0
+
+Cleaning up...</code></pre>
+<p>可以看到，线程的运行过程中，时钟值每达到100会触发系统中断实现线程调度。改变<code>TimerTicks</code>值即可更改时间片大小。</p>
+<h2 id="toc_14">内容二：遇到的困难以及收获</h2>
+<p>困难：</p>
 <ol>
-<li>
-对于排序优先级应该使用哪个函数不了解，后来发现有内置的<code>SortedInsert</code>插入方法。说明还是要多寻找内生函数来减少不必要的操作。
-</li>
-<li>
-时间片轮转的机制很简单，但是如何获取每个线程的运行时间是个问题。最后通过查资料发现了可以手动中断来使得时钟增加。
-</li>
-<li>
-本来准备使用Yield加判断来实现时间片轮转，但后来查资料发现，nachos本身也内置了<code>-rs</code>指令来轮转，因此已经内置了相关的机制。充分利用本身的方法来更高效地达到效果。
-</li>
+<li>对于排序优先级应该使用哪个函数不了解，后来发现有内置的<code>SortedInsert</code>插入方法。说明还是要多寻找内生函数来减少不必要的操作。</li>
+<li>时间片轮转的机制很简单，但是如何获取每个线程的运行时间是个问题。最后通过查资料发现了可以手动中断来使得时钟增加。</li>
+<li>本来准备使用Yield加判断来实现时间片轮转，但后来查资料发现，nachos本身也内置了<code>-rs</code>指令来轮转，因此已经内置了相关的机制。充分利用本身的方法来更高效地达到效果。</li>
 </ol>
-<p>
-收获：
-</p>
+<p>收获：</p>
 <ol>
-<li>
-对linux线程调度的各种机制有了更深的了解。
-</li>
-<li>
-对于Nachos，学会利用时钟中断来控制系统时钟的增加，并一次构造时间片轮转算法。
-</li>
+<li>对linux线程调度的各种机制有了更深的了解。</li>
+<li>对于Nachos，学会利用时钟中断来控制系统时钟的增加，并一次构造时间片轮转算法。</li>
 </ol>
-<h2 id="toc_15">
-内容三：对课程或Lab的意见和建议
-</h2>
-<p>
-希望lab给出更详细的指导，建立讨论群等。<br/> 希望每周的任务量按照学时做一些调整。
-</p>
-<h2 id="toc_16">
-内容四：参考文献
-</h2>
+<h2 id="toc_15">内容三：对课程或Lab的意见和建议</h2>
+<p>希望lab给出更详细的指导，建立讨论群等。<br/>
+希望每周的任务量按照学时做一些调整。</p>
+<h2 id="toc_16">内容四：参考文献</h2>
 <ol>
-<li>
-Nachos中文教程。
-</li>
-<li>
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242</a>
-</li>
-<li>
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42214778/article/details/104844245">https://blog.csdn.net/weixin_42214778/article/details/104844245</a>
-</li>
-<li>
-<a target="_blank" rel="noopener" href="https://github.com/MakiSzz/Nachos-project">https://github.com/MakiSzz/Nachos-project</a>
-</li>
+<li>Nachos中文教程。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42214778/article/details/104844245">https://blog.csdn.net/weixin_42214778/article/details/104844245</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MakiSzz/Nachos-project">https://github.com/MakiSzz/Nachos-project</a></li>
 </ol>
 
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/cpp/" rel="tag"># cpp</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2020/10/28/nachos-lab1/" rel="prev" title="操作系统lab1——线程实验报告">
-                  <i class="fa fa-chevron-left"></i> 操作系统lab1——线程实验报告
-                </a>
             </div>
-            <div class="post-nav-item">
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%93%8D%E7%BB%9F/">操统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/cpp/">cpp</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/28/nachos-lab1/">
+                        <span class="hidden-mobile">操作系统lab1——线程实验报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
             </div>
-          </div>
-    </footer>
-  </article>
-  
-  
-  
 
-
-
-      
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      const commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
+            
+          </article>
+        </div>
+      </div>
     </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      
-
-      
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Martin Feld</span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
   </div>
-
-
-
-    </div>
-  </footer>
-
-  
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-
-
-
-
-
   
 
   
 
   
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.12.0/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
 
 </body>
 </html>
