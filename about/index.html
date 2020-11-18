@@ -53,7 +53,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","version":"1.8.5","typing":{"enable":false,"typeSpeed":30,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":50,"cursorChar":"","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -162,8 +162,6 @@
           <div class="page-header text-center fade-in-up">
             <span class="h2" id="subtitle" title="关于">
               
-                关于
-              
             </span>
 
             
@@ -193,14 +191,14 @@
 
 <div class="text-center">
   <div class="about-info">
-    <div class="about-name">myname</div>
-    <div class="about-intro">一句简短的介绍</div>
+    <div class="about-name">FELD</div>
+    <div class="about-intro">PKU受难者</div>
     <div class="about-icons">
       
         
         
         
-        <a target="_blank" rel="noopener" href="https://github.com" class="
+        <a target="_blank" rel="noopener" href="https://github.com/tyfeld" class="
            hint--bottom hint--rounded"
            aria-label=GitHub
         >
@@ -211,24 +209,22 @@
         
         
         
-        <a target="_blank" rel="noopener" href="https://douban.com" class="
+        <a target="_blank" rel="noopener" href="https://twitter.com/tyfeld2" class="
            hint--bottom hint--rounded"
-           aria-label=豆瓣
+           aria-label=Twitter
         >
-          <i class="iconfont icon-douban-fill" aria-hidden="true"></i>
+          <i class="iconfont icon-twitter-fill" aria-hidden="true"></i>
           
         </a>
       
         
         
         
-        <a href="javascript:;" class="qr-trigger
-           "
-           
+        <a target="_blank" rel="noopener" href="https://weibo.com/u/6662071849" class="
+           hint--bottom hint--rounded"
+           aria-label=微博
         >
-          <i class="iconfont icon-wechat-fill" aria-hidden="true"></i>
-          
-            <img class="qr-img" src="/img/favicon.png" srcset="/img/loading.gif" alt="qrcode" />
+          <i class="iconfont icon-weibo-fill" aria-hidden="true"></i>
           
         </a>
       
@@ -237,7 +233,7 @@
 </div>
 
 <article class="mt-5 markdown-body">
-  <p>晚安，作业人！</p>
+  <p>作业人空闲时会来维护一下</p>
 
 </article>
 
@@ -288,6 +284,30 @@
      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
   </div>
   
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
 
   
 
@@ -342,7 +362,20 @@
 
 
 
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
 
 
 
