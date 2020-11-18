@@ -478,31 +478,31 @@ ThreadTestPCSema()
     t3-&gt;Fork(Consumer,<span class="hljs-number">6</span>);
 &#125;</code></pre>
 <p>在测试时加入<code>-rs</code>命令使得进程由于时钟中断而被随机调度，测试的结果如下：</p>
-<pre><code class="hljs angelscript"><span class="hljs-symbol">root@</span><span class="hljs-number">56618</span>acc2196:/home/code/threads# ./nachos -rs -q <span class="hljs-number">7</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">2</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">3</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">2</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">3</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">4</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">4</span> to <span class="hljs-number">3</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">2</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">1</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Consumer1 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">2</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">3</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">4</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">4</span> to <span class="hljs-number">3</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">2</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">1</span>
-Consumer2 consume <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -rs -q 7</span>
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 2
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 3
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 2
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 3
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 4
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 4 to 3
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 2
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 1
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Consumer1 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 2
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 3
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 4
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 4 to 3
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 2
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 1
+Consumer2 consume 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
 ^C
 Cleaning up...</code></pre>
 <p>可以看到两者没有产生矛盾，成功地使得消费者生产者两个进程满足了同步互斥的需求。</p>
@@ -544,33 +544,33 @@ Condition* notfull = <span class="hljs-keyword">new</span> Condition(<span class
     &#125;
 &#125;</code></pre>
 <p>将缓冲区的大小修改为6，执行与上一个测试函数类似的测试函数，结果如下:</p>
-<pre><code class="hljs angelscript"><span class="hljs-symbol">root@</span><span class="hljs-number">56618</span>acc2196:/home/code/threads# ./nachos -rs -q <span class="hljs-number">8</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">2</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">3</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">4</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">4</span> to <span class="hljs-number">5</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">5</span> to <span class="hljs-number">6</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">6</span> to <span class="hljs-number">5</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">5</span> to <span class="hljs-number">4</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">4</span> to <span class="hljs-number">3</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">2</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">1</span>
-Consumer1 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Buffer <span class="hljs-keyword">is</span> empty, waiting <span class="hljs-keyword">for</span> producers.
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">2</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">3</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">4</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">4</span> to <span class="hljs-number">3</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">3</span> to <span class="hljs-number">2</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">1</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
-Buffer <span class="hljs-keyword">is</span> empty, waiting <span class="hljs-keyword">for</span> producers.
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">0</span> to <span class="hljs-number">1</span>
-Producer produced <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">2</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">2</span> to <span class="hljs-number">1</span>
-Consumer2 consumed <span class="hljs-number">1</span> item, items <span class="hljs-keyword">in</span> buffer changed <span class="hljs-keyword">from</span> <span class="hljs-number">1</span> to <span class="hljs-number">0</span>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -rs -q 8</span>
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 2
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 3
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 4
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 4 to 5
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 5 to 6
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 6 to 5
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 5 to 4
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 4 to 3
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 2
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 1
+Consumer1 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Buffer is empty, waiting <span class="hljs-keyword">for</span> producers.
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 2
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 3
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 4
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 4 to 3
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 3 to 2
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 1
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
+Buffer is empty, waiting <span class="hljs-keyword">for</span> producers.
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 0 to 1
+Producer produced 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 2
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 2 to 1
+Consumer2 consumed 1 item, items <span class="hljs-keyword">in</span> buffer changed from 1 to 0
 ^C
 Cleaning up...</code></pre>
 <p>可以看到同样成功解决了生产者消费者的同步互斥问题。</p>
@@ -613,21 +613,21 @@ ThreadTestBarrier()
     &#125;
 &#125;</code></pre>
 <p>测试结果如下：</p>
-<pre><code class="hljs yaml"><span class="hljs-string">root@56618acc2196:/home/code/threads#</span> <span class="hljs-string">./nachos</span> <span class="hljs-string">-rs</span> <span class="hljs-string">-q</span> <span class="hljs-number">9</span>
-<span class="hljs-attr">Waiting for more... Present threads:</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-attr">Barrier threads:</span> <span class="hljs-number">6</span>
-<span class="hljs-attr">Waiting for more... Present threads:</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-attr">Barrier threads:</span> <span class="hljs-number">6</span>
-<span class="hljs-attr">Waiting for more... Present threads:</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-attr">Barrier threads:</span> <span class="hljs-number">6</span>
-<span class="hljs-attr">Waiting for more... Present threads:</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-attr">Barrier threads:</span> <span class="hljs-number">6</span>
-<span class="hljs-attr">Waiting for more... Present threads:</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-attr">Barrier threads:</span> <span class="hljs-number">6</span>
-<span class="hljs-string">Meeting</span> <span class="hljs-string">Barrier</span> <span class="hljs-string">Now!</span> <span class="hljs-string">Waking</span> <span class="hljs-string">all</span> <span class="hljs-string">waiting</span> <span class="hljs-string">threads.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">6</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">1</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">3</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">5</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">2</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">Thread</span> <span class="hljs-number">4</span> <span class="hljs-string">continue</span> <span class="hljs-string">to</span> <span class="hljs-string">run.</span>
-<span class="hljs-string">^C</span>
-<span class="hljs-string">Cleaning</span> <span class="hljs-string">up...</span></code></pre>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -rs -q 9</span>
+Waiting <span class="hljs-keyword">for</span> more... Present threads: 1, Barrier threads: 6
+Waiting <span class="hljs-keyword">for</span> more... Present threads: 2, Barrier threads: 6
+Waiting <span class="hljs-keyword">for</span> more... Present threads: 3, Barrier threads: 6
+Waiting <span class="hljs-keyword">for</span> more... Present threads: 4, Barrier threads: 6
+Waiting <span class="hljs-keyword">for</span> more... Present threads: 5, Barrier threads: 6
+Meeting Barrier Now! Waking all waiting threads.
+Thread 6 <span class="hljs-built_in">continue</span> to run.
+Thread 1 <span class="hljs-built_in">continue</span> to run.
+Thread 3 <span class="hljs-built_in">continue</span> to run.
+Thread 5 <span class="hljs-built_in">continue</span> to run.
+Thread 2 <span class="hljs-built_in">continue</span> to run.
+Thread 4 <span class="hljs-built_in">continue</span> to run.
+^C
+Cleaning up...</code></pre>
 <p>可以看到前5个进程都进入了等待队列，最后一个进程达到barrier后，唤醒了之前的所有进程，6个进程都继续运行。实现了barrier机制。</p>
 <h2 id="toc_15">内容二：遇到的困难以及收获</h2>
 <p>在掌握了锁、条件变量和信号量的运行机制和构造方法后，本实习的内容相当地直接了断。只需将伪代码实现为c++代码即可，基本上没有太大的思维难度和编码难度。<br/>

@@ -74,14 +74,14 @@
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/tags/Web/</loc>
+    <loc>http://tyfeld.github.io/tags/cpp/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/tags/cpp/</loc>
+    <loc>http://tyfeld.github.io/tags/Web/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -97,14 +97,14 @@
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/categories/Daily/</loc>
+    <loc>http://tyfeld.github.io/categories/%E6%93%8D%E7%BB%9F/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/categories/%E6%93%8D%E7%BB%9F/</loc>
+    <loc>http://tyfeld.github.io/categories/Daily/</loc>
     <lastmod>2020-11-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
