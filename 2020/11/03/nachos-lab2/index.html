@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Martin Feld">
   <meta name="keywords" content="">
-  <title>操作系统lab2——线程调度报告 - Harmon</title>
+  <title>操作系统 lab2—— 线程调度报告 - Fe1d</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Harmon's Blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>Fe1d's Blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="操作系统lab2——线程调度报告">
+            <span class="h2" id="subtitle" title="操作系统 lab2—— 线程调度报告">
               
             </span>
 
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.3k 字
+      3.4k 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      45
+      46
        分钟
     </span>
   
@@ -224,11 +224,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">操作系统lab2——线程调度报告</h1>
+            <h1 style="display: none">操作系统 lab2—— 线程调度报告</h1>
             
             <div class="markdown-body">
-              <h2 id="toc_1">内容一：任务完成情况</h2>
-<h3 id="toc_2">任务完成列表</h3>
+              <h2 id="toc_1"> 内容一：任务完成情况 </h2>
+<h3 id="toc_2"> 任务完成列表 </h3>
 <table>
 <thead>
 <tr>
@@ -248,107 +248,107 @@
 </tbody>
 </table>
 <a id="more"></a>
-<h3 id="toc_3">具体Exercise完成情况</h3>
-<h4 id="toc_4">Exercise 1  调研</h4>
-<p>调研Linux中的线程调度算法：</p>
-<p>从Linux 2.6.23开始，默认的调度器为CFS，即&quot;完全公平调度器&quot;(Completely Fair Scheduler)。CFS调度器取代了之前的&quot;O(1)&quot;调度器。相关的代码在 <code>kernel/sched_fair.c</code>中。<br/>
-CFS算法中，每个进程都有一个“虚拟运行时间”表 示该进程运行了“多长时间”，而调度器会选择虚拟运行时间最小的进程来运行；虚拟运行时间的计算与进程实际运行时间成正比， 而与进程优先级成反比；CFS以虚拟运行时间作为键值构造一棵红黑树，从而实现了快速更新和删除。</p>
-<p>除此之外，Linux系统支持普通和实时两种进程。与此相对应的，Linux有两种进程调度策略：普通进程调度和实时进程调度。因此，在每个进程的进程控制块中都有一个域policy，用来指明该进程为何种进程，应该使用何种调度策略。</p>
+<h3 id="toc_3"> 具体 Exercise 完成情况 </h3>
+<h4 id="toc_4">Exercise 1  调研 </h4>
+<p > 调研 Linux 中的线程调度算法：</p>
+<p > 从 Linux 2.6.23 开始，默认的调度器为 CFS，即 & quot; 完全公平调度器 & quot;(Completely Fair Scheduler)。CFS 调度器取代了之前的 & quot;O (1)&quot; 调度器。相关的代码在 <code>kernel/sched_fair.c</code > 中。<br/>
+CFS 算法中，每个进程都有一个 “虚拟运行时间” 表 示该进程运行了 “多长时间”，而调度器会选择虚拟运行时间最小的进程来运行；虚拟运行时间的计算与进程实际运行时间成正比， 而与进程优先级成反比；CFS 以虚拟运行时间作为键值构造一棵红黑树，从而实现了快速更新和删除。</p>
+<p > 除此之外，Linux 系统支持普通和实时两种进程。与此相对应的，Linux 有两种进程调度策略：普通进程调度和实时进程调度。因此，在每个进程的进程控制块中都有一个域 policy，用来指明该进程为何种进程，应该使用何种调度策略。</p>
 <h5 id="toc_5">SCHED_OTHER</h5>
-<p>如果进程控制块的policy的值为SCHED_OTHER，则该进程为普通进程，适用于普通进程调度策略。该策略是是默认的Linux分时调度（time-sharing scheduling）策略，其调度优先级sched_priority是不起作用的，即可以看成其调度优先级为0。对于该策略列表上的线程，调度器是基于动态优先级（dynamic priority）来调度的，动态优先级是跟nice中相关(nice值可以由接口nice, setpriority,sched_setattr来设置)，该值会随着线程的运行时间而动态改变，以确保所有具有SCHED_OTHER策略的线程公平运行。</p>
+<p > 如果进程控制块的 policy 的值为 SCHED_OTHER，则该进程为普通进程，适用于普通进程调度策略。该策略是是默认的 Linux 分时调度（time-sharing scheduling）策略，其调度优先级 sched_priority 是不起作用的，即可以看成其调度优先级为 0。对于该策略列表上的线程，调度器是基于动态优先级（dynamic priority）来调度的，动态优先级是跟 nice 中相关 (nice 值可以由接口 nice, setpriority,sched_setattr 来设置)，该值会随着线程的运行时间而动态改变，以确保所有具有 SCHED_OTHER 策略的线程公平运行。</p>
 <h5 id="toc_6">SCHED_FIFO</h5>
-<p>凡是进程控制块的policy的值为SCHED_FIFO或SCHED_RR的进程，调度器都将其视为实时进程。<br/>
-进程控制块中的域rt_pripority就是实时进程的优先级，其范围为1~99。<br/>
-FIFO是典型的先来先服务调度。即在同一级别的队列中，先就绪的进程先入队，后就绪的进程后入队。调度器在选择运行进程时，就以优先级rt_pripority为序查询各个队列，当发现队列中有就绪进程时，就运行处于队列头位置的进程。</p>
+<p > 凡是进程控制块的 policy 的值为 SCHED_FIFO 或 SCHED_RR 的进程，调度器都将其视为实时进程。<br/>
+进程控制块中的域 rt_pripority 就是实时进程的优先级，其范围为 1~99。<br/>
+FIFO 是典型的先来先服务调度。即在同一级别的队列中，先就绪的进程先入队，后就绪的进程后入队。调度器在选择运行进程时，就以优先级 rt_pripority 为序查询各个队列，当发现队列中有就绪进程时，就运行处于队列头位置的进程。</p>
 <h5 id="toc_7">SCHED_RR</h5>
-<p>时间片轮转调度，同样属于实时进程的调度策略。<br/>
+<p > 时间片轮转调度，同样属于实时进程的调度策略。<br/>
 时间片轮转。当进程的时间片用完，系统将重新分配时间片，并置于就绪队列。放在队尾保证了所有具有相同优先级的轮转任务的调度公平。</p>
-<h4 id="toc_8">Exercise 2  源代码阅读</h4>
-<h5 id="toc_9">code/threads/scheduler.和code/threads/scheduler.cc</h5>
-<p>在<code>scheduler.h</code>中，定义了调度器<code>scheduler</code>类。其中维护一个私有的描述就绪线程队列的<code>readyList</code>指针。以及一众共有的构造函数、析构函数，以及与线程调度相关的<code>ReadyToRun</code>,<code>FindNextToRun</code>,<code>Run</code>,<code>Print</code>函数。<br/>
-在<code>scheduler.cc</code>中，具体定义了这些函数的行为。<br/>
-可以看到Nachos只有一种最简单的调度策略：FIFO先入先出。</p>
+<h4 id="toc_8">Exercise 2  源代码阅读 </h4>
+<h5 id="toc_9">code/threads/scheduler. 和 code/threads/scheduler.cc</h5>
+<p > 在 < code>scheduler.h</code > 中，定义了调度器 < code>scheduler</code > 类。其中维护一个私有的描述就绪线程队列的 < code>readyList</code > 指针。以及一众共有的构造函数、析构函数，以及与线程调度相关的 < code>ReadyToRun</code>,<code>FindNextToRun</code>,<code>Run</code>,<code>Print</code > 函数。<br/>
+在 < code>scheduler.cc</code > 中，具体定义了这些函数的行为。<br/>
+可以看到 Nachos 只有一种最简单的调度策略：FIFO 先入先出。</p>
 <ul>
-<li><code>ReadyToRun (Thread *thread)</code>:将传递的线程的状态更改为<code>Ready</code>。</li>
-<li><code>FindNextToRun</code>:直接在就绪队列中移出首位元素。</li>
-<li><code>Run (Thread *nextThread)</code>:将cpu调度给下一个进程，包括以下步骤：
+<li><code>ReadyToRun (Thread *thread)</code>: 将传递的线程的状态更改为 < code>Ready</code>。</li>
+<li><code>FindNextToRun</code>: 直接在就绪队列中移出首位元素。</li>
+<li><code>Run (Thread *nextThread)</code>: 将 cpu 调度给下一个进程，包括以下步骤：
 <ul>
-<li>保存当前线程为旧线程并检查是否有堆栈溢出。</li>
-<li>将下一个进程设定为当前进程并改为运行态。</li>
-<li>使用<code>SWITCH</code>切换新旧线程的上下文。</li>
-<li>判断threadToBeDestroyed，如果不为空则将其删除。</li>
+<li > 保存当前线程为旧线程并检查是否有堆栈溢出。</li>
+<li > 将下一个进程设定为当前进程并改为运行态。</li>
+<li > 使用 < code>SWITCH</code > 切换新旧线程的上下文。</li>
+<li > 判断 threadToBeDestroyed，如果不为空则将其删除。</li>
 </ul></li>
-<li><code>Print()</code>：调用<code>ThreadPrint</code>打印出就绪队列中的所有线程。</li>
+<li><code>Print ()</code>：调用 < code>ThreadPrint</code > 打印出就绪队列中的所有线程。</li>
 </ul>
 <h5 id="toc_10">code/threads/switch.s</h5>
-<p>switch.s中包含对于四个架构分别定义的两个函数：<code>ThreadRoot(InitialPC, InitialArg, WhenDonePC, StartupPC),SWITCH(oldThread, newThread)</code>。<br/>
-其中前者用来在创建第一个线程的时候被<code>SWITCH</code>调用。<br/>
+<p>switch.s 中包含对于四个架构分别定义的两个函数：<code>ThreadRoot (InitialPC, InitialArg, WhenDonePC, StartupPC),SWITCH (oldThread, newThread)</code>。<br/>
+其中前者用来在创建第一个线程的时候被 < code>SWITCH</code > 调用。<br/>
 后者是切换新旧线程上下文的关键函数。其中包括以下主要步骤：</p>
 <ul>
-<li>将当前CPU寄存器的信息保存到旧线程的machineState中</li>
-<li>将保存的寄存器信息加载到新线程的相关寄存器中<br/>
-这样就将cpu的上下文切换到了新进程的栈空间中，切换为新进程运行。</li>
+<li > 将当前 CPU 寄存器的信息保存到旧线程的 machineState 中 </li>
+<li > 将保存的寄存器信息加载到新线程的相关寄存器中 < br/>
+这样就将 cpu 的上下文切换到了新进程的栈空间中，切换为新进程运行。</li>
 </ul>
-<h5 id="toc_11">code/machine/timer.h和code/machine/timer.cc</h5>
-<p>在<code>timer.h</code>中，定义了模拟硬件计时器的数据结构<code>Timer</code>。其中包含：</p>
+<h5 id="toc_11">code/machine/timer.h 和 code/machine/timer.cc</h5>
+<p > 在 < code>timer.h</code > 中，定义了模拟硬件计时器的数据结构 < code>Timer</code>。其中包含：</p>
 <ul>
-<li>构造、析构函数</li>
-<li>每当时钟中断时调用的函数<code>TimerExpired()</code></li>
-<li>计算下一次时钟中断的时间函数<code>TimeOfNextInterrupt()</code></li>
-<li>私有变量 <code>randomize</code>：标志是否使用随机中断</li>
-<li>私有函数<code>handler</code>：中断处理函数</li>
-<li>私有变量<code>arg</code>：传给中断处理函数的参数</li>
+<li > 构造、析构函数 </li>
+<li > 每当时钟中断时调用的函数 < code>TimerExpired ()</code></li>
+<li > 计算下一次时钟中断的时间函数 < code>TimeOfNextInterrupt ()</code></li>
+<li > 私有变量 <code>randomize</code>：标志是否使用随机中断 </li>
+<li > 私有函数 < code>handler</code>：中断处理函数 </li>
+<li > 私有变量 < code>arg</code>：传给中断处理函数的参数 </li>
 </ul>
-<p>在<code>timer.cc</code>中，具体定义了以上函数的行为。</p>
+<p > 在 < code>timer.cc</code > 中，具体定义了以上函数的行为。</p>
 <ul>
-<li>构造函数在初始化完成后将一个时钟中断插入等待处理的中断队列。</li>
-<li>当时钟中断时，<code>TimerHandler</code>会被调用，它又会调用<code>TimerExpired</code>函数。这个函数通过<code>TimeOfNextInterrupt</code>函数计算下一个时钟中断发生的时间并将下一个时钟中断插入等待处理的中断队列，之后调用时钟中断处理函数。<br/>
+<li > 构造函数在初始化完成后将一个时钟中断插入等待处理的中断队列。</li>
+<li > 当时钟中断时，<code>TimerHandler</code > 会被调用，它又会调用 < code>TimerExpired</code > 函数。这个函数通过 < code>TimeOfNextInterrupt</code > 函数计算下一个时钟中断发生的时间并将下一个时钟中断插入等待处理的中断队列，之后调用时钟中断处理函数。<br/>
 从而使得系统时间逐步增加。</li>
 </ul>
-<h4 id="toc_12">Exercise 3  线程调度算法扩展</h4>
-<p>实现基于优先级的抢占式调度算法。<br/>
-首先在<code>thread.h</code>、<code>thread.cc</code>中，对于进程类定义一个新变量：优先级<code>priority</code>。提供相关的获取、初始化函数。</p>
+<h4 id="toc_12">Exercise 3  线程调度算法扩展 </h4>
+<p > 实现基于优先级的抢占式调度算法。<br/>
+首先在 < code>thread.h</code>、<code>thread.cc</code > 中，对于进程类定义一个新变量：优先级 < code>priority</code>。提供相关的获取、初始化函数。</p>
 <pre><code class="hljs cpp">thread.h:
 ...
-Thread(<span class="hljs-keyword">char</span>* debugName, <span class="hljs-keyword">int</span> pri = <span class="hljs-number">0</span>);
+Thread (<span class="hljs-keyword">char</span>* debugName, <span class="hljs-keyword">int</span> pri = <span class="hljs-number">0</span>);
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getPriority</span><span class="hljs-params">()</span></span>;
 <span class="hljs-keyword">int</span> priority;
 ...
 thread.cc:
-Thread::Thread(<span class="hljs-keyword">char</span>* threadName, <span class="hljs-keyword">int</span> pri)&#123;
+Thread::Thread (<span class="hljs-keyword">char</span>* threadName, <span class="hljs-keyword">int</span> pri)&#123;
     priority = pri;
 &#125;
 <span class="hljs-keyword">int</span>
-Thread::getPriority()
+Thread::getPriority ()
 &#123;
     <span class="hljs-keyword">return</span> priority;
 &#125;
 ...</code></pre>
-<p>随后，由于要实现通过优先级调度。在调度函数<code>ReadyToRun</code>中，改变原有的将线程增加进就绪队列的方法。每次插入新线程时，通过原有的<code>SortedInsert</code>方法，按照优先级加入就绪队列。这样每次取出新线程时，能够按优先级取出。<br/>
-同时加入抢占式算法。由于每次会在使用<code>Fork</code>创建新线程时，调用<code>ReadyToRun</code>函数，因此创建新线程后可以直接在这里检查优先级，如果正在运行的线程优先级较低，则放弃CPU的占用，达到抢占的目的。</p>
+<p > 随后，由于要实现通过优先级调度。在调度函数 < code>ReadyToRun</code > 中，改变原有的将线程增加进就绪队列的方法。每次插入新线程时，通过原有的 < code>SortedInsert</code > 方法，按照优先级加入就绪队列。这样每次取出新线程时，能够按优先级取出。<br/>
+同时加入抢占式算法。由于每次会在使用 < code>Fork</code > 创建新线程时，调用 < code>ReadyToRun</code > 函数，因此创建新线程后可以直接在这里检查优先级，如果正在运行的线程优先级较低，则放弃 CPU 的占用，达到抢占的目的。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
 Scheduler::ReadyToRun (Thread *thread)&#123;
-    readyList-&gt;SortedInsert((<span class="hljs-keyword">void</span>*) thread, thread-&gt;getPriority());
+    readyList-&gt;SortedInsert ((<span class="hljs-keyword">void</span>*) thread, thread-&gt;getPriority ());
 
     <span class="hljs-comment">//add Preemptive algo</span>
-    <span class="hljs-keyword">if</span>(thread != currentThread &amp;&amp; (thread-&gt;getPriority() &lt; currentThread-&gt;getPriority()))
+    <span class="hljs-keyword">if</span>(thread != currentThread &amp;&amp; (thread-&gt;getPriority () &lt; currentThread-&gt;getPriority ()))
     &#123;
-        currentThread-&gt;Yield();
+        currentThread-&gt;Yield ();
     &#125;
 &#125;</code></pre>
-<p>随后在<code>threadtest.cc</code>中测试相关功能。<br/>
-首先测试fork多个优先级不同的进程时，输出的信息。</p>
+<p > 随后在 < code>threadtest.cc</code > 中测试相关功能。<br/>
+首先测试 fork 多个优先级不同的进程时，输出的信息。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
-ThreadTestPri()
+ThreadTestPri ()
 &#123;
-    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
-    t1-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
-    Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">7</span>);
-    t2-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
-    Thread *t3 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">5</span>);
-    t3-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
+    t1-&gt;Fork (SimpleThread,<span class="hljs-number">0</span>);
+    Thread *t2 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">7</span>);
+    t2-&gt;Fork (SimpleThread,<span class="hljs-number">0</span>);
+    Thread *t3 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">5</span>);
+    t3-&gt;Fork (SimpleThread,<span class="hljs-number">0</span>);
 &#125;</code></pre>
-<p>测试结果如下：</p>
+<p > 测试结果如下：</p>
 <pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 4</span>
 *** thread 1 looped 0 time, priority: 3
 *** thread 1 looped 1 time, priority: 3
@@ -376,27 +376,27 @@ Paging: faults 0
 Network I/O: packets received 0, sent 0
 
 Cleaning up...</code></pre>
-<p>可以看到，生成的不同优先级的进程，按照优先级依次被调度。</p>
-<p>之后测试抢占功能：</p>
+<p > 可以看到，生成的不同优先级的进程，按照优先级依次被调度。</p>
+<p > 之后测试抢占功能：</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
-ThreadTestPree()
+ThreadTestPree ()
 &#123;
-    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
-    t1-&gt;Fork(SimpleThreadPree,<span class="hljs-number">0</span>);
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">3</span>);
+    t1-&gt;Fork (SimpleThreadPree,<span class="hljs-number">0</span>);
 &#125;
 <span class="hljs-keyword">void</span>
-SimpleThreadPree(<span class="hljs-keyword">int</span> which)
+SimpleThreadPree (<span class="hljs-keyword">int</span> which)
 &#123;
     <span class="hljs-keyword">int</span> num;
     <span class="hljs-keyword">for</span> (num = <span class="hljs-number">0</span>; num &lt; <span class="hljs-number">5</span>; num++)&#123;
         <span class="hljs-keyword">if</span> (num==<span class="hljs-number">0</span>)&#123;
-            Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">1</span>);
-            t2-&gt;Fork(SimpleThread,<span class="hljs-number">0</span>);
+            Thread *t2 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>, <span class="hljs-number">1</span>);
+            t2-&gt;Fork (SimpleThread,<span class="hljs-number">0</span>);
         &#125;
-        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread %d looped %d time, priority: %d\n&quot;</span>, currentThread-&gt;getpid(), num, currentThread-&gt;getPriority());
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread % d looped % d time, priority: % d\n&quot;</span>, currentThread-&gt;getpid (), num, currentThread-&gt;getPriority ());
     &#125;
 &#125;</code></pre>
-<p>即测试先fork一个优先级为3的进程，在进程创建过程中又fork优先级为1的进程，输出结果如下：</p>
+<p > 即测试先 fork 一个优先级为 3 的进程，在进程创建过程中又 fork 优先级为 1 的进程，输出结果如下：</p>
 <pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 5</span>
 *** thread 2 looped 0 time, priority: 1
 *** thread 2 looped 1 time, priority: 1
@@ -419,36 +419,36 @@ Paging: faults 0
 Network I/O: packets received 0, sent 0
 
 Cleaning up...</code></pre>
-<p>可以看到实现了抢占式算法。</p>
-<h4 id="toc_13">Challenge 1  线程调度算法扩展</h4>
-<p>扩展实现时间片轮转算法。<br/>
-Nachos作为分时系统，本身就有时间片轮转的思想所在。因此需要充分利用内部的类和函数来构造时间片轮转。<br/>
-在<code>system.cc</code>中，定义了一个<code>timer</code>类，可以在一段时间后产生时钟中断。将其模拟成时间片轮转的时间点，需要首先创建一个非随机的<code>timer</code>类，随后在<code>stats.h</code>中定义的<code>TimerTicks</code>就可看作为时间片。<br/>
-原系统的<code>TimerTicks</code>定义为100，因此每当时间点到达100的整数倍会触发系统中断，实现进程轮转调度。<br/>
-同时，对于fork的进程，要使它的运行增加系统时钟，需要调用<code>interrupt-&gt;SetLevel(IntOn),interrupt-&gt;SetLevel(IntOff);</code>函数。每次执行中断，会使得系统时间增加<code>SystemTic=10</code>，这个值同样定义在<code>stats.h</code>中。<br/>
-通过以上分析构造测试函数，每个fork的进程执行15次中断。</p>
+<p > 可以看到实现了抢占式算法。</p>
+<h4 id="toc_13">Challenge 1  线程调度算法扩展 </h4>
+<p > 扩展实现时间片轮转算法。<br/>
+Nachos 作为分时系统，本身就有时间片轮转的思想所在。因此需要充分利用内部的类和函数来构造时间片轮转。<br/>
+在 < code>system.cc</code > 中，定义了一个 < code>timer</code > 类，可以在一段时间后产生时钟中断。将其模拟成时间片轮转的时间点，需要首先创建一个非随机的 < code>timer</code > 类，随后在 < code>stats.h</code > 中定义的 < code>TimerTicks</code > 就可看作为时间片。<br/>
+原系统的 < code>TimerTicks</code > 定义为 100，因此每当时间点到达 100 的整数倍会触发系统中断，实现进程轮转调度。<br/>
+同时，对于 fork 的进程，要使它的运行增加系统时钟，需要调用 < code>interrupt-&gt;SetLevel (IntOn),interrupt-&gt;SetLevel (IntOff);</code > 函数。每次执行中断，会使得系统时间增加 < code>SystemTic=10</code>，这个值同样定义在 < code>stats.h</code > 中。<br/>
+通过以上分析构造测试函数，每个 fork 的进程执行 15 次中断。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
-ThreadTestRR()
+ThreadTestRR ()
 &#123;
-    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
-    Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
-    Thread *t3 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;test RR&quot;</span>);
-    t1-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
-    t2-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
-    t3-&gt;Fork(SimpleThreadRR,<span class="hljs-number">0</span>);
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;test RR&quot;</span>);
+    Thread *t2 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;test RR&quot;</span>);
+    Thread *t3 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;test RR&quot;</span>);
+    t1-&gt;Fork (SimpleThreadRR,<span class="hljs-number">0</span>);
+    t2-&gt;Fork (SimpleThreadRR,<span class="hljs-number">0</span>);
+    t3-&gt;Fork (SimpleThreadRR,<span class="hljs-number">0</span>);
 &#125;
 <span class="hljs-keyword">void</span>
-SimpleThreadRR(<span class="hljs-keyword">int</span> which)
+SimpleThreadRR (<span class="hljs-keyword">int</span> which)
 &#123;
     <span class="hljs-keyword">int</span> num;
     <span class="hljs-keyword">for</span> (num = <span class="hljs-number">0</span>; num &lt; <span class="hljs-number">15</span>; num++)&#123;
-        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread %d looped %d time, priority: %d, time: %d\n&quot;</span>, 
-        currentThread-&gt;getpid(), num, currentThread-&gt;getPriority(), stats-&gt;totalTicks);
-        interrupt-&gt;SetLevel(IntOn);
-        interrupt-&gt;SetLevel(IntOff);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread % d looped % d time, priority: % d, time: % d\n&quot;</span>, 
+        currentThread-&gt;getpid (), num, currentThread-&gt;getPriority (), stats-&gt;totalTicks);
+        interrupt-&gt;SetLevel (IntOn);
+        interrupt-&gt;SetLevel (IntOff);
     &#125;
 &#125;</code></pre>
-<p>编译运行得到结果：</p>
+<p > 编译运行得到结果：</p>
 <pre><code class="hljs bash">root@56618acc2196:/home/code/threads<span class="hljs-comment"># ./nachos -q 6</span>
 *** thread 1 looped 0 time, priority: 0, time: 50
 *** thread 1 looped 1 time, priority: 0, time: 50
@@ -506,25 +506,25 @@ Paging: faults 0
 Network I/O: packets received 0, sent 0
 
 Cleaning up...</code></pre>
-<p>可以看到，线程的运行过程中，时钟值每达到100会触发系统中断实现线程调度。改变<code>TimerTicks</code>值即可更改时间片大小。</p>
-<h2 id="toc_14">内容二：遇到的困难以及收获</h2>
-<p>困难：</p>
+<p > 可以看到，线程的运行过程中，时钟值每达到 100 会触发系统中断实现线程调度。改变 < code>TimerTicks</code > 值即可更改时间片大小。</p>
+<h2 id="toc_14"> 内容二：遇到的困难以及收获 </h2>
+<p > 困难：</p>
 <ol>
-<li>对于排序优先级应该使用哪个函数不了解，后来发现有内置的<code>SortedInsert</code>插入方法。说明还是要多寻找内生函数来减少不必要的操作。</li>
-<li>时间片轮转的机制很简单，但是如何获取每个线程的运行时间是个问题。最后通过查资料发现了可以手动中断来使得时钟增加。</li>
-<li>本来准备使用Yield加判断来实现时间片轮转，但后来查资料发现，nachos本身也内置了<code>-rs</code>指令来轮转，因此已经内置了相关的机制。充分利用本身的方法来更高效地达到效果。</li>
+<li > 对于排序优先级应该使用哪个函数不了解，后来发现有内置的 < code>SortedInsert</code > 插入方法。说明还是要多寻找内生函数来减少不必要的操作。</li>
+<li > 时间片轮转的机制很简单，但是如何获取每个线程的运行时间是个问题。最后通过查资料发现了可以手动中断来使得时钟增加。</li>
+<li > 本来准备使用 Yield 加判断来实现时间片轮转，但后来查资料发现，nachos 本身也内置了 < code>-rs</code > 指令来轮转，因此已经内置了相关的机制。充分利用本身的方法来更高效地达到效果。</li>
 </ol>
-<p>收获：</p>
+<p > 收获：</p>
 <ol>
-<li>对linux线程调度的各种机制有了更深的了解。</li>
-<li>对于Nachos，学会利用时钟中断来控制系统时钟的增加，并一次构造时间片轮转算法。</li>
+<li > 对 linux 线程调度的各种机制有了更深的了解。</li>
+<li > 对于 Nachos，学会利用时钟中断来控制系统时钟的增加，并一次构造时间片轮转算法。</li>
 </ol>
-<h2 id="toc_15">内容三：对课程或Lab的意见和建议</h2>
-<p>希望lab给出更详细的指导，建立讨论群等。<br/>
+<h2 id="toc_15"> 内容三：对课程或 Lab 的意见和建议 </h2>
+<p > 希望 lab 给出更详细的指导，建立讨论群等。<br/>
 希望每周的任务量按照学时做一些调整。</p>
-<h2 id="toc_16">内容四：参考文献</h2>
+<h2 id="toc_16"> 内容四：参考文献 </h2>
 <ol>
-<li>Nachos中文教程。</li>
+<li>Nachos 中文教程。</li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/wyxpku/article/details/52076206?utm_medium=distribute.pc_relevant.none-task-blog-title-3&amp;spm=1001.2101.3001.4242</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42214778/article/details/104844245">https://blog.csdn.net/weixin_42214778/article/details/104844245</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/MakiSzz/Nachos-project">https://github.com/MakiSzz/Nachos-project</a></li>
@@ -561,7 +561,7 @@ Cleaning up...</code></pre>
                     
                       <a href="/2020/11/18/nachos-lab3/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">操作系统lab3——同步机制报告</span>
+                        <span class="hidden-mobile">操作系统 lab3—— 同步机制报告</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -570,7 +570,7 @@ Cleaning up...</code></pre>
                     
                     
                       <a href="/2020/10/28/nachos-lab1/">
-                        <span class="hidden-mobile">操作系统lab1——线程实验报告</span>
+                        <span class="hidden-mobile">操作系统 lab1—— 线程实验报告</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

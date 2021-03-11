@@ -1,0 +1,1406 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Martin Feld">
+  <meta name="keywords" content="">
+  <title>操作系统 lab5 - 文件系统 - Fe1d</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/atom-one-light.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":50,"cursorChar":"","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fe1d's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="操作系统 lab5 - 文件系统">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-11 19:39" pubdate>
+        2021年3月11日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      119
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">操作系统 lab5 - 文件系统</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>本实习希望通过修改 Nachos 系统平台的底层源代码，达到 “实现文件系统” 的目标。<br />
+项目地址：<a target="_blank" rel="noopener" href="https://github.com/tyfeld/nachoslab">https://github.com/tyfeld/nachoslab</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="内容一任务完成情况"><a class="markdownIt-Anchor" href="#内容一任务完成情况"></a> 内容一：任务完成情况</h2>
+<h3 id="任务完成列表"><a class="markdownIt-Anchor" href="#任务完成列表"></a> 任务完成列表</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Exercise1</th>
+<th style="text-align:center">Exercise2</th>
+<th style="text-align:center">Exercise3</th>
+<th style="text-align:center">Exercise4</th>
+<th style="text-align:center">Exercise5</th>
+<th style="text-align:center">Exercise6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Exercise 7</th>
+<th style="text-align:center">Challenge 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+</tbody>
+</table>
+<h3 id="具体-exercise-完成情况"><a class="markdownIt-Anchor" href="#具体-exercise-完成情况"></a> 具体 Exercise 完成情况</h3>
+<h4 id="exercise-1-源代码阅读"><a class="markdownIt-Anchor" href="#exercise-1-源代码阅读"></a> Exercise 1  源代码阅读</h4>
+<h5 id="codefilesysfilesysh-和-codefilesysfilesyscc"><a class="markdownIt-Anchor" href="#codefilesysfilesysh-和-codefilesysfilesyscc"></a> code/filesys/filesys.h 和 code/filesys/filesys.cc</h5>
+<p>这一部分定义了 Nachos 文件系统的基本数据结构。Nachos 中定义了两种对于文件系统的实现，一是在定义宏 <code>FILESYS_STUB</code> 的情况下，简单地重定义原 Unix 文件系统的相关函数；第二种则是真正需要处理和研究的文件系统。对于后者，在此文件系统中，只有一个根目录，所有文件都在根目录下一级中，同时使用一个 bitmap 来完成对磁盘块的分配。</p>
+<p>在 <code>filesys.cc</code> 中，定义了具体的初始化系统、打开、关闭文件等主要函数，简单概括如下：</p>
+<ol>
+<li><code>FileSystem</code>：初始化文件系统函数。在磁盘块的 0 和 1 位置初始化 bitmap 和根目录文件的文件头，随后为这两个文件分配空间并写回磁盘。</li>
+<li><code>Create</code>：创建一个文件。需要分配磁盘块给头文件，分配空间给数据段，以及一些错误检查操作。</li>
+<li><code>Open</code>：打开一个文件。通过目录文件找其文件名对应的文件头的块序号，并通过 <code>Openfile</code> 打开。</li>
+<li><code>Remove</code>：删除文件系统中的一个文件。需要删除对应的文件头、数据段等并将变化写回磁盘。</li>
+<li><code>List</code>,<code>Print</code>: 打印相关信息。</li>
+</ol>
+<h5 id="codefilesysfilehdrh-和-codefilesysfilehdrcc"><a class="markdownIt-Anchor" href="#codefilesysfilehdrh-和-codefilesysfilehdrcc"></a> code/filesys/filehdr.h 和 code/filesys/filehdr.cc</h5>
+<p><code>FileHeader</code> 类用来描述文件头信息，通过文件头在磁盘中找到文件位置，类似 Unix 系统中的 “i-node”。其中包括的部分私有变量和函数如下：</p>
+<ol>
+<li><code>numBytes</code>：文件所占大小。</li>
+<li><code>numSectors</code>：文件数据所占磁盘块数量。</li>
+<li><code>dataSectors</code>：文件每一个数据库对应的磁盘款数组。</li>
+<li><code>Allocate,Deacllocate</code>：为新创建的文件头分配块，以及清除文件时回收所有使用的块。</li>
+</ol>
+<h5 id="codefilesysdirectoryh-和-codefilesysdirectorycc"><a class="markdownIt-Anchor" href="#codefilesysdirectoryh-和-codefilesysdirectorycc"></a> code/filesys/directory.h 和 code/filesys/directory.cc</h5>
+<p>目录在文件系统中是一个很重要的部分，它实际上是一张表，将字符形式的文件名与实际文<br />
+件的文件头相对应。这样用户就能方便地通过文件名来访问文件。<br />
+Nachos 中的目录结构非常简单，它只有一级目录，也就是只有根目录；而且根目录的大小是固定的，整个文件系统中只能存放有限个文件。<br />
+在以上两个文件中，首先定义了目录项类 <code>DirectoryEntry</code>，包含 <code>sector</code>,<code>name</code>,<code>inUse</code> 等信息。随后有多个目录项组成目录类 <code>Directory</code>，目录文件类中包含的部分函数如下：</p>
+<ol>
+<li><code>Directory</code>：初始化</li>
+<li><code>FetchFrom</code>：从磁盘中读取内容到 <code>table</code> 中</li>
+<li><code>WriteBack</code>：将对目录文件的修改写回文件中</li>
+<li><code>FindIndex</code>,<code>Find</code>：通过文件名找到该文件在目录表中的索引，以及继续查找对应的磁盘块</li>
+<li><code>Add</code>,<code>Remove</code>：在目录文件中新增文件或删除文件，前者要保证该文件名不在目录中并且仍有多余空间，后者只需要将使用标志 <code>inUse</code> 修改为 <code>FALSE</code></li>
+</ol>
+<h5 id="code-filesysopenfileh-和-code-filesysopenfilecc"><a class="markdownIt-Anchor" href="#code-filesysopenfileh-和-code-filesysopenfilecc"></a> code /filesys/openfile.h 和 code /filesys/openfile.cc</h5>
+<p>这两个文件定义了打开文件时的数据结构，对文件的操作都可以通过这个数据结构来完成。类似文件系统的两种实现方式，openfile 也有两种实现方式。</p>
+<p>这个类中重要的私有变量和函数如下：</p>
+<ol>
+<li><code>hdr</code>：打开文件的文件头</li>
+<li><code>seekPosition</code>：当前文件读写指针的位置</li>
+<li><code>OpenFile</code>：构造函数，从一个 sector 中读入文件头，并且把读取位置设置成 0。</li>
+<li><code>Read,Write</code>：从当前位置开始读制定长度的内容到 into 指向的位置，使读取位置这个值增加到读到的位置，并且返回真正读取到的字节数。</li>
+<li><code>ReadAt,WriteAt</code>：将文件从指定的位置向后读指定长度（如果够长的话）， 但是不同的是读取文件位置的指不变，先是读文件到一个 buf 缓冲数组中，之后从 buf 中再复制到 into 指定的位置。</li>
+</ol>
+<h5 id="codeuserprogbitmaph-和-codeuserprogbitmapcc"><a class="markdownIt-Anchor" href="#codeuserprogbitmaph-和-codeuserprogbitmapcc"></a> code/userprog/bitmap.h 和 code/userprog/bitmap.cc</h5>
+<p>在 Nachos 中，通过位图来管理空闲扇区。这部分定义了一个位图的相关操作，如将某一位标记、清空，以及创建、删除、打印信息等。<br />
+由于内容相对简单直接，而且属于基础架构，在此处就不做详细说明。</p>
+<h4 id="exercise-2-扩展文件属性"><a class="markdownIt-Anchor" href="#exercise-2-扩展文件属性"></a> Exercise 2  扩展文件属性</h4>
+<p>增加文件描述信息，如 “类型”、“创建时间”、“上次访问时间”、“上次修改时间”、“路径” 等等。尝试突破文件名长度的限制。</p>
+<p>考虑在文件头 <code>FileHeader</code> 中，添加：</p>
+<ol>
+<li>
+<p>文件的类型信息。初步通过文件名 ‘.’ 符号之后的文字来区分。</p>
+ <pre><code class="hljs cpp"><span class="hljs-keyword">char</span>*
+getExt (<span class="hljs-keyword">char</span> *filename)
+&#123;
+    <span class="hljs-keyword">char</span> *dot = <span class="hljs-built_in">strrchr</span>(filename, <span class="hljs-string">&#x27;.&#x27;</span>);
+    <span class="hljs-keyword">if</span>(!dot || dot == filename) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">return</span> dot + <span class="hljs-number">1</span>;
+&#125;</code></pre>
+<p>这个函数用来在创建文件时调用:<br />
+<code>hdr-&gt;fileType = getExt (name);</code></p>
+</li>
+<li>
+<p>文件的创建时间。时间信息可以通过 <code>time.h</code> 中相关函数来获得。这一部分信息需要在文件执行 <code>Create</code> 时，调用 <code>getTime</code> 来获得:<code>strcpy (hdr-&gt;createdTime,getTime ());</code></p>
+ <pre><code class="hljs cpp"><span class="hljs-keyword">char</span>*
+getTime (<span class="hljs-keyword">void</span>)
+&#123;
+    <span class="hljs-keyword">time_t</span> rawtime;
+    time (&amp;rawtime);
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tm</span>* <span class="hljs-title">currentTime</span> = <span class="hljs-title">localtime</span>(&amp;<span class="hljs-title">rawtime</span>);</span>
+    <span class="hljs-keyword">return</span> asctime (currentTime); 
+&#125;</code></pre>
+</li>
+<li>
+<p>文件的上次访问时间。同样通过 <code>getTime</code> 来获得。同时在 <code>Openfile:WriteAt</code>,<code>Openfile:ReadAt</code> 这两个读写函数中，增加对文件上次访问时间的修改：<code>strcpy (hdr-&gt;lastVisitedTime,getTime ());</code></p>
+</li>
+<li>
+<p>文件的上次修改时间：这个变量需要在文件创建和写文件结束后两个时间点调用。分别在这两个函数的恰当位置增加: <code>strcpy (hdr-&gt;modifiedTime,getTime ());</code></p>
+</li>
+<li>
+<p>除此之外，要方便完成 Exercise 5 中对于文件头的写回，我们可以在文件头中记录打开文件时的块位置。定义一个公有变量 <code>sectorPos</code>，然后在 <code>OpenFile::OpenFile</code> 中记录这个扇区 <code>hdr-&gt;sectorPos = sector;</code>，并在析构函数中通过这个变量将打开文件头写回磁盘。</p>
+</li>
+</ol>
+<p>添加后的文件头数据结构为：</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FileHeader</span> &#123;</span>
+  <span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> sectorPos;
+  <span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">int</span> numBytes;   <span class="hljs-comment">// Number of bytes in the file</span>
+    <span class="hljs-keyword">int</span> numSectors; <span class="hljs-comment">// Number of data sectors in the file</span>
+    <span class="hljs-keyword">int</span> dataSectors [NumDirect]; <span class="hljs-comment">// Disk sector numbers for each data</span>
+                                <span class="hljs-comment">//block in the file</span>
+    <span class="hljs-keyword">char</span> fileType [LengthOfType];
+    <span class="hljs-keyword">char</span> createdTime [LengthOfTime];
+    <span class="hljs-keyword">char</span> modifiedTime [LengthOfTime];
+    <span class="hljs-keyword">char</span> lastVisitedTime [LengthOfTime];
+&#125;</code></pre>
+<p>规定时间字符数组的长度为 25，加上结尾的 ‘/0’，定义 <code>LengthOfTime=26</code>。<br />
+规定文件扩展名数组的长度为 4，加上结尾的 ‘/0’，定义 <code>LengthOfType=5</code>。<br />
+那么数据块的 <code>NumDirect</code> 同样要做相关修改，按照上述分析，将其修改为</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NumDirect 	((SectorSize - (2*sizeof (int) + (LengthofType+3*LengthOfTime)*sizeof (char))) /sizeof (int))</span></code></pre>
+<p>随后修改 <code>FileHeader::Print</code> 函数，增加对新增的私有变量的打印工作。</p>
+<p>经过以上修改后尝试测试文件名信息。</p>
+<ol>
+<li>
+<p>首先执行 <code>./nachos -cp test/small small.txt</code> 拷贝出一个除了文件名，其他与测试文件完全相同的文本文件。</p>
+</li>
+<li>
+<p>执行 <code>./nachos -D</code> 观察详细信息。</p>
+</li>
+<li>
+<p>得到目标文件的文件头信息如下：</p>
+ <pre><code class="hljs bash">Name: small.txt, Sector: 5
+FileHeader contents.  File size: 38.  File blocks:
+6
+fileType: txt
+createdTime: Sun Dec 20 22:32:45 2020
+modifiedTime: Sun Dec 20 22:32:45 2020
+lastVisitedTime: Sun Dec 20 22:32:45 2020
+File contents:
+This is the spring of our discontent.\a</code></pre>
+<p>可以看到成功增加了文件信息。</p>
+</li>
+</ol>
+<p>为了突破文件名的限制，可以采用两种方法：<br />
+方法一：观察 <code>Directory</code> 类中对于文件名大小的限制</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FileNameMaxLen 		9</span></code></pre>
+<p>将这个最大值更改为比原始值更大的数，即可成功创建文件名较长的文件。<br />
+方法二：在文件头类中，将 name 由字符数组改为字符指针，并且修改相应的赋值方式。</p>
+<p>进行上述更改后，测试一个更长的文件名，执行 <code>./nachos -cp test/small longlongname.txt</code><br />
+执行 <code>./nachos -D</code> 可以成功看到这个长度扩展后的文件出现在了文件系统中。具体的信息和上面的测试信息基本一致。</p>
+<pre><code class="hljs bash">Name: longlongname.txt, Sector: 5
+FileHeader contents.  File size: 38.  File blocks:
+6
+fileType: txt
+...</code></pre>
+<h4 id="exercise-3-扩展文件长度"><a class="markdownIt-Anchor" href="#exercise-3-扩展文件长度"></a> Exercise 3 扩展文件长度</h4>
+<p>改直接索引为间接索引，以突破文件长度不能超过 4KB 的限制。<br />
+按照上述方法修改文件头属性后，文件系统的索引项大小变为 <code>NumDirect = (128-2*4-5-26*3)=37</code>，索引项个数为 9，文件大小最多为 <code>9*128bytes</code>。考虑将最后一个索引改为间接索引，这样文件的大小可以扩展为 <code>8*128+128*32=5120bytes</code>。<br />
+首先在 <code>filehdr.cc</code> 中增加相关的定义：</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MyNumSector 	((SectorSize - (2*sizeof (int) + (LengthOfType+3*LengthOfTime)*sizeof (char))) /sizeof (int))</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NumDirect MyNumSector - 1 </span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SectorInt  SectorSize/(sizeof (int))</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MaxFileSize  NumDirect * SectorSize +SectorInt * SectorSize</span></code></pre>
+<p>为了增加索引结构，需要更改分配文件空间的方式 <code>Allocate</code>，在原函数中，考虑 <code>numSectors &gt; NumDirect</code> 的情况。此时使用直接索引无法储存这个大文件，因此使用间接索引。分配一个磁盘块用来储存间接索引的信息，并新建一个整数数组来储存超过直接索引的文件数据块部分。最后将这个数组指针写入磁盘，以便之后的函数访问该文件时调用此指针来找到文件数据块。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (numSectors &lt;= NumDirect)
+    &#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numSectors; i++)
+            dataSectors [i] = freeMap-&gt;Find ();
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        DEBUG (<span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-string">&quot;Using indirect indexing\n&quot;</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; NumDirect; i++)
+            dataSectors [i] = freeMap-&gt;Find ();
+        dataSectors [NumDirect] = freeMap-&gt;Find ();
+        <span class="hljs-keyword">int</span> Indirect [SectorInt];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numSectors - NumDirect; i++)
+            &#123;Indirect [i] = freeMap-&gt;Find (); <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Indirect :% d\n&quot;</span>,Indirect [i]);&#125;
+        synchDisk-&gt;WriteSector (dataSectors [NumDirect], (<span class="hljs-keyword">char</span> *) Indirect);
+    &#125;</code></pre>
+<p>同理，在 <code>Deallocate</code> 中，对于使用间接索引的部分，需要将对应的指针存储块读出，并将其中的文件数据块依次清除。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FileHeader::Deallocate</span><span class="hljs-params">(BitMap *freeMap)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (numSectors &lt;= NumDirect)
+    &#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numSectors; i++)
+        &#123;
+            ASSERT (freeMap-&gt;Test ((<span class="hljs-keyword">int</span>) dataSectors [i])); <span class="hljs-comment">//ought to be marked!</span>
+            freeMap-&gt;Clear ((<span class="hljs-keyword">int</span>) dataSectors [i]);
+        &#125;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        DEBUG (<span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-string">&quot;Using indirect indexing&quot;</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; NumDirect; i++)
+        &#123;
+            ASSERT (freeMap-&gt;Test ((<span class="hljs-keyword">int</span>) dataSectors [i])); <span class="hljs-comment">//ought to be marked!</span>
+            freeMap-&gt;Clear ((<span class="hljs-keyword">int</span>) dataSectors [i]);
+        &#125;
+        <span class="hljs-keyword">int</span> Indirect [SectorInt];
+        synchDisk-&gt;ReadSector (dataSectors [NumDirect], (<span class="hljs-keyword">char</span> *) Indirect);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; numSectors - NumDirect; i++)
+        &#123;
+            ASSERT (freeMap-&gt;Test ((<span class="hljs-keyword">int</span>) Indirect [i])); <span class="hljs-comment">//ought to be marked!</span>
+            freeMap-&gt;Clear ((<span class="hljs-keyword">int</span>) Indirect [i]);
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>同理按照上述方法处理 <code>ByteToSector</code> 函数，对于超过直接索引的字节数，使用间接索引来获取磁盘块。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">FileHeader::ByteToSector</span><span class="hljs-params">(<span class="hljs-keyword">int</span> offset)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (offset &lt; NumDirect * SectorSize)
+    &#123;
+        <span class="hljs-keyword">return</span> (dataSectors [offset / SectorSize]);
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        <span class="hljs-keyword">int</span> sectorNum = (offset - NumDirect * SectorSize) / SectorSize;
+        <span class="hljs-keyword">int</span> Indirect [SectorInt];
+        synchDisk-&gt;ReadSector (dataSectors [NumDirect], (<span class="hljs-keyword">char</span> *) Indirect);
+        <span class="hljs-keyword">return</span> Indirect [sectorNum];
+    &#125;
+&#125;</code></pre>
+<p>最后，修改 <code>FileHeader::Print ()</code> 函数，使得在使用间接索引时，打印出文件使用的时间索引块，使用的间接索引指针对应的数据块，以及间接索引中包含数据的每一个磁盘块。<br />
+在打印文件内容时，同样可以加上打印每一个对应的磁盘块的块号和其中的具体内容。<br />
+完成上述步骤后，我将 <code>test/big</code> 文件内容复制了几分，制作了一个 <code>huge</code> 文件，制作了一个 1824bytes 的文件（必须使用间接索引）。继续调用 <code>./nachos -cp &amp; ./nachos -D</code> 命令，得到的输出结果中摘取该文件的 <code>FileHeader</code> 和 <code>FileContent</code> 部分如下：</p>
+<pre><code class="hljs bash">Name: huge, Sector: 10
+File <span class="hljs-built_in">type</span>: None
+Created: Sat Dec 26 08:58:03 2020
+Modified: Sat Dec 26 08:58:03 2020
+Last visited: Sat Dec 26 08:58:03 2020
+File size: 1824.  File blocks:
+Direct indexing:
+    11 12 13 14 15 16 17
+Indirect indexing: 18
+    19 20 21 22 23 24 25 26
+File contents:
+Sector: 11
+This is the spring of our discontent.\aThis is the spring of our discontent.\aThis is the spring of our discontent.\aThis is the sp
+...
+...
+Sector: 25
+ontent.\aThis is the spring of our discontent.\aThis is the spring of our discontent.\aThis is the spring of our discontent.\aThis i
+Sector: 26
+s the spring of our discontent.\a</code></pre>
+<p>随后执行 <code>./nachos -r huge</code>，并打印出文件系统信息，可以看到只有位图和目录文件两个文件，并且 9 个 Sector 中的内容都被清零。成功地创建和删除了一个大文件。</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -D</span>
+Bit map file header:
+...
+Sector: 2
+\ff\3\0\....
+Directory file header:
+...
+File size: 880.  File blocks:
+Direct indexing:
+3 4 5 6 7 8 9
+File contents:
+Sector: 3
+\0\0\0\0\a\0\0\0huge\0\0\...
+Bitmap <span class="hljs-built_in">set</span>:
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+Directory contents:
+
+No threads ready or runnable, and no pending interrupts.
+...
+Cleaning up...</code></pre>
+<h4 id="exercise-4-实现多级目录"><a class="markdownIt-Anchor" href="#exercise-4-实现多级目录"></a> Exercise 4 实现多级目录</h4>
+<p>要实现多级目录，需要在原有的目录类 <code>Directory</code> 中增加新的变量：表示类型是目录文件或者普通文件的 <code>type</code>，以及文件的路径 <code>path</code>。为了便于扩展，此处使用 int 四个比特位来储存类型变量。</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> IS_FOLDER 0</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> IS_PATH 1</span>
+
+    <span class="hljs-keyword">int</span> type;         <span class="hljs-comment">// Is this a folder or a file?</span>
+    <span class="hljs-keyword">char</span> path [<span class="hljs-number">25</span>];</code></pre>
+<p>设定好后，首先需要增加解析路径的函数 <code>FindDirSector</code>。这个函数的目的是将文件 / 目录名中的 <code>'/'</code> 之前的部分找到，设置为 <code>preDir</code>，即上一级目录。如果没有分隔符，那么找到的即是该文件本身。找到上一级目录后，由于必须要建立上一级目录后才能在二级目录建立文件等等操作，因此上一级目录对应的磁盘块一定能找到。我们使用类似递归的方式，就可以逐步读取到每一级目录对应的磁盘块文件和目录文件，最后得到该文件 / 目录对应的磁盘块。<br />
+具体的函数即为：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">int</span>
+Directory::FindDirSector (<span class="hljs-keyword">char</span>* name)
+&#123;
+    <span class="hljs-keyword">int</span> sector = <span class="hljs-number">1</span>;
+    OpenFile *dirFile = <span class="hljs-keyword">new</span> OpenFile (sector);
+    Directory *dir = <span class="hljs-keyword">new</span> Directory (<span class="hljs-number">10</span>);
+    dir-&gt;FetchFrom (dirFile);
+    <span class="hljs-keyword">int</span> ori_pos = <span class="hljs-number">0</span>, str_pos = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">char</span> preDir [<span class="hljs-number">12</span>];
+    <span class="hljs-keyword">while</span>(ori_pos &lt; <span class="hljs-built_in">strlen</span>(name))&#123;
+        preDir [str_pos++] = name [ori_pos++];
+        <span class="hljs-keyword">if</span> (name [ori_pos]==<span class="hljs-string">&#x27;/&#x27;</span>)&#123;
+            preDir [str_pos]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+            sector = dir-&gt;Find (preDir);
+            dirFile = <span class="hljs-keyword">new</span> OpenFile (sector);
+            dir = <span class="hljs-keyword">new</span> Directory (<span class="hljs-number">10</span>);
+            dir-&gt;FetchFrom (dirFile);
+            ori_pos++;
+            str_pos = <span class="hljs-number">0</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> sector;
+&#125;</code></pre>
+<p>基础的框架搭好后，最重要的修改函数为 <code>Directory</code> 类中的 <code>Add</code> 函数。我们讲原有的增加文件的方式，扩展为可以增加目录文件的方式。需要的工作步骤如下：</p>
+<ol>
+<li>按照 ‘/’ 切割原有的文件名，前部分设定为 <code>path</code>，后部分设定为 <code>name</code>。</li>
+<li>对 <code>table</code> 的每一项赋值 <code>path</code> 和指定的 <code>type</code></li>
+<li>得到的函数结构如下：</li>
+</ol>
+<pre><code class="hljs cpp"><span class="hljs-keyword">bool</span>
+Directory::Add (<span class="hljs-keyword">char</span> *name, <span class="hljs-keyword">int</span> newSector, <span class="hljs-keyword">int</span> type)
+&#123; 
+    <span class="hljs-keyword">char</span> file_name [FileNameMaxLen+<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">int</span> spilt = <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-built_in">strlen</span>(name) - <span class="hljs-number">1</span>; i &gt;=<span class="hljs-number">0</span>; i--)&#123;
+        <span class="hljs-keyword">if</span> (name [i] == <span class="hljs-string">&#x27;/&#x27;</span>)&#123;
+            split = i + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">if</span> (split == <span class="hljs-number">-1</span>) split = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = split; i &lt; <span class="hljs-built_in">strlen</span>(name); i++)
+        file_name [j++] = name [i];
+    file_name [j] = <span class="hljs-string">&#x27;\0&#x27;</span>;
+    <span class="hljs-keyword">if</span> (FindIndex (file_name) != <span class="hljs-number">-1</span>)
+	<span class="hljs-keyword">return</span> FALSE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; tableSize; i++)
+        <span class="hljs-keyword">if</span> (!table [i].inUse) &#123;
+            table [i].inUse = TRUE;
+            <span class="hljs-built_in">strncpy</span>(table [i].path, name, <span class="hljs-number">25</span>); 
+            <span class="hljs-built_in">strncpy</span>(table [i].name,file_name,FileNameMaxLen);
+            table [i].type = type;
+            table [i].sector = newSector;
+        <span class="hljs-keyword">return</span> TRUE;
+	&#125;
+    <span class="hljs-keyword">return</span> FALSE;	<span class="hljs-comment">//no space.  Fix when we have extensible files.</span>
+&#125;</code></pre>
+<p>之后需要修改的是 <code>FileSystem::Create</code> 函数。在指定一个文件名进行创建时，首先需要增加一个参数用来表示创建的文件是目录文件还是普通文件。随后对路径名进行解析，找到上一级的目录文件和普通文件名，这样讲文件定位到正确的创建文件夹。<br />
+随后，如果建立的是目录文件，那么在原有的文件创立基础上，增加需要对目录进行初始化的部分，打开扇区对应的目录文件，再写回磁盘。最后函数修改完的结果如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">FileSystem::Create</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *name, <span class="hljs-keyword">int</span> initialSize)</span></span>
+<span class="hljs-function"></span>&#123;
+    Directory *directory;
+    BitMap *freeMap;
+    FileHeader *hdr;
+    <span class="hljs-keyword">int</span> sector;
+    <span class="hljs-keyword">bool</span> success;
+
+    DEBUG (<span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-string">&quot;Creating file % s, size % d\n&quot;</span>, name, initialSize);
+
+    directory = <span class="hljs-keyword">new</span> Directory (NumDirEntries);
+    directory-&gt;FetchFrom (directoryFile);
+
+    <span class="hljs-keyword">int</span> dirSector = directory-&gt;FindDirSector (name);
+    OpenFile *prev_dir_file = <span class="hljs-keyword">new</span> OpenFile (dirSector);
+    directory-&gt;FetchFrom (prev_dir_file);
+    <span class="hljs-keyword">char</span> file_name [FileNameMaxLen + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (directory-&gt;Find (name) != <span class="hljs-number">-1</span>)
+        success = FALSE; <span class="hljs-comment">//file is already in directory</span>
+    <span class="hljs-keyword">else</span>
+    &#123;
+        freeMap = <span class="hljs-keyword">new</span> BitMap (NumSectors);
+        freeMap-&gt;FetchFrom (freeMapFile);
+        sector = freeMap-&gt;Find (); <span class="hljs-comment">//find a sector to hold the file header</span>
+        <span class="hljs-keyword">if</span> (sector == <span class="hljs-number">-1</span>)
+            success = FALSE; <span class="hljs-comment">//no free block for file header</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (initialSize == <span class="hljs-number">-1</span>)
+        &#123;
+            <span class="hljs-keyword">if</span> (!directory-&gt;Add (name, sector, <span class="hljs-number">0</span>))
+                success = FALSE; <span class="hljs-comment">//no space in directory</span>
+            <span class="hljs-keyword">else</span>
+            &#123;
+                hdr = <span class="hljs-keyword">new</span> FileHeader;
+                <span class="hljs-keyword">if</span> (!hdr-&gt;Allocate (freeMap, initialSize))
+                    success = FALSE; <span class="hljs-comment">//no space on disk for data</span>
+                <span class="hljs-keyword">else</span>
+                &#123;
+                    success = TRUE;
+                    <span class="hljs-comment">//everthing worked, flush all changes back to disk</span>
+                    hdr-&gt;WriteBack (sector);
+                    Directory *dir = <span class="hljs-keyword">new</span> Directory (NumDirEntries);
+                    OpenFile *dir_dir = <span class="hljs-keyword">new</span> OpenFile (sector);
+                    dir-&gt;WriteBack (dir_dir);
+                    directory-&gt;WriteBack (prev_dir_file);
+                    freeMap-&gt;WriteBack (freeMapFile);
+                    <span class="hljs-keyword">delete</span> hdr;
+                    <span class="hljs-keyword">delete</span> dir;
+                    <span class="hljs-keyword">delete</span> dir_dir;
+                &#125;
+                <span class="hljs-keyword">delete</span> hdr;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">delete</span> freeMap;
+    &#125;
+    <span class="hljs-keyword">delete</span> directory;
+    <span class="hljs-keyword">return</span> success;
+&#125;</code></pre>
+<p>继续修改 <code>filesys.cc</code> 中的 <code>Open&amp;Remove</code> 函数。用来打开和删除文件。在原先的基础上，需要先通过 <code>FindDirSector</code> 来找到所在的文件夹扇区，随后进行相应操作。</p>
+<pre><code class="hljs cpp">OpenFile *
+FileSystem::Open (<span class="hljs-keyword">char</span> *name)
+&#123; 
+    Directory *directory = <span class="hljs-keyword">new</span> Directory (NumDirEntries);
+    OpenFile *openFile = <span class="hljs-literal">NULL</span>;
+    <span class="hljs-keyword">int</span> sector;
+    directory-&gt;FetchFrom (directoryFile);
+    sector = directory-&gt;FindDirSector (name);
+    directory = <span class="hljs-keyword">new</span> Directory (NumDirEntries);
+    <span class="hljs-keyword">if</span> (sector &gt;= <span class="hljs-number">0</span>) 		
+	openFile = <span class="hljs-keyword">new</span> OpenFile (sector);	<span class="hljs-comment">//name was found in directory </span>
+    directory-&gt;FetchFrom (openFile);
+    <span class="hljs-keyword">char</span> file_name [FileNameMaxLen+<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (sector &gt;= <span class="hljs-number">0</span>)
+    openFile = <span class="hljs-keyword">new</span> OpenFile (sector);
+    <span class="hljs-keyword">delete</span> directory;
+    <span class="hljs-keyword">return</span> openFile;				<span class="hljs-comment">//return NULL if not found</span>
+&#125;</code></pre>
+<p>同理，在 <code>Remove</code> 中需要执行几乎镜像的操作，这里就不再一一列出了。<br />
+其中要实现递归删除文件夹，即 Unix 中的 <code>rm -r</code> 指令，需要在 <code>Remove</code> 中调用自身。关键的代码片段为:</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; tableSize; i++)&#123;
+    <span class="hljs-keyword">if</span> (table [i].inUse)
+        Remove (table [i].path);
+&#125;</code></pre>
+<p>经过上述的函数修改，基本完成了对文件系统的扩展，可以存储、识别、访问目录文件了。随后为了仿照 Unix，可以加入相关的 <code>mkdir</code> 指令来实现文件夹的创建，加入 <code>-rd</code> 指令来递归删除。因此我们在 <code>main.cc</code> 加入新的解析：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(*argv, <span class="hljs-string">&quot;-mkdir&quot;</span>)) &#123; 
+        ASSERT (argc &gt; <span class="hljs-number">1</span>);
+        MakeDir (*(argv + <span class="hljs-number">1</span>));<span class="hljs-comment">// 需要实现的函数功能，定义在 fstest.cc 文件下 </span>
+        argCount = <span class="hljs-number">2</span>;
+       &#125; 
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(*argv, <span class="hljs-string">&quot;-rd&quot;</span>)) &#123; 
+        ASSERT (argc &gt; <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">bool</span> success = fileSystem-&gt;RemoveDir (*(argv + <span class="hljs-number">1</span>));        argCount = <span class="hljs-number">2</span>;
+    &#125;</code></pre>
+<p><code>MakeDir</code> 函数的定义为</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MakeDir</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *dirname)</span></span>
+<span class="hljs-function"></span>&#123;
+    fileSystem-&gt;Create (dirname, <span class="hljs-number">-1</span>);
+&#125;</code></pre>
+<p>最后，在 <code>Directory</code> 类中的 <code>Print</code> 函数中，打印出目录文件的 <code>type</code> 和 <code>path</code>。注意讲 <code>type</code> 对应的数值转化成字符串。</p>
+<p>完成后，依次执行以下命令：</p>
+<ol>
+<li><code>./nachos -mkdir my</code></li>
+<li><code>./nachos -cp test/small my/small</code></li>
+<li><code>./nachos -D</code></li>
+<li><code>./nachos -r my</code></li>
+<li><code>./nachos -D</code></li>
+</ol>
+<p>执行第三步后，得到的测试结果中摘取文件头的部分展示如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -D</span>
+....
+
+Bitmap <span class="hljs-built_in">set</span>:
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 
+Directory contents:
+Name: <span class="hljs-built_in">test</span>, Sector: 7, path: my, <span class="hljs-built_in">type</span>: dir
+Directory contents:
+Name: small, Sector: 10, path: my/small, <span class="hljs-built_in">type</span>: file
+FileHeader contents:
+Sector 7:
+.....
+
+</code></pre>
+<p>执行第五步后，打印出的信息发现文件系统中刚才复制的文件以及文件夹都不再存在，对应的磁盘块清空。<br />
+因此成功得到了多级目录的创建 / 访问 / 删除等基本功能。</p>
+<h4 id="exercise-5-动态调整文件长度"><a class="markdownIt-Anchor" href="#exercise-5-动态调整文件长度"></a> Exercise 5 动态调整文件长度</h4>
+<p>对文件的创建操作和写入操作进行适当修改，以使其符合实习要求。<br />
+要完成对于文件动态的修改，即在文件操作中增加一个可以在使得文件长度增长的函数 <code>Expand</code>。这个函数的过程为：</p>
+<ol>
+<li>计算增加后的总字节数，如果仍能用原有的扇区储存，则不需要额外的空间。</li>
+<li>如果计算出的增加后扇区大于原有的扇区，那么需要神奇新的数据块。其中注意检查剩余的空闲块总大小是否满足要求，如果满足要求则对于每个超过原始空间的数据块，执行 <code>freeMap-&gt;Find ()</code> 操作来获取新的磁盘块。</li>
+<li>具体的代码实现如下：</li>
+</ol>
+<pre><code class="hljs cpp"><span class="hljs-keyword">bool</span>
+FileHeader::Expand (BitMap *freeMap, <span class="hljs-keyword">int</span> Bytes)
+&#123;
+    numBytes += Bytes;
+    <span class="hljs-keyword">int</span> initSector = numSectors;
+    numSectors = divRoundUp (numBytes, SectorSize);
+    <span class="hljs-keyword">if</span> (initSector == numSectors) &#123;
+        <span class="hljs-keyword">return</span> TRUE; 
+    &#125;
+    <span class="hljs-keyword">if</span> (freeMap-&gt;NumClear () &lt; numSectors - initSector) &#123;
+        <span class="hljs-keyword">return</span> FALSE; 
+    &#125;
+    DEBUG (<span class="hljs-string">&quot;f&quot;</span>,<span class="hljs-string">&quot;Expanding file size for % d sectors of % d bytes\n&quot;</span>, numSectors - initSector, Bytes);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = initSector; i &lt; numSectors; i++)
+        dataSectors [i] = freeMap-&gt;Find ();
+    <span class="hljs-keyword">return</span> TRUE;
+&#125;</code></pre>
+<p>至此，我们在写文件时，就可以通过调用 <code>Expand</code> 函数来完成对文件长度的扩展。观察原有的 <code>OpenFile::WriteAt</code> 函数，发现如果当要写入的字节数写入后超过了原有的文件长度，将会对写入的字节进行修改削减，如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">if</span> ((position + numBytes) &gt; fileLength)
+	numBytes = fileLength - position;</code></pre>
+<p>因此我们要对这一块做更改，使得超过文件长度的字节能够被写入。结合上述 <code>Expand</code> 函数，修改如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (position + numBytes &gt; fileLength) &#123;
+        BitMap *freeMap = <span class="hljs-keyword">new</span> BitMap (NumSectors);
+        OpenFile* freeMapFile = <span class="hljs-keyword">new</span> OpenFile (<span class="hljs-number">0</span>);
+        freeMap-&gt;FetchFrom (freeMapFile);
+        hdr-&gt;Expand (freeMap, position + numBytes - fileLength);
+        hdr-&gt;WriteBack (hdr-&gt;sectorPos);
+        freeMap-&gt;WriteBack (freeMapFile);
+        <span class="hljs-keyword">delete</span> freeMapFile;
+    &#125;</code></pre>
+<p>最后，使用自带的 <code>PermanceTest</code> 来测试对文件的动态写入。为了便于观察将循环次数改为 20，执行命令 <code>./nachos -d f -t</code> 得到以下结果：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -d f -t</span>
+Sequential write of 200 byte file, <span class="hljs-keyword">in</span> 10 byte chunks
+Creating file TestFile, size 0
+Reading 880 bytes at 0, from file of length 880.
+Reading 128 bytes at 0, from file of length 128.
+Writing 880 bytes at 0, from file of length 880.
+Reading 112 bytes at 768, from file of length 880.
+Writing 128 bytes at 0, from file of length 128.
+Opening file TestFile
+Reading 880 bytes at 0, from file of length 880.
+Reading 128 bytes at 0, from file of length 128.
+Expanding file size <span class="hljs-keyword">for</span> 1 sectors of 10 bytes
+Writing 128 bytes at 0, from file of length 128.
+...
+...
+Expanding file size <span class="hljs-keyword">for</span> 1 sectors (10 bytes)
+...
+Reading 72 bytes at 128, from file of length 200.
+Sequential <span class="hljs-built_in">read</span> of 200 byte file, <span class="hljs-keyword">in</span> 10 byte chunks
+Opening file TestFile
+...</code></pre>
+<p>可以看到写入 200 个 byte，按照预期应该申请两次磁盘块，与输出的 DEBUG 信息相符合。最后能够成功读写文件没有报错。<br />
+将 <code>PerformanceTest</code> 中 <code>Remove</code> 文件的操作注释掉，随后重复上述操作，并且执行 <code>./nachos -D</code> 来观察写入的 <code>TestFile</code>，输出的结果如下：</p>
+<pre><code class="hljs bash">File contents:
+Sector: 12
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+Sector: 13
+901234567890123456789012345678901234567890123456789012345678901234567890</code></pre>
+<p>可以看到成功按照预想的方式动态写入了文件内容，扩展了文件长度。</p>
+<h4 id="exercise-6-源代码阅读"><a class="markdownIt-Anchor" href="#exercise-6-源代码阅读"></a> Exercise 6 源代码阅读</h4>
+<h5 id="filesyssynchdiskh-和-filesyssynchdiskcc"><a class="markdownIt-Anchor" href="#filesyssynchdiskh-和-filesyssynchdiskcc"></a> filesys/synchdisk.h 和 filesys/synchdisk.cc</h5>
+<p>阅读 Nachos 源代码中与异步磁盘相关的代码，理解 Nachos 系统中异步访问模拟磁盘的工作原理。<br />
+阅读代码可知，Nachos 运行在的物理磁盘是异步设备，即对于磁盘的请求需要立即响应，后续接受和响应中断。在物理磁盘之上，Nachos 提供了一个外部接口，使得用户能够使用同步的磁盘。Nachos 通过 <code>synchdisk</code> 类来模拟一个同步磁盘。<br />
+其中重要的变量和函数如下：</p>
+<ol>
+<li><code>Disk *disk</code>：原始的磁盘。</li>
+<li><code>Semaphore *semaphore;</code>：一个信号量，用来保证磁盘访问请求完成后，才能对其进行操作。</li>
+<li><code>Lock *lock</code>：用来保证每次只有一个线程访问磁盘。</li>
+<li><code>SynchDisk::SynchDisk, SynchDisk::~SynchDisk</code>：构造函数和析构函数，执行简单的对私有变量的创建和删除。</li>
+<li><code>ReadSector</code>：在特定扇区读出一定大小的数据到缓冲区。分为 4 步：
+<ol>
+<li>获取磁盘锁</li>
+<li>发送读请求</li>
+<li>对信号量执行 P 操作</li>
+<li>释放磁盘锁</li>
+</ol>
+</li>
+<li><code>WriteSector</code>：在特定扇区写入数据，和 <code>ReadSector</code> 的过程大致相同，只是将读请求换成了写请求。</li>
+<li><code>RequestDone</code>：在一个线程对于磁盘的访问结束后调用此函数，即磁盘中断的处理程序。这个函数用来将信号量执行 <code>V</code> 操作。</li>
+</ol>
+<p>这样就保证了同时期只有一个线程访问磁盘，并且有相应的磁盘中断处理程序。</p>
+<h5 id="class-synchconsole"><a class="markdownIt-Anchor" href="#class-synchconsole"></a> Class SynchConsole</h5>
+<p>利用异步访问模拟磁盘的工作原理，在 Class Console 的基础上，实现 Class SynchConsole。<br />
+<code>Console</code> 类定义在 <code>code/machine/console.h</code> 中。在这个头文件和对应的 cc 文件中，增加 <code>SynchConsole</code> 类。利用上述 <code>syncdisk</code> 的原理，为了使得 <code>Console</code> 能够被同步访问，我们也需要加入一个锁变量和两个信号量。分别用来保证同时只有一个线程访问，以及读、写必须要请求结束返回之后才能继续操作。<br />
+由此，仿照原有的 <code>Console</code> 类，定义新的 <code>SynchConsole</code> 类如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SynchConsole</span> &#123;</span>
+  <span class="hljs-keyword">public</span>:
+    SynchConsole (<span class="hljs-keyword">char</span> *readFile, <span class="hljs-keyword">char</span> *writeFile);    
+    ~SynchConsole ();                               
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PutChar</span><span class="hljs-params">(<span class="hljs-keyword">char</span> ch)</span></span>; 
+    <span class="hljs-function"><span class="hljs-keyword">char</span> <span class="hljs-title">GetChar</span><span class="hljs-params">()</span></span>; 
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">WriteDone</span><span class="hljs-params">()</span></span>; 
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ReadAvail</span><span class="hljs-params">()</span></span>;
+  <span class="hljs-keyword">private</span>:
+    Console *console;
+    Lock *lock;
+    Semaphore *sReadAvail;
+    Semaphore *sWriteDone;
+&#125;;</code></pre>
+<p>这个类的构造函数即为：</p>
+<pre><code class="hljs cpp">SynchConsole::SynchConsole (<span class="hljs-keyword">char</span> *readFile, <span class="hljs-keyword">char</span> *writeFile)
+&#123;
+    lock = <span class="hljs-keyword">new</span> Lock (<span class="hljs-string">&quot;synch console&quot;</span>);
+    sReadAvail = <span class="hljs-keyword">new</span> Semaphore (<span class="hljs-string">&quot;synch console read avail&quot;</span>, <span class="hljs-number">0</span>);
+    sWriteDone = <span class="hljs-keyword">new</span> Semaphore (<span class="hljs-string">&quot;synch console write done&quot;</span>, <span class="hljs-number">0</span>);
+    console = <span class="hljs-keyword">new</span> Console (readFile, writeFile, ReadAvail, WriteDone, (<span class="hljs-keyword">int</span>)<span class="hljs-keyword">this</span>);
+&#125;</code></pre>
+<p>注意在构造函数之前需要补充两个 dummy function，来成功引用 <code>ReadAvail</code> 和 <code>WriteDone</code>。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SynchConsoleReadAvail</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sc)</span></span>
+<span class="hljs-function"></span>&#123; SynchConsole *console = (SynchConsole *) sc; console-&gt;ReadAvail (); &#125;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SynchConsoleWriteDone</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sc)</span></span>
+<span class="hljs-function"></span>&#123; SynchConsole *console = (SynchConsole *) sc; console-&gt;WriteDone (); &#125;</code></pre>
+<p>我们将 <code>GetChar</code> 和 <code>PutChar</code> 可以类比读操作和写操作，因此使用和 <code>synchdisk</code> 相似的操作逻辑来完成这两个函数：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">char</span>
+SynchConsole::GetChar ()
+&#123;
+    lock-&gt;Acquire ();
+    sReadAvail-&gt;P ();
+    <span class="hljs-keyword">char</span> ch = console-&gt;GetChar ();
+    lock-&gt;Release ();
+    <span class="hljs-keyword">return</span> ch;
+&#125;
+<span class="hljs-keyword">void</span>
+SynchConsole::PutChar (<span class="hljs-keyword">char</span> ch)
+&#123;
+    lock-&gt;Acquire ();
+    console-&gt;PutChar (ch);
+    sWriteDone-&gt;P ();
+    lock-&gt;Release ();
+&#125;</code></pre>
+<p>最后，读、写完成的请求结束函数即可以类比 <code>WriteDone</code> 和 <code>ReadAvail</code> 函数。只需要将对应的信号量执行 V 操作即可。具体的内容如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
+SynchConsole::WriteDone ()
+&#123;
+    sWriteDone-&gt;V ();
+&#125;
+<span class="hljs-keyword">void</span>
+SynchConsole::ReadAvail ()
+&#123;
+    sReadAvail-&gt;V ();
+&#125;</code></pre>
+<p>测试：在 <code>code/userprog/progtest.cc</code> 中，新增一个同步 Console 测试函数如下，这个函数不断在终端接收输入的字符串，在输入结束后，将其在终端中打印。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
+SynchConsoleTest (<span class="hljs-keyword">char</span> *in, <span class="hljs-keyword">char</span> *out)
+&#123;
+    <span class="hljs-keyword">char</span> ch;
+    synchConsole = <span class="hljs-keyword">new</span> SynchConsole (in, out);
+    <span class="hljs-keyword">for</span> (;;) &#123;
+        ch = synchConsole-&gt;GetChar ();
+        synchConsole-&gt;PutChar (ch); 
+        <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27;q&#x27;</span>)
+            <span class="hljs-keyword">return</span>; 
+    &#125;
+&#125;</code></pre>
+<p>最后，在 <code>main.cc</code> 中，增加一个新的参数解析 <code>-sc</code>，用来调用上述的 <code>SynchConsoleTest</code> 函数。执行 <code>./nachos -sc</code>，随意输入字符串，结果如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -sc</span>
+test1
+test1
+test2
+test2
+q
+qMachine halting!
+
+Ticks: total 871327020, idle 871326170, system 850, user 0
+Disk I/O: reads 2, writes 0
+Console I/O: reads 14, writes 13
+Paging: faults 0
+Network I/O: packets received 0, sent 0
+
+Cleaning up...</code></pre>
+<p>可以看到基本完成了一个 <code>SyncConsole</code>。</p>
+<h4 id="exercise-7-实现文件系统的同步互斥访问机制达到如下效果"><a class="markdownIt-Anchor" href="#exercise-7-实现文件系统的同步互斥访问机制达到如下效果"></a> Exercise 7 实现文件系统的同步互斥访问机制，达到如下效果：</h4>
+<p>a)	一个文件可以同时被多个线程访问。且每个线程独自打开文件，独自拥有一个当前文件访问位置，彼此间不会互相干扰。<br />
+b)	所有对文件系统的操作必须是原子操作和序列化的。例如，当一个线程正在修改一个文件，而另一个线程正在读取该文件的内容时，读线程要么读出修改过的文件，要么读出原来的文件，不存在不可预计的中间状态。<br />
+c)	当某一线程欲删除一个文件，而另外一些线程正在访问该文件时，需保证所有线程关闭了这个文件，该文件才被删除。也就是说，只要还有一个线程打开了这个文件，该文件就不能真正地被删除。</p>
+<p>我们可以按照读者写者问题的思路，通过文件头来识别文件。<br />
+对于同一个文件，每一时刻只允许一个写者或者多个读者，使得一个文件对应一个信号量。因此需要我们创建一个文件信号量的数组，来管理所有文件的读写。<br />
+对于写者，需要在写过程前对信号量进行 P 操作，写过程完成后对信号量进行 V 操作。<br />
+对于读者，读者数量从 0 到 1 时对信号量进行 P 操作，读者数量从 1 到 0 时对信号量进行 V 操作。<br />
+最后需要用锁保证对读者数量的访问和修改是互斥的。<br />
+在 <code>syncdisk.cc</code> 中，增加如下的变量和函数：</p>
+<ol>
+<li>文件访问信号量数组 <code>readerLock</code></li>
+<li>读者数量数组 <code>numReaders</code></li>
+<li>读者数量锁 <code>readerLock</code></li>
+<li>增加新读者 <code>PlusReader</code></li>
+<li>读者离开要读的文件 <code>MinusReader</code></li>
+<li>写者开始写 <code>BeginWrite</code></li>
+<li>写者结束写 <code>EndWrite</code><br />
+效果如下：</li>
+</ol>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SynchDisk</span> &#123;</span>
+  <span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PlusReader</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MinusReader</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">BeginWrite</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">EndWrite</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>;
+  <span class="hljs-keyword">private</span>:
+    Semaphore *mutex [NumSectors];
+    <span class="hljs-keyword">int</span> numReaders [NumSectors];
+    Lock *readerLock;
+&#125;;</code></pre>
+<p>相应的，在 <code>SynchDisk</code> 类的构造函数中加入对上述三个新变量的初始化:</p>
+<pre><code class="hljs cpp">readerLock = <span class="hljs-keyword">new</span> Lock (<span class="hljs-string">&quot;ReaderLock&quot;</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;NumSectors;i++)
+    &#123;
+        numReaders [i]=<span class="hljs-number">0</span>;
+        mutex [i]=<span class="hljs-keyword">new</span> Semaphore (<span class="hljs-string">&quot;Lock&quot;</span>,<span class="hljs-number">1</span>);
+    &#125;</code></pre>
+<p><code>PlusReader</code> 函数用来将读者数目增加。需要获取读者数量锁、增加相应磁盘块的读者数量纪录、如果对应的磁盘块读者数量只有一个则对该磁盘块的信号量执行 P 操作。打印出相关的信息后释放锁。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SynchDisk::PlusReader</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>
+<span class="hljs-function"></span>&#123;
+    readerLock-&gt;Acquire ();
+    numReaders [sector]++;
+    <span class="hljs-keyword">if</span>(numReaders [sector]==<span class="hljs-number">1</span>)
+        mutex [sector]-&gt;P ();
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Reader cnt: % d\n&quot;</span>, numReaders [sector]);
+    readerLock-&gt;Release ();
+&#125;</code></pre>
+<p><code>MinusReader</code> 和 <code>PlusReader</code> 所做的工作形成镜像。同样是在获取锁后执行相应的减少读者操作，在检测到读者数量为 0 时使得信号量执行 V 操作，最后释放锁。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SynchDisk::MinusReader</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>
+<span class="hljs-function"></span>&#123;
+    readerLock-&gt;Acquire ();
+    numReaders [sector]--;
+    <span class="hljs-keyword">if</span>(numReaders [sector]==<span class="hljs-number">0</span>)
+        mutex [sector]-&gt;V ();
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;reader cnt: % d\n&quot;</span>, numReaders [sector]);
+    readerLock-&gt;Release ();
+&#125;</code></pre>
+<p>对于写着来说，他们只需要在开始写的时候，占用磁盘块，即对磁盘块的信号量执行 P 操作。在结束写之后释放磁盘量即可。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SynchDisk::BeginWrite</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>
+<span class="hljs-function"></span>&#123;
+    mutex [sector]-&gt;P ();
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SynchDisk::EndWrite</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sector)</span></span>
+<span class="hljs-function"></span>&#123;
+    mutex [sector]-&gt;V ();
+&#125;</code></pre>
+<p>修改完后，我们需要在原有的 <code>OpenFile::Read&amp;Write</code> 中增加使用 <code>synchdisk</code> 的读写方式。并在读写函数中加入 <code>currentThread-&gt;Yield ()</code> 来方便测试：</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;synchdisk.h&quot;</span></span>
+SynchDisk *synchDisk = <span class="hljs-keyword">new</span> SynchDisk (<span class="hljs-string">&quot;test&quot;</span>);
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">OpenFile::Read</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *into, <span class="hljs-keyword">int</span> numBytes)</span></span>
+<span class="hljs-function"></span>&#123;
+    synchDisk-&gt;PlusReader (hdr-&gt;sectorPos);
+    <span class="hljs-keyword">int</span> result = ReadAt (into, numBytes, seekPosition);
+    currentThread-&gt;Yield ();
+    seekPosition += result;
+    synchDisk-&gt;MinusReader (hdr-&gt;sectorPos);
+    <span class="hljs-keyword">return</span> result;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">OpenFile::Write</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *into, <span class="hljs-keyword">int</span> numBytes)</span></span>
+<span class="hljs-function"></span>&#123;
+    synchDisk-&gt;BeginWrite (hdr-&gt;sectorPos);
+    <span class="hljs-keyword">int</span> result = WriteAt (into, numBytes, seekPosition);
+    currentThread-&gt;Yield ();
+    seekPosition += result;
+    synchDisk-&gt;EndWrite (hdr-&gt;sectorPos);
+    <span class="hljs-keyword">return</span> result;
+&#125;</code></pre>
+<p>对于要求 (3)，我们希望确保能够在没有线程访问文件的时候才能删除文件，因此我们需要对于每一个磁盘块，统计特定文件目前的访问线程数量：</p>
+<ol>
+<li>
+<p>在 <code>synchdisk</code> 类中新增变量 <code>int numVisitors [NumSectors]</code></p>
+</li>
+<li>
+<p>每次一个线程打开文件时，将这个文件磁盘块对应的访问者数量增加；关闭文件时，将访问者数量减少。即在 <code>OpenFile</code> 类的构造和析构函数中增加对上述数组的变更过程。</p>
+</li>
+<li>
+<p>在 <code>FileSystem::Remove</code> 函数中，如果发现访问者的数量不为 0，不能删除该文件：</p>
+ <pre><code class="hljs cpp"><span class="hljs-keyword">if</span>(synchDisk-&gt;numVisitors [sector])&#123;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;This file is still being visited, unable to remove.\n&quot;</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre>
+</li>
+</ol>
+<p>至此，就完成了读写文件的改造。我们接下来进行测试工作。<br />
+测试一：</p>
+<p>在 <code>fstest.cc</code> 中，修改原有的 <code>PerformanceTest</code> 为：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
+read ()
+&#123;   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;% s begin reading\n&quot;</span>, currentThread-&gt;getName ());
+    FileRead ();
+&#125;
+<span class="hljs-keyword">void</span>
+PerformanceTest ()
+&#123;   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Starting file system performance test:\n&quot;</span>);
+    FileWrite ();
+    Thread* t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;Myreader&quot;</span>);
+    t1-&gt;Fork (read,<span class="hljs-number">1</span>);
+    FileRead ();
+    fileSystem-&gt;Remove (FileName);
+&#125;</code></pre>
+<p>运行 <code>./nachos -t</code>，抽取其中涉及到双线程读写的输出部分如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -t</span>
+....
+Reader cnt: 1
+Reader cnt: 0
+main end reading
+main begin reading
+Reader cnt: 1
+Myreader begin reading
+Reader cnt: 2
+Reader cnt: 1
+Myreader end reading
+......</code></pre>
+<p>可以看到双线程可以同时读取同一文件。</p>
+<p>测试二：<br />
+使得一个线程在操作文件的过程中，另一个线程尝试删除文件。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
+remove ()
+&#123;   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;% s removing file\n&quot;</span>, currentThread-&gt;getName ());
+    fileSystem-&gt;Remove (FileName);
+&#125;
+<span class="hljs-keyword">void</span>
+PerformanceTest ()
+&#123;   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Starting file system performance test:\n&quot;</span>);
+    FileWrite ();
+    Thread* t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;Myreader&quot;</span>);
+    t1-&gt;Fork (remove,<span class="hljs-number">1</span>);
+    FileRead ();
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;% s removed the file\n&quot;</span>, currentThread-&gt;getName ());
+    fileSystem-&gt;Remove (FileName);
+&#125;</code></pre>
+<p>测试结果如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -t</span>
+....
+main begin writing
+main end writing
+main begin writing
+This file is still being visited, unable to remove.
+Perf <span class="hljs-built_in">test</span>: unable to remove TestFile.
+......</code></pre>
+<p>可以看到，由于 <code>main</code> 仍然在访问文件，<code>Mythread</code> 无法执行相应的 <code>Remove</code> 操作，达到预期。</p>
+<h4 id="challenge-2-实现-pipe-机制"><a class="markdownIt-Anchor" href="#challenge-2-实现-pipe-机制"></a> Challenge 2  实现 pipe 机制</h4>
+<p>重定向 openfile 的输入输出方式，使得前一进程从控制台读入数据并输出至管道，后一进程从管道读入数据并输出至控制台。<br />
+首先我们要创建一个管道文件用来模拟这个管道。写数据时实际上把数据写进管道，后一进程再从管道文件中读出即可。<br />
+首先在 <code>FileSystem</code> 的构造函数中，加入初始化管道文件的部分：</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> PipeSector 2</span>
+FileSystem::FileSystem (<span class="hljs-keyword">bool</span> format)
+&#123; 
+		…………
+     FileHeader *pipeHdr = <span class="hljs-keyword">new</span> FileHeader;
+     freeMap-&gt;Mark (PipeSector);
+     pipeHdr-&gt;WriteBack (PipeSector);
+&#125;</code></pre>
+<p>随后，在 <code>FileSystem</code> 类中，增加两个函数 <code>ReadPipe</code> 和 <code>WritePipe</code> 用来实现管道的读和写。在管道中读数据时，我们就需要打开管道文件，将管道的字节数看作是读取的长度，随后读出相应的数据。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">FileSystem::ReadPipe</span><span class="hljs-params">(<span class="hljs-keyword">char</span> * data)</span></span>&#123;
+    FileHeader *fileHdr;
+    fileHdr = <span class="hljs-keyword">new</span> FileHeader;
+    fileHdr-&gt;FetchFrom (PipeSector);
+    <span class="hljs-keyword">int</span> length=fileHdr-&gt;numBytes ();
+    fileHdr-&gt;WriteBack (PipeSector);
+    OpenFile *pipe_file=<span class="hljs-keyword">new</span> OpenFile (PipeSector);
+    pipe_file-&gt;Read (data,length);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Successfully reading data from the pipe.\n&quot;</span>);
+    <span class="hljs-keyword">delete</span> pipe_file;
+    <span class="hljs-keyword">return</span> length;
+&#125;</code></pre>
+<p>同理，在对管道文件写时，使用类似的方法对文件进行写操作即可。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FileSystem::WritePipe</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *data,<span class="hljs-keyword">int</span> length)</span></span>
+<span class="hljs-function"></span>&#123;
+    OpenFile *pipe_file = <span class="hljs-keyword">new</span> OpenFile (PipeSector);
+    pipe_file-&gt;Write (data, length);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Successfully writing data into the pipe.\n&quot;</span>);
+    <span class="hljs-keyword">delete</span> pipe_file;
+    FileHeader *fileHdr;
+    fileHdr = <span class="hljs-keyword">new</span> FileHeader;
+    fileHdr-&gt;FetchFrom (PipeSector);
+    fileHdr-&gt;setnumBytes (length);
+    fileHdr-&gt;WriteBack (PipeSector);
+&#125;</code></pre>
+<p>最后，在 <code>fstest.cc</code> 中加入新的测试函数：<code>PerformanceTestPipe1</code> 用来将用户输入的字符串写入管道文件，模拟线程对管道文件的写操作。<code>PerformanceTestPipe2</code> 用来将管道文件中的内容打印出来，模拟线程对管道文件的读操作。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PerformanceTestPipe1</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread 1 writing data to the pipe.\n&quot;</span>);
+    <span class="hljs-keyword">char</span> input_str [SectorSize+<span class="hljs-number">1</span>];
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;% s&quot;</span>,input_str);
+    fileSystem-&gt;WritePipe (input_str,<span class="hljs-built_in">strlen</span>(input_str));
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PerformanceTestPipe2</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread 2 reading data from the pipe.\n&quot;</span>);
+    <span class="hljs-keyword">char</span> data [SectorSize+<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">int</span> length=fileSystem-&gt;ReadPipe (data);
+    data [length]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;% s\n&quot;</span>,data);
+&#125;</code></pre>
+<p>在 <code>main.cc</code> 中加入对 <code>-t1,-t2</code> 指令的解析，分别对应上述两个测试函数。执行命令 <code>./nachos -t1, ./nachos -t2</code>，部分结果摘取如下：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -t1</span>
+Thread 1 writing data to the pipe.
+Testing Pipe
+Successfully writing data from the pipe.
+....
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+...
+Cleaning up...
+
+root@56618acc2196:/home/code/filesys<span class="hljs-comment"># ./nachos -t2</span>
+Thread 2 reading data from the pipe.
+Testing Pipe
+Successfully reading data from the pipe.
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+...
+Cleaning up...</code></pre>
+<p>可以看到简单的完成了管道文件的构建。</p>
+<h2 id="内容二遇到的困难以及收获"><a class="markdownIt-Anchor" href="#内容二遇到的困难以及收获"></a> 内容二：遇到的困难以及收获</h2>
+<h3 id="文件系统的操作方式"><a class="markdownIt-Anchor" href="#文件系统的操作方式"></a> 文件系统的操作方式</h3>
+<ol>
+<li>在 userprog 的 <code>Makefile</code> 中，删去 <code>-DFILESYS_STUB</code> 部分来使用 Nachos 的文件系统。</li>
+<li>在 <code>main.cc</code> 中注释掉对于 <code>threads</code> 的相关参数解析。因为这一块 Nachos 书写错误，改变了原有的参数导致后续解析错误，因此需要注释掉以便正常工作。</li>
+<li>编译后，通过 <code>./nachos -f</code> 初始化磁盘。</li>
+<li>通过 <code>./nachos -D</code> 打印详细信息。</li>
+</ol>
+<p>如何实现递归删除：由于删除文件时，默认的删除方法只会回收这个文件、文件头对应的位图和磁盘块，如果要删除目录文件，最好的结果是讲起内部的文件都递归删除。<br />
+通过查找资料，发现需要在可以在 <code>FileSystem::Remove</code> 中递归调用自身来达到。测试结果成功。</p>
+<p>多级目录时如何对文件路径解析：其实不需要储存过多的信息，只需要把文件按照最后一个分隔符划分即可，前一部分一定能够在磁盘块中找到。</p>
+<p>同步机制：实际上这一块是对之前的同步机制实习的一个扩展。注意好信号量的操作实现起来困难不大。</p>
+<p>最令人困扰的是各种细小难以调试的 bug，在终端只会有断言错误告知磁盘空间不够。这些多是由于分配空间、创建文件时的一些错误语句导致的。需要仔细研究文件的创建过程才能清除问题。</p>
+<p>通过这次实验，对于文件系统的结构、文件定位方式、多级目录的实现方式，文件的读写同步等等能让有了更加细致深入的了解和理解。也再一次巩固了管道相关的知识。</p>
+<h2 id="内容三对课程或-lab-的意见和建议"><a class="markdownIt-Anchor" href="#内容三对课程或-lab-的意见和建议"></a> 内容三：对课程或 Lab 的意见和建议</h2>
+<p>无</p>
+<h2 id="内容四参考文献"><a class="markdownIt-Anchor" href="#内容四参考文献"></a> 内容四：参考文献</h2>
+<ol>
+<li>Nachos 中文教材.pdf</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_40875078/article/details/111053480">https://blog.csdn.net/sinat_40875078/article/details/111053480</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/daviddwlee84/OperatingSystem/blob/master/Lab/Lab5_FileSystem/README.md">https://github.com/daviddwlee84/OperatingSystem/blob/master/Lab/Lab5_FileSystem/README.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/04382358f6ec4afe04a1b0717fd5360cbb1a8d40.html">https://wenku.baidu.com/view/04382358f6ec4afe04a1b0717fd5360cbb1a8d40.html</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%93%8D%E7%BB%9F/">操统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/cpp/">cpp</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/11/nachos-lab6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统 lab6 - 系统调用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/29/2020-sub/">
+                        <span class="hidden-mobile">我的 2020 音视频服务订阅</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.12.0/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

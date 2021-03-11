@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Martin Feld">
   <meta name="keywords" content="">
-  <title>操作系统lab1——线程实验报告 - Harmon</title>
+  <title>操作系统 lab1—— 线程实验报告 - Fe1d</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Harmon's Blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>Fe1d's Blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="操作系统lab1——线程实验报告">
+            <span class="h2" id="subtitle" title="操作系统 lab1—— 线程实验报告">
               
             </span>
 
@@ -224,7 +224,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">操作系统lab1——线程实验报告</h1>
+            <h1 style="display: none">操作系统 lab1—— 线程实验报告</h1>
             
             <div class="markdown-body">
               <h2 id="内容一任务完成情况"><a class="markdownIt-Anchor" href="#内容一任务完成情况"></a> 内容一：任务完成情况</h2>
@@ -248,12 +248,12 @@
 </tbody>
 </table>
 <a id="more"></a>
-<h3 id="具体exercise完成情况"><a class="markdownIt-Anchor" href="#具体exercise完成情况"></a> 具体Exercise完成情况</h3>
+<h3 id="具体-exercise-完成情况"><a class="markdownIt-Anchor" href="#具体-exercise-完成情况"></a> 具体 Exercise 完成情况</h3>
 <h4 id="exercise-1-调研"><a class="markdownIt-Anchor" href="#exercise-1-调研"></a> Exercise 1  调研</h4>
-<h5 id="linux中的pcb"><a class="markdownIt-Anchor" href="#linux中的pcb"></a> linux中的PCB</h5>
-<p>Linux内核通过一个被称为进程描述符的task_struct结构体来管理进程，这个结构体包含了一个进程所需的所有信息。它定义在include/linux/sched.h文件中。<br />
+<h5 id="linux-中的-pcb"><a class="markdownIt-Anchor" href="#linux-中的-pcb"></a> linux 中的 PCB</h5>
+<p>Linux 内核通过一个被称为进程描述符的 task_struct 结构体来管理进程，这个结构体包含了一个进程所需的所有信息。它定义在 include/linux/sched.h 文件中。<br />
 其中包含的部分重要进程信息如下：<br />
-1、 进程状态。Linux通过定义<code>state</code>成员来制定每个进程的状态。这些<code>define</code>中包括正在运行、正在被阻塞、处于中断、僵尸进程等等常见的状态。举例如下：</p>
+1、 进程状态。Linux 通过定义 <code>state</code> 成员来制定每个进程的状态。这些 <code>define</code> 中包括正在运行、正在被阻塞、处于中断、僵尸进程等等常见的状态。举例如下：</p>
 <pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TASK_RUNNING		0</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TASK_INTERRUPTIBLE 1</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TASK_UNINTERRUPTIBLE	2</span>
@@ -267,15 +267,15 @@
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TASK_WAKEKILL		128</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TASK_WAKING		256</span></code></pre>
 <p>2、进程标识符（PID）<br />
-包括<code>pid</code>和<code>tgid</code>。其中前者是指每个进程或者线程的id，而对于同一个父进程的所有子线程，其编号是相同的，因此一个线程组中的所有线程使用和该线程组的领头线程（该组中的第一个轻量级进程）相同的PID，并被存放在tgid成员中。<br />
+包括 <code>pid</code> 和 <code>tgid</code>。其中前者是指每个进程或者线程的 id，而对于同一个父进程的所有子线程，其编号是相同的，因此一个线程组中的所有线程使用和该线程组的领头线程（该组中的第一个轻量级进程）相同的 PID，并被存放在 tgid 成员中。<br />
 3、进程内核栈<br />
-由<code>void *stack;</code>定义。<br />
+由 <code>void *stack;</code> 定义。<br />
 即内核为这个进程所分配的独立的内核栈的指针。<br />
-4、标记flag<br />
+4、标记 flag<br />
 表示进程的状态值。<br />
 5、表示进程亲属关系的成员</p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> *<span class="hljs-title">real_parent</span>;</span> <span class="hljs-comment">/* real parent process */</span>
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> *<span class="hljs-title">parent</span>;</span> <span class="hljs-comment">/* recipient of SIGCHLD, wait4() reports */</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> *<span class="hljs-title">parent</span>;</span> <span class="hljs-comment">/* recipient of SIGCHLD, wait4 () reports */</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">list_head</span> <span class="hljs-title">children</span>;</span>	<span class="hljs-comment">/* list of my children */</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">list_head</span> <span class="hljs-title">sibling</span>;</span>	<span class="hljs-comment">/* linkage in my parent&#x27;s children list */</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> *<span class="hljs-title">group_leader</span>;</span>	<span class="hljs-comment">/* threadgroup leader */</span></code></pre>
@@ -288,39 +288,39 @@
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sched_rt_entity</span> <span class="hljs-title">rt</span>;</span>
 <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> policy;
 <span class="hljs-keyword">cpumask_t</span> cpus_allowed;</code></pre>
-<p>其中<code>prio, static_prio, normal_prio</code>分别表示动态优先级、静态优先级、和在当前调度策略下的优先级。  <code>policy</code>表示当前调度策略，包括<code>FIFO</code>、<code>RR</code>等实时调度策略。</p>
-<h5 id="nachos中的pcb"><a class="markdownIt-Anchor" href="#nachos中的pcb"></a> Nachos中的PCB</h5>
-<p>Nachos中的PCB定义的内容非常少，在<code>threads.h</code>中可以发现其结构体的一些主体存储信息：<br />
+<p>其中 <code>prio, static_prio, normal_prio</code> 分别表示动态优先级、静态优先级、和在当前调度策略下的优先级。  <code>policy</code> 表示当前调度策略，包括 <code>FIFO</code>、<code>RR</code> 等实时调度策略。</p>
+<h5 id="nachos-中的-pcb"><a class="markdownIt-Anchor" href="#nachos-中的-pcb"></a> Nachos 中的 PCB</h5>
+<p>Nachos 中的 PCB 定义的内容非常少，在 <code>threads.h</code> 中可以发现其结构体的一些主体存储信息：<br />
 1、进程状态。<br />
 只有四个状态值：<code>&#123; JUST_CREATED, RUNNING, READY, BLOCKED &#125;</code>。<br />
 2、进程内核栈<br />
-同样包含了内核为其分配的栈指针<code>int* stackTop</code>。<br />
+同样包含了内核为其分配的栈指针 <code>int* stackTop</code>。<br />
 3、线程名字<br />
-类似linux中pid的名字:<code>char* name;</code>。用来作为标识。<br />
-可以看到，对比linux，nachos中进程的PCB含有的信息大量减少，都统一在了线程的头函数中。状态量少，调度函数简单、缺少亲属关系等。</p>
+类似 linux 中 pid 的名字:<code>char* name;</code>。用来作为标识。<br />
+可以看到，对比 linux，nachos 中进程的 PCB 含有的信息大量减少，都统一在了线程的头函数中。状态量少，调度函数简单、缺少亲属关系等。</p>
 <h4 id="exercise-2-源代码阅读"><a class="markdownIt-Anchor" href="#exercise-2-源代码阅读"></a> Exercise 2  源代码阅读</h4>
 <h5 id="1maincc"><a class="markdownIt-Anchor" href="#1maincc"></a> <a target="_blank" rel="noopener" href="http://1.main.cc">1.main.cc</a></h5>
-<p>初始化系统内核的main函数。初始化所有的数据结构并且启动一个用户程序。<br />
+<p>初始化系统内核的 main 函数。初始化所有的数据结构并且启动一个用户程序。<br />
 提供了众多的命令接口供调试。</p>
 <h5 id="2threadsh"><a class="markdownIt-Anchor" href="#2threadsh"></a> 2.threads.h</h5>
-<p>控制线程结构和函数的头文件。在其中定义了PCB，每一个进程的状态、栈顶和栈底指针等私有和共有数据结构。声明了一些列重要的线程操作函数，如<code>Fork()</code>,<code>Yield()</code>,<code>Sleep()</code>,<code>Finish(）</code>等。</p>
+<p>控制线程结构和函数的头文件。在其中定义了 PCB，每一个进程的状态、栈顶和栈底指针等私有和共有数据结构。声明了一些列重要的线程操作函数，如 <code>Fork ()</code>,<code>Yield ()</code>,<code>Sleep ()</code>,<code>Finish (）</code> 等。</p>
 <h5 id="3threadscc"><a class="markdownIt-Anchor" href="#3threadscc"></a> <a target="_blank" rel="noopener" href="http://3.threads.cc">3.threads.cc</a></h5>
-<p>主要包括线程<code>Thread</code>对象的创建、析构函数以及上述的四个主要线程函数的具体定义。<br />
-以及<code>StackAllocate()</code>,<code>Checkoverflow()</code>等需要的函数具体内容定义。</p>
+<p>主要包括线程 <code>Thread</code> 对象的创建、析构函数以及上述的四个主要线程函数的具体定义。<br />
+以及 <code>StackAllocate ()</code>,<code>Checkoverflow ()</code> 等需要的函数具体内容定义。</p>
 <h5 id="4threadstestcc"><a class="markdownIt-Anchor" href="#4threadstestcc"></a> <a target="_blank" rel="noopener" href="http://4.threadstest.cc">4.threadstest.cc</a></h5>
-<p>一个对于线程调度的简单测试函数。简单来说就是创建两个线程，让他们不断自我执行<code>Yield()</code>函数，使得上下文在两个不同的线程中切换。</p>
+<p>一个对于线程调度的简单测试函数。简单来说就是创建两个线程，让他们不断自我执行 <code>Yield ()</code> 函数，使得上下文在两个不同的线程中切换。</p>
 <h4 id="exercise-3-扩展线程的数据结构"><a class="markdownIt-Anchor" href="#exercise-3-扩展线程的数据结构"></a> Exercise 3  扩展线程的数据结构</h4>
 <h5 id="1threadh"><a class="markdownIt-Anchor" href="#1threadh"></a> 1.<code>thread.h</code></h5>
-<p>增加数据结构需要现在头文件声明。在<code>thread.h</code>中添加两个私有变量表示线程id和用户id，以及两个公有函数<code>getPID(),getUID()</code>和一个分配各个进程id的<code>pidAllocate()</code>函数。</p>
+<p>增加数据结构需要现在头文件声明。在 <code>thread.h</code> 中添加两个私有变量表示线程 id 和用户 id，以及两个公有函数 <code>getPID (),getUID ()</code> 和一个分配各个进程 id 的 <code>pidAllocate ()</code> 函数。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">private</span>:
     ...
-    <span class="hljs-comment">// add pid and uid</span>
+    <span class="hljs-comment">//add pid and uid</span>
     
     <span class="hljs-keyword">int</span> pid;
     <span class="hljs-keyword">int</span> uid;
     ...
 <span class="hljs-keyword">public</span>:
-    <span class="hljs-comment">// add functions that get uid and pid</span>
+    <span class="hljs-comment">//add functions that get uid and pid</span>
     
     ...
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getpid</span><span class="hljs-params">()</span></span>;
@@ -328,31 +328,31 @@
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">pidAllocate</span><span class="hljs-params">()</span></span>;
     ...</code></pre>
 <h5 id="2systemh"><a class="markdownIt-Anchor" href="#2systemh"></a> 2.<code>system.h</code></h5>
-<p>由于增加了进程id，并且需要分配，因此最好设定最大进程数，方便分配id。结合Exercise 4的需求，设定最高的同时运行线程数为128。</p>
+<p>由于增加了进程 id，并且需要分配，因此最好设定最大进程数，方便分配 id。结合 Exercise 4 的需求，设定最高的同时运行线程数为 128。</p>
 <pre><code class="hljs cpp"><span class="hljs-comment">//add max threads and initialize</span>
 
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MaxThreads 128</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-keyword">int</span> pids[MaxThreads];</code></pre>
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">int</span> pids [MaxThreads];</code></pre>
 <h5 id="3systemcc"><a class="markdownIt-Anchor" href="#3systemcc"></a> 3.<code>system.cc</code></h5>
-<p>对每一个线程的id进行初始化。</p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">int</span> pids[MaxThreads];
+<p>对每一个线程的 id 进行初始化。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">int</span> pids [MaxThreads];
 <span class="hljs-comment">//add threads id initialization</span>
 
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; MaxThreads; ++i)&#123;
-    pids[i] = <span class="hljs-number">0</span>;
+    pids [i] = <span class="hljs-number">0</span>;
 &#125;</code></pre>
 <h5 id="4threadcc"><a class="markdownIt-Anchor" href="#4threadcc"></a> 4.<code>thread.cc</code></h5>
-<p>具体定义上述三个函数。其中获得用户id可以直接调用cpp<code>unistd.h</code>库中的<code>getuid()</code>函数。<code>pidAllocate</code>函数遍历之前初始化的线程数组，找到其中一个值为0的索引设为pid，并将值设为1。</p>
-<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;unistd.h&quot;</span>  <span class="hljs-comment">//add getuid() function</span></span>
+<p>具体定义上述三个函数。其中获得用户 id 可以直接调用 cpp<code>unistd.h</code> 库中的 <code>getuid ()</code> 函数。<code>pidAllocate</code> 函数遍历之前初始化的线程数组，找到其中一个值为 0 的索引设为 pid，并将值设为 1。</p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;unistd.h&quot;</span>  <span class="hljs-comment">//add getuid () function</span></span>
 ...
-Thread::Thread(<span class="hljs-keyword">char</span>* threadName)
+Thread::Thread (<span class="hljs-keyword">char</span>* threadName)
     <span class="hljs-comment">//initialize pid,uid</span>
-    pid = pidAllocate();
-    uid = getuid();
+    pid = pidAllocate ();
+    uid = getuid ();
 ...
-Thread::~Thread()
+Thread::~Thread ()
     <span class="hljs-comment">//clean pid</span>
-    pids[pid] = <span class="hljs-number">0</span>;
+    pids [pid] = <span class="hljs-number">0</span>;
 ...
 <span class="hljs-comment">//----------------------------------------------------------------------</span>
 <span class="hljs-comment">// Thread::getpid</span>
@@ -360,7 +360,7 @@ Thread::~Thread()
 <span class="hljs-comment">//----------------------------------------------------------------------</span>
 
 <span class="hljs-keyword">int</span> 
-Thread::getpid()
+Thread::getpid ()
 &#123;
     <span class="hljs-keyword">return</span> pid;
 &#125;
@@ -371,7 +371,7 @@ Thread::getpid()
 <span class="hljs-comment">//----------------------------------------------------------------------</span>
 
 <span class="hljs-keyword">int</span> 
-Thread::getuid()
+Thread::getuid ()
 &#123;
     <span class="hljs-keyword">return</span> uid;
 &#125;
@@ -382,17 +382,17 @@ Thread::getuid()
 <span class="hljs-comment">//----------------------------------------------------------------------</span>
 
 <span class="hljs-keyword">int</span>
-Thread::pidAllocate()
+Thread::pidAllocate ()
 &#123;
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; MaxThreads; i++)&#123;
-        <span class="hljs-keyword">if</span> (pids[i] == <span class="hljs-number">0</span>)&#123;
-            pids[i] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (pids [i] == <span class="hljs-number">0</span>)&#123;
+            pids [i] = <span class="hljs-number">1</span>;
             <span class="hljs-keyword">return</span> i;
         &#125;
     &#125;
 &#125;</code></pre>
 <h5 id="5threadtestcc"><a class="markdownIt-Anchor" href="#5threadtestcc"></a> 5.<code>threadtest.cc</code></h5>
-<p>在测试的打印信息中增加pid和uid，执行结果如下：</p>
+<p>在测试的打印信息中增加 pid 和 uid，执行结果如下：</p>
 <pre><code class="hljs yaml"><span class="hljs-string">root@56618acc2196:/home/code/threads#</span> <span class="hljs-string">./nachos</span>
 <span class="hljs-string">***</span> <span class="hljs-attr">thread 0 looped 0 time pid:</span> <span class="hljs-number">0</span><span class="hljs-string">,</span> <span class="hljs-attr">uid:</span> <span class="hljs-number">0</span>
 <span class="hljs-string">***</span> <span class="hljs-attr">thread 1 looped 0 time pid:</span> <span class="hljs-number">1</span><span class="hljs-string">,</span> <span class="hljs-attr">uid:</span> <span class="hljs-number">0</span>
@@ -415,25 +415,25 @@ Thread::pidAllocate()
 <span class="hljs-attr">Network I/O:</span> <span class="hljs-string">packets</span> <span class="hljs-string">received</span> <span class="hljs-number">0</span><span class="hljs-string">,</span> <span class="hljs-string">sent</span> <span class="hljs-number">0</span>
 
 <span class="hljs-string">Cleaning</span> <span class="hljs-string">up...</span></code></pre>
-<p>可以看到生成了对应的pid和uid。</p>
+<p>可以看到生成了对应的 pid 和 uid。</p>
 <h4 id="exercise-4-增加全局线程管理机制"><a class="markdownIt-Anchor" href="#exercise-4-增加全局线程管理机制"></a> Exercise 4  增加全局线程管理机制</h4>
-<h5 id="问题一在threadcc中改进pidallocate函数"><a class="markdownIt-Anchor" href="#问题一在threadcc中改进pidallocate函数"></a> 问题一：在<code>thread.cc</code>中改进<code>pidAllocate()</code>函数</h5>
+<h5 id="问题一在-threadcc-中改进-pidallocate-函数"><a class="markdownIt-Anchor" href="#问题一在-threadcc-中改进-pidallocate-函数"></a> 问题一：在 <code>thread.cc</code> 中改进 <code>pidAllocate ()</code> 函数</h5>
 <p>增加一个判定，判断线程数是否已经达到上限。输出警告提示。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">int</span>
-Thread::pidAllocate()
+Thread::pidAllocate ()
 &#123;
 ...
-    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;No more threads can be created.  Limit: %d\n&quot;</span>, MaxThreads);
-    ASSERT(i&lt;MaxThreads);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;No more threads can be created.  Limit: % d\n&quot;</span>, MaxThreads);
+    ASSERT (i&lt;MaxThreads);
     <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
 &#125;</code></pre>
 <p>测试函数增加一个对应的测试：</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span> 
-ThreadTestMax()
+ThreadTestMax ()
 &#123;
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= MaxThreads; i++)&#123;
-        Thread *t = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;for test&quot;</span>);
-        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread %d created\n&quot;</span>, t-&gt;getpid());
+        Thread *t = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;for test&quot;</span>);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*** thread % d created\n&quot;</span>, t-&gt;getpid ());
     &#125;
 &#125;</code></pre>
 <p>测试结果如下：</p>
@@ -451,47 +451,47 @@ ThreadTestMax()
 No more threads can be created.  Limit: <span class="hljs-number">128</span>
 Assertion failed: line <span class="hljs-number">368</span>, file <span class="hljs-string">&quot;../threads/thread.cc&quot;</span>
 Aborted</code></pre>
-<h5 id="问题二增加ts命令"><a class="markdownIt-Anchor" href="#问题二增加ts命令"></a> 问题二：增加TS命令</h5>
-<p>首先在<code>main.cc</code>中增加对该命令的识别：</p>
+<h5 id="问题二增加-ts-命令"><a class="markdownIt-Anchor" href="#问题二增加-ts-命令"></a> 问题二：增加 TS 命令</h5>
+<p>首先在 <code>main.cc</code> 中增加对该命令的识别：</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (argc--, argv++; argc &gt; <span class="hljs-number">0</span>; argc -= argCount, argv += argCount) &#123;
      ...
-	  <span class="hljs-comment">// add command &quot;TS&quot;</span>
+	  <span class="hljs-comment">//add command &quot;TS&quot;</span>
 	  <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>:
-	  	<span class="hljs-keyword">if</span> (argv[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;T&#x27;</span>)&#123;
+	  	<span class="hljs-keyword">if</span> (argv [<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;T&#x27;</span>)&#123;
 			testnum = <span class="hljs-number">2</span>;
 		&#125;
 		<span class="hljs-keyword">break</span>;
 	...</code></pre>
-<p>注意到所有的进程包括就绪队列中的进程和目前正在运行的线程。那么对于正在运行的进程，打印出其信息，并且加上就绪队列<code>readylist</code>中所有进程的信息即可。其中后者可以直接调用<code>scheduler-&gt;Print()</code>函数来打印全部就绪线程信息。之后在<code>Thread::Print()</code>函数中调整输出格式即可。</p>
+<p>注意到所有的进程包括就绪队列中的进程和目前正在运行的线程。那么对于正在运行的进程，打印出其信息，并且加上就绪队列 <code>readylist</code> 中所有进程的信息即可。其中后者可以直接调用 <code>scheduler-&gt;Print ()</code> 函数来打印全部就绪线程信息。之后在 <code>Thread::Print ()</code> 函数中调整输出格式即可。</p>
 <p><code>thread.h</code>:</p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> ThreadStatusChar[] = &#123;<span class="hljs-string">&quot;JUST_CREATED&quot;</span>,<span class="hljs-string">&quot;RUNNING&quot;</span>,<span class="hljs-string">&quot;READY&quot;</span>,<span class="hljs-string">&quot;BLOCKED&quot;</span>&#125;;
+<pre><code class="hljs cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> ThreadStatusChar [] = &#123;<span class="hljs-string">&quot;JUST_CREATED&quot;</span>,<span class="hljs-string">&quot;RUNNING&quot;</span>,<span class="hljs-string">&quot;READY&quot;</span>,<span class="hljs-string">&quot;BLOCKED&quot;</span>&#125;;
     <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span></span>&#123;
-      <span class="hljs-comment">//printf(&quot;Thread pid: %d name: %s, uid: %d, status: %s\n&quot;, pid, name, uid,  ThreadStatusChar[status]);</span>
-      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d \t %s \t %d \t %s\n&quot;</span>, pid, name, uid,  ThreadStatusChar[status]);
+      <span class="hljs-comment">//printf (&quot;Thread pid: % d name: % s, uid: % d, status: % s\n&quot;, pid, name, uid,  ThreadStatusChar [status]);</span>
+      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;% d \t % s \t % d \t % s\n&quot;</span>, pid, name, uid,  ThreadStatusChar [status]);
     &#125;</code></pre>
 <p><code>threadtest.cc</code>：<br />
 增加四个线程轮换的过程，方便看到更具有实际意义的进程信息表：</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">void</span>
-SimpleThreadTS(<span class="hljs-keyword">int</span> which)
+SimpleThreadTS (<span class="hljs-keyword">int</span> which)
 &#123;
-    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread %d yielding...\n&quot;</span>, currentThread-&gt;getpid());
-    currentThread-&gt;Print();
-    scheduler-&gt;Print();
-    currentThread-&gt;Yield();   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread % d yielding...\n&quot;</span>, currentThread-&gt;getpid ());
+    currentThread-&gt;Print ();
+    scheduler-&gt;Print ();
+    currentThread-&gt;Yield ();   
 &#125;
 <span class="hljs-keyword">void</span> 
-ThreadTestTS()
+ThreadTestTS ()
 &#123;
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;PID \t NAME     \t UID \t STATUS\n&quot;</span>);
-    Thread *t1 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;forked thread&quot;</span>);
-    Thread *t2 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;forked thread&quot;</span>);    
-    Thread *t3 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;forked thread&quot;</span>);
-    Thread *t4 = <span class="hljs-keyword">new</span> Thread(<span class="hljs-string">&quot;forked thread&quot;</span>);
-    t1-&gt;Fork(SimpleThreadTS, <span class="hljs-number">0</span>);
-    t2-&gt;Fork(SimpleThreadTS, <span class="hljs-number">0</span>);
-    t3-&gt;Fork(SimpleThreadTS, <span class="hljs-number">0</span>);
-    t4-&gt;Fork(SimpleThreadTS, <span class="hljs-number">0</span>);
-    <span class="hljs-comment">//scheduler-&gt;Print();</span>
+    Thread *t1 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;forked thread&quot;</span>);
+    Thread *t2 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;forked thread&quot;</span>);    
+    Thread *t3 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;forked thread&quot;</span>);
+    Thread *t4 = <span class="hljs-keyword">new</span> Thread (<span class="hljs-string">&quot;forked thread&quot;</span>);
+    t1-&gt;Fork (SimpleThreadTS, <span class="hljs-number">0</span>);
+    t2-&gt;Fork (SimpleThreadTS, <span class="hljs-number">0</span>);
+    t3-&gt;Fork (SimpleThreadTS, <span class="hljs-number">0</span>);
+    t4-&gt;Fork (SimpleThreadTS, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">//scheduler-&gt;Print ();</span>
 &#125;</code></pre>
 <p>输出结果如下：</p>
 <pre><code class="hljs yaml"><span class="hljs-string">root@56618acc2196:/home/code/threads#</span> <span class="hljs-string">./nachos</span> <span class="hljs-string">TS</span>
@@ -525,15 +525,15 @@ ThreadTestTS()
 <span class="hljs-string">Cleaning</span> <span class="hljs-string">up...</span></code></pre>
 <p>可以看到完成了打印信息的需求。</p>
 <h2 id="内容二遇到的困难以及收获"><a class="markdownIt-Anchor" href="#内容二遇到的困难以及收获"></a> 内容二：遇到的困难以及收获</h2>
-<p>困难：主要体现在c++的结构上。头文件.h和.cc文件之间的函数定义关系、头文件定义时各种不同数据结构的定义方式等不太明确。以及寻找需要的函数时需要仔细研读文档。</p>
-<p>收获：积累了c++编写操作系统的经验，对线程创建、分配、消亡等基础进程有了更深入的理解。</p>
-<h2 id="内容三对课程或lab的意见和建议"><a class="markdownIt-Anchor" href="#内容三对课程或lab的意见和建议"></a> 内容三：对课程或Lab的意见和建议</h2>
+<p>困难：主要体现在 c++ 的结构上。头文件.h <a target="_blank" rel="noopener" href="http://xn--0tr.cc">和.cc</a> 文件之间的函数定义关系、头文件定义时各种不同数据结构的定义方式等不太明确。以及寻找需要的函数时需要仔细研读文档。</p>
+<p>收获：积累了 c++ 编写操作系统的经验，对线程创建、分配、消亡等基础进程有了更深入的理解。</p>
+<h2 id="内容三对课程或-lab-的意见和建议"><a class="markdownIt-Anchor" href="#内容三对课程或-lab-的意见和建议"></a> 内容三：对课程或 Lab 的意见和建议</h2>
 <p>课程讲解细致深入，非常满意。<br />
-Lab的要求不是非常明确、希望能有更详细的guide。<br />
+Lab 的要求不是非常明确、希望能有更详细的 guide。<br />
 老师讲的很好，也学到了很多，但是课程任务量个人感觉实在是太大，特别是书面作业的书写量每周过于庞大。</p>
 <h2 id="内容四参考文献"><a class="markdownIt-Anchor" href="#内容四参考文献"></a> 内容四：参考文献</h2>
 <ol>
-<li>Nachos中文教程</li>
+<li>Nachos 中文教程</li>
 <li>博客：<a target="_blank" rel="noopener" href="https://www.shangmayuan.com/a/42b0aa2d756a4e83905c92df.html">https://www.shangmayuan.com/a/42b0aa2d756a4e83905c92df.html</a></li>
 <li>博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/superli90/article/details/29369909">https://blog.csdn.net/superli90/article/details/29369909</a></li>
 </ol>
@@ -569,7 +569,7 @@ Lab的要求不是非常明确、希望能有更详细的guide。<br />
                     
                       <a href="/2020/11/03/nachos-lab2/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">操作系统lab2——线程调度报告</span>
+                        <span class="hidden-mobile">操作系统 lab2—— 线程调度报告</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

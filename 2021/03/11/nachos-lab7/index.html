@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Martin Feld">
+  <meta name="keywords" content="">
+  <title>操作系统 lab7-Shell 实现 - Fe1d</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/atom-one-light.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"tyfeld.github.io","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":50,"cursorChar":"","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fe1d's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="操作系统 lab7-Shell 实现">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-11 19:39" pubdate>
+        2021年3月11日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">操作系统 lab7-Shell 实现</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>设计实现一个用户程序 shell，通过./nachos -x shell 进入用户交互界面中。在该界面中可以查询支持的功能、可以创建删除文件或目录、可以执行另一个用户程序并输出运行结果，类似 Linux 上跑的 bash。<br />
+项目地址：<a target="_blank" rel="noopener" href="https://github.com/tyfeld/nachoslab">https://github.com/tyfeld/nachoslab</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="内容一任务完成情况"><a class="markdownIt-Anchor" href="#内容一任务完成情况"></a> 内容一：任务完成情况</h2>
+<h3 id="任务完成列表"><a class="markdownIt-Anchor" href="#任务完成列表"></a> 任务完成列表</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Exercise1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Y</td>
+</tr>
+</tbody>
+</table>
+<h3 id="具体-exercise-完成情况"><a class="markdownIt-Anchor" href="#具体-exercise-完成情况"></a> 具体 Exercise 完成情况</h3>
+<h4 id="前期准备"><a class="markdownIt-Anchor" href="#前期准备"></a> 前期准备</h4>
+<p>实习要求为创建一个 shell 用户程序来处理类似 Linux bash 的相关 cli 指令。在 <code>test/shell.c</code> 中，可以发现其中的部分铺垫已经由 Nachos 完成。我们的实现即在这一部分继续完善。<code>shell.c</code> 的内容如下：</p>
+<pre><code class="hljs c"><span class="hljs-keyword">int</span>
+main ()
+&#123;
+    SpaceId newProc;
+    OpenFileId input = ConsoleInput;
+    OpenFileId output = ConsoleOutput;
+    <span class="hljs-keyword">char</span> prompt [<span class="hljs-number">2</span>], ch, buffer [<span class="hljs-number">60</span>];
+    <span class="hljs-keyword">int</span> i;
+
+    prompt [<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;-&#x27;</span>;
+    prompt [<span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;-&#x27;</span>;
+
+    <span class="hljs-keyword">while</span>( <span class="hljs-number">1</span> )
+    &#123;
+	Write (prompt, <span class="hljs-number">2</span>, output);
+
+	i = <span class="hljs-number">0</span>;
+	
+	<span class="hljs-keyword">do</span> &#123;
+	
+	    Read (&amp;buffer [i], <span class="hljs-number">1</span>, input); 
+
+	&#125; <span class="hljs-keyword">while</span>( buffer [i++] != <span class="hljs-string">&#x27;\n&#x27;</span> );
+
+	buffer [--i] = <span class="hljs-string">&#x27;\0&#x27;</span>;
+
+	<span class="hljs-keyword">if</span>( i &gt; <span class="hljs-number">0</span> ) &#123;
+		newProc = Exec (buffer);
+		Join (newProc);
+	&#125;
+    &#125;
+&#125;</code></pre>
+<p>可以看到，它通过调用 lab6 实现的 <code>Read</code> 和 <code>Write</code> 系统调用，将用户在命令行的输入解析，储存到 <code>buffer</code> 字符数组中。根据 <code>buffer</code> 数组的内容来实现相关的系统调用。<br />
+为了处理对于 Console 的读写操作，在 lab6 中对于 <code>Read,Write</code> 的系统调用部分需要增加对于 <code>fd==ConsoleInput, fd==ConsoleOutput</code> 的处理部分，使得用户能够直接对终端内容进行写入和读出。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// Read</span>
+<span class="hljs-keyword">if</span> (fd == ConsoleInput)
+&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)
+        data [i] = getchar ();
+    result = len;
+&#125;
+
+<span class="hljs-comment">//Write</span>
+<span class="hljs-keyword">if</span> (fd == ConsoleOutput)
+&#123;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)
+			<span class="hljs-built_in">putchar</span>(data [i]);
+&#125;</code></pre>
+<p>最后，<code>prompt</code> 数组中存放的是每一行打印的提示标识符。</p>
+<p>对于以下每个增加的系统调用，需要在 <code>syscall.h</code>,<code>start,s</code> 中声明，并在 <code>exception.cc</code> 中定义，具体方式已在上一个 lab 中演示。</p>
+<h4 id="x"><a class="markdownIt-Anchor" href="#x"></a> x</h4>
+<p>运行用户程序。这一部分可以直接在原有的 <code>shell.c</code> 中补充：</p>
+<pre><code class="hljs c"><span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">1</span>))
+&#123;
+    newProc = Exec (buffer + <span class="hljs-number">2</span>);
+    Join (newProc);
+&#125;</code></pre>
+<h4 id="pwd-ls"><a class="markdownIt-Anchor" href="#pwd-ls"></a> pwd, ls</h4>
+<p>打印出当前目录 / 当前目录中的所有文件。这一部分需要获取当前的目录，在原先实现的文件系统中残缺，参考资料发现可以用 <code>system</code> 命令实现。</p>
+<pre><code class="hljs cpp">\\exception.cc
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == SC_Pwd)
+&#123;
+    system (<span class="hljs-string">&quot;pwd&quot;</span>);
+    machine-&gt;AdvancePC ();
+&#125;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == SC_Ls)
+&#123;
+    system (<span class="hljs-string">&quot;ls&quot;</span>);
+    machine-&gt;AdvancePC ();
+&#125;
+\\shell.c
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;ls&quot;</span>, <span class="hljs-number">2</span>))
+&#123;
+    Ls ();
+&#125;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;pwd&quot;</span>, <span class="hljs-number">3</span>))
+&#123;
+    Pwd ();
+&#125;</code></pre>
+<h4 id="cd"><a class="markdownIt-Anchor" href="#cd"></a> cd</h4>
+<p>进入指定的目录。可以基于 c 函数 <code>chdir</code> 来实现。新增一个系统调用 <code>SC_Cd</code>。仿照上次的创建文件 <code>Create</code> 的处理方式，将文件创建语句改为进入指定路径。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//exception.cc</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == SC_Cd)
+&#123;
+    ...
+    <span class="hljs-comment">//fileSystem-&gt;Create (name, 0);</span>
+    chdir (name);
+    ...
+&#125;
+<span class="hljs-comment">//shell.c</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;cd&quot;</span>, <span class="hljs-number">2</span>))
+&#123;
+   Cd (buffer+<span class="hljs-number">3</span>);
+&#125;</code></pre>
+<h4 id="touch-mkdir-rm"><a class="markdownIt-Anchor" href="#touch-mkdir-rm"></a> touch, mkdir, rm</h4>
+<p>文件的创建和删除相关。对于 <code>touch</code>，创建文件可以直接调用之前实现的系统调用 <code>Create</code> 来创建相关文件：</p>
+<pre><code class="hljs c"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;touch&quot;</span>, <span class="hljs-number">5</span>))
+&#123;
+    Create (buffer+<span class="hljs-number">6</span>);
+&#125;</code></pre>
+<p>对于 <code>mkdir</code>，要求创建的是目录，需要添加一个新的系统调用 <code>CreateDir</code>。实现过程中，我们使用 lab5 中的文件系统，修改 <code>Create</code> 的参数即可。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//exception.cc</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == SC_CreateDir)
+&#123;
+    ...
+    fileSystem-&gt;Create (name, <span class="hljs-number">0</span>, FALSE);
+    ...
+&#125;
+<span class="hljs-comment">//shell.c</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;mkdir&quot;</span>, <span class="hljs-number">5</span>))
+&#123;
+    CreateDir (buffer+<span class="hljs-number">6</span>);
+&#125;</code></pre>
+<p>对于 <code>rm</code>，同样使用之前实现过的，支持递归删除的 <code>fileSystem-&gt;Remove</code>。处理系统调用的过程和触发的过程如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//exception.cc</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == SC_Remove)
+&#123;
+    <span class="hljs-keyword">int</span> address = machine-&gt;ReadRegister (<span class="hljs-number">4</span>);
+    <span class="hljs-keyword">int</span> pos = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">char</span> name [<span class="hljs-number">10</span>];
+    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)
+    &#123;
+        <span class="hljs-keyword">int</span> data;
+        machine-&gt;ReadMem (address + pos, <span class="hljs-number">1</span>, &amp;data);
+        <span class="hljs-comment">//printf (&quot;% s\n&quot;,(char*) data);</span>
+        name [pos++] = (<span class="hljs-keyword">char</span>) data;
+        <span class="hljs-keyword">if</span> (!data)
+        &#123;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+    fileSystem-&gt;Remove (name);
+    machine-&gt;AdvancePC ();
+&#125;
+<span class="hljs-comment">//shell.c</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;rm&quot;</span>, <span class="hljs-number">2</span>))
+&#123;
+    CreateDir (buffer+<span class="hljs-number">3</span>);
+&#125;</code></pre>
+<h4 id="help"><a class="markdownIt-Anchor" href="#help"></a> help</h4>
+<p>输出帮助信息。</p>
+<pre><code class="hljs c"><span class="hljs-comment">//shell.c</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strncmp</span>(buffer, <span class="hljs-string">&quot;help&quot;</span>, <span class="hljs-number">4</span>))
+&#123;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Usage: \n&quot;</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    ls: list files and directories in current directroy\n&quot;</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    pwd: print current directory\n&quot;</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    mkdir [-name]: create new directory\n&quot;</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    touch [-name]: create new file\n&quot;</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    rm [-name]: remove a file or directory\n&quot;</span>)
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    x [-name]: run a user program&quot;</span>)
+&#125;</code></pre>
+<h4 id="测试结果"><a class="markdownIt-Anchor" href="#测试结果"></a> 测试结果：</h4>
+<p>在 <code>userprog</code> 和 <code>test</code> 中都编译后，终端输入命令 <code>./nachos -x ../test/shell</code>，开始测试：</p>
+<pre><code class="hljs bash">root@56618acc2196:/home/code/userprog<span class="hljs-comment"># ./nachos -x ../test/shell</span>
+--<span class="hljs-built_in">pwd</span>
+/home/code/userprog
+--mkdir lab7
+--<span class="hljs-built_in">cd</span> lab7
+--<span class="hljs-built_in">pwd</span>
+/home/code/userprog/lab7
+--ls
+--touch test_file
+--mkdir test_dir
+--ls
+test_file test_dir
+--<span class="hljs-built_in">cd</span> test_dir
+--ls
+--<span class="hljs-built_in">help</span>
+Usage:
+    ls: list files and directories <span class="hljs-keyword">in</span> current directroy
+    <span class="hljs-built_in">pwd</span>: <span class="hljs-built_in">print</span> current directory
+    mkdir [-name]: create new directory
+    touch [-name]: create new file
+    rm [-name]: remove a file or directory
+    x [-name]: run a user program
+--<span class="hljs-built_in">cd</span> ..
+--x halt
+No threads ready or runnable, and no pending interrupts.
+Assuming the program completed.
+Machine halting!
+...</code></pre>
+<p>可以看到基本完成的需求的功能。</p>
+<h2 id="内容二遇到的困难以及收获"><a class="markdownIt-Anchor" href="#内容二遇到的困难以及收获"></a> 内容二：遇到的困难以及收获</h2>
+<p>主要是对于文件目录跳转部分，由于之前的文件系统缺少对这一块的实现，所以调用了 c 函数命令来完成。其他部分相当于只需要简单应用上一个 lab 中的系统调用，因此没有遇到大的困难。<br />
+通过这次 lab，再一次巩固了系统调用的实现和使用方法，并且简单模拟了一个 bash shell 的交互方式。由于时间原因，各方面的实现都相对基础。</p>
+<h2 id="内容三对课程或-lab-的意见和建议"><a class="markdownIt-Anchor" href="#内容三对课程或-lab-的意见和建议"></a> 内容三：对课程或 Lab 的意见和建议</h2>
+<p>无</p>
+<h2 id="内容四参考文献"><a class="markdownIt-Anchor" href="#内容四参考文献"></a> 内容四：参考文献</h2>
+<ol>
+<li>Nachos 中文教程。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Bug-terminator/Nachos/blob/master/labs/Shell/README.md">https://github.com/Bug-terminator/Nachos/blob/master/labs/Shell/README.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/a3e1f237a31614791711cc7931b765ce04087a54.html?fr=search-1&amp;fixfr=LWjggFmNizxl8xYrBy4q3A%3D%3D">https://wenku.baidu.com/view/a3e1f237a31614791711cc7931b765ce04087a54.html?fr=search-1&amp;fixfr=LWjggFmNizxl8xYrBy4q3A%3D%3D</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%93%8D%E7%BB%9F/">操统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/cpp/">cpp</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/11/nachos-lab8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统 lab8 - 进程通信</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/11/nachos-lab6/">
+                        <span class="hidden-mobile">操作系统 lab6 - 系统调用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.12.0/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
