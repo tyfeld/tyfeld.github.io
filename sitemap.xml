@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tyfeld.github.io/2020/10/07/intervals-distribution/</loc>
+    
+    <lastmod>2021-03-12</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tyfeld.github.io/2020/12/29/2020-sub/</loc>
     
     <lastmod>2021-03-11</lastmod>
@@ -72,13 +79,6 @@
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/2020/10/07/intervals-distribution/</loc>
-    
-    <lastmod>2020-11-10</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tyfeld.github.io/tags/index.html</loc>
     
     <lastmod>2020-09-15</lastmod>
@@ -109,7 +109,7 @@
   </url>
   
   <url>
-    <loc>http://tyfeld.github.io/tags/Python/</loc>
+    <loc>http://tyfeld.github.io/tags/python/</loc>
     <lastmod>2021-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
