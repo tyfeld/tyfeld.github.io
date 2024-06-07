@@ -23,8 +23,8 @@ KwaiVGI, [Kuaishou Technology](https://www.kuaishou.com/en), building Next-Gen T
 **Ye Tian**, [Ling Yang*](https://yangling0818.github.io), [Haotian Yang](https://scholar.google.com/citations?user=LH71RGkAAAAJ&hl=en),[Yuan Gao](https://videotetris.github.io/), [Yufan Deng](https://videotetris.github.io/), [Jingmin Chen](https://videotetris.github.io/), [Xintao Wang](https://xinntao.github.io), [Zhaochen Yu](https://videotetris.github.io/), [Xin Tao](https://scholar.google.com/citations?user=sQ30WyUAAAAJ&hl=en),[Pengfei Wan](https://scholar.google.com/citations?user=P6MraaYAAAAJ&hl=en),[Di Zhang](https://openreview.net/profile?id=~Di_ZHANG3), [Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) 
 [[Project Page](https://videotetris.github.io/)] [[arXiv](https://arxiv.org/abs/2406.04277)] [[Code]([https://github.com/arthur-qiu/LongerCrafter](https://github.com/YangLing0818/VideoTetris))]
 
-<img src='./files/semanticadv.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
-**SemanticAdv: Generating Adversarial Examples via Attribute-conditional Image Editing**     
-**Haonan Qiu\***, [Chaowei Xiao\*](http://www-personal.umich.edu/~xiaocw/), [Lei Yang\*](https://scholar.google.com.hk/citations?user=jZH2IPYAAAAJ&hl=en), [Xinchen Yan](https://sites.google.com/site/skywalkeryxc/), [Honglak Lee](http://web.eecs.umich.edu/~honglak/), [Bo Li](https://aisecure.github.io/)  
-European Conference on Computer Vision (ECCV), 2020.
-[[Paper](https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123590018.pdf)] [[Project Page](./projects/SemanticAdv)] [[Code](https://github.com/AI-secure/SemanticAdv)] [[News](https://syncedreview.com/2019/08/09/semantic-based-adversarial-examples-fool-face-recognition/)] [[Slides](https://docs.google.com/presentation/d/1H3_ATznmQ9EXBEXMNAsSETKvSByjNXxXDXFjGr8H-9w/edit?usp=sharing)] 
+<img src='./files/vqgraph.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
+**VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
+[Ling Yang](https://yangling0818.github.io/), **Ye Tian(equal contribution)**, [Minkai Xu](https://minkaixu.com/),[Zhongyi Liu](),[Shenda Hong](https://hsd1503.github.io/), [Wei Qu](),[Wentao Zhang](https://zwt233.github.io/),[Bin Cui](https://cuibinpku.github.io/),[Muhan Zhang](https://muhanzhang.github.io/), [Jure Leskovec](https://cs.stanford.edu/~jure/)
+International Conference on Learning Representations (ICLR), 2024.
+[[Paper](https://openreview.net/forum?id=h6Tz85BqRI)][[Code](https://github.com/YangLing0818/VQGraph)]
