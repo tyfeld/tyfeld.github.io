@@ -9,7 +9,7 @@ redirect_from:
 
 I'm **Ye Tian (田野)**, a graduate(master) student at Peking University. My research interests mainly focus on AI-Generated Visual Content (AIGC), multi-modal LLM and GNNs. I received my bachelor's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. 
 
-I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I'm currently a research intern at 
+I work closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I'm currently a research intern at 
 KwaiVGI, [Kuaishou Technology](https://www.kuaishou.com/en), building Next-Gen Text-to-Video model **Kling**.
 
 <font color='orange'> I am actively pursuing full-time positions as well as Ph.D. positions in cutting-edge visual diffusion models</font>
@@ -25,7 +25,6 @@ KwaiVGI, [Kuaishou Technology](https://www.kuaishou.com/en), building Next-Gen T
 
 <img src='./files/vqgraph.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
-
 [Ling Yang](https://yangling0818.github.io/), **Ye Tian (equal contribution)**, [Minkai Xu](https://minkaixu.com/),[Zhongyi Liu](),[Shenda Hong](https://hsd1503.github.io/), [Wei Qu](),[Wentao Zhang](https://zwt233.github.io/),[Bin Cui](https://cuibinpku.github.io/),[Muhan Zhang](https://muhanzhang.github.io/), [Jure Leskovec](https://cs.stanford.edu/~jure/)
 International Conference on Learning Representations (ICLR), 2024.
 [[Paper](https://openreview.net/forum?id=h6Tz85BqRI)][[Code](https://github.com/YangLing0818/VQGraph)]
