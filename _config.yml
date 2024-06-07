@@ -21,7 +21,7 @@ repository               : "tyfeld/tyfeld.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "my.jpg"
   name             : "Ye Tian"
   # pronouns         : # example: "she/her"  
   bio              : "AIGC Researcher"
