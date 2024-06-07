@@ -25,6 +25,7 @@ KwaiVGI, [Kuaishou Technology](https://www.kuaishou.com/en), building Next-Gen T
 
 <img src='./files/vqgraph.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
-[Ling Yang](https://yangling0818.github.io/), **Ye Tian(equal contribution)**, [Minkai Xu](https://minkaixu.com/),[Zhongyi Liu](),[Shenda Hong](https://hsd1503.github.io/), [Wei Qu](),[Wentao Zhang](https://zwt233.github.io/),[Bin Cui](https://cuibinpku.github.io/),[Muhan Zhang](https://muhanzhang.github.io/), [Jure Leskovec](https://cs.stanford.edu/~jure/)
+
+[Ling Yang](https://yangling0818.github.io/), **Ye Tian (equal contribution)**, [Minkai Xu](https://minkaixu.com/),[Zhongyi Liu](),[Shenda Hong](https://hsd1503.github.io/), [Wei Qu](),[Wentao Zhang](https://zwt233.github.io/),[Bin Cui](https://cuibinpku.github.io/),[Muhan Zhang](https://muhanzhang.github.io/), [Jure Leskovec](https://cs.stanford.edu/~jure/)
 International Conference on Learning Representations (ICLR), 2024.
 [[Paper](https://openreview.net/forum?id=h6Tz85BqRI)][[Code](https://github.com/YangLing0818/VQGraph)]
