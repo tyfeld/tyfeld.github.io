@@ -15,15 +15,13 @@ I'm **Ye Tian (田野)**, an MS student at Peking University. My research intere
 # Selected Publications
 
 <img src='./files/videotetris.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
-**VideoTetris: VideoTetris: Towards Compositional Text-To-Video Generation**    
+**[NeurIPS 2024]VideoTetris: VideoTetris: Towards Compositional Text-To-Video Generation**    
 **Ye Tian**, [Ling Yang*](https://yangling0818.github.io), [Haotian Yang](https://scholar.google.com/citations?user=LH71RGkAAAAJ&hl=en),[Yuan Gao](https://videotetris.github.io/), [Yufan Deng](https://videotetris.github.io/), [Jingmin Chen](https://videotetris.github.io/), [Xintao Wang](https://xinntao.github.io), [Zhaochen Yu](https://videotetris.github.io/), [Pengfei Wan](https://scholar.google.com/citations?user=P6MraaYAAAAJ&hl=en),[Di Zhang](https://openreview.net/profile?id=~Di_ZHANG3), [Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) 
-Annual Conference on Neural Information Processing Systems (NeurIPS), 2024.
 [[Project Page](https://videotetris.github.io/)] [[arXiv](https://arxiv.org/abs/2406.04277)] [[Code]([https://github.com/arthur-qiu/LongerCrafter](https://github.com/YangLing0818/VideoTetris))]
 
 <img src='./files/vqgraph.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
-**VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
+**[ICLR 2024]VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
 [Ling Yang](https://yangling0818.github.io/), **Ye Tian (equal contribution)**, [Minkai Xu](https://minkaixu.com/),[Zhongyi Liu](),[Shenda Hong](https://hsd1503.github.io/), [Wei Qu](),[Wentao Zhang](https://zwt233.github.io/),[Bin Cui](https://cuibinpku.github.io/),[Muhan Zhang](https://muhanzhang.github.io/), [Jure Leskovec](https://cs.stanford.edu/~jure/)
-International Conference on Learning Representations (ICLR), 2024.
 [[Paper](https://openreview.net/forum?id=h6Tz85BqRI)][[Code](https://github.com/YangLing0818/VQGraph)]
 
 # Internship 
