@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I'm **Ye Tian (田野)**, an MS student at Peking University. My research interests mainly focus on AI-Generated Visual Content (AIGC), multi-modal LLM and GNNs. I received my bachelor's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I will persue my Ph.D. in Peking Univeristy advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1).
+I'm **Ye Tian (田野)**, an MS student at Peking University. My research interests mainly focus on AI-Generated Visual Content (AIGC), multi-modal LLM, and unified model. I received my bachelor's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I will persue my Ph.D. in Peking Univeristy advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1).
 
 My Wechat account: tyfeld66. Feel free to contact!
 
@@ -18,21 +18,18 @@ My Wechat account: tyfeld66. Feel free to contact!
 
 <img src='./files/bs.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
 **Training-free Diffusion Acceleration with Bottleneck Sampling**     
-**Ye Tian**, Xin Xia, Yuxi Ren, Shanchuan Lin, Xing Wang, Xuefeng Xiao, Yunhai Tong, Ling Yang, Bin Cui
-Arxiv, 2025     
+**Ye Tian**, Xin Xia, Yuxi Ren, Shanchuan Lin, Xing Wang, Xuefeng Xiao, Yunhai Tong, Ling Yang, Bin Cui   
 [[Project Page](https://tyfeld.github.io/BottleneckSampling.github.io/)] [[arXiv](https://arxiv.org/abs/2503.18940)]
 
-<img src='./files/hermesflow.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
+<img src='./files/hermesflow.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
 **HermesFlow: Seamlessly Closing the Gap in Multimodal Understanding and Generation**     
 **Ye Tian**, Ling Yang, Xinchen Zhang, Yunhai Tong, Mengdi Wang, Bin Cui     
-Arxiv, 2025    
 [[arXiv](https://arxiv.org/abs/2502.12146)] [[Code](https://github.com/Gen-Verse/Diffusion-Sharpening)]
 
 
-<img src='./files/diffusion-sharpen.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
+<img src='./files/diffusion-sharpen.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
 **Diffusion-Sharpening: Fine-tuning Diffusion Models with Denoising Trajectory Sharpening**     
 Ling Yang*, Xinchen Zhang*, **Ye Tian**, Chenming Shang, Minghao Xu, Wentao Zhang, Bin Cui     
-Arxiv, 2025     
 [[arXiv](https://arxiv.org/abs/2502.12148)] [[Code](https://github.com/Gen-Verse/HermesFlow)]
 
 <img src='./files/videotetris.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
