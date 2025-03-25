@@ -7,9 +7,9 @@ redirect_from:
   - /about.html
 ---
 
-I'm **Ye Tian (田野)**, an MS student at Peking University. My research interests mainly focus on AI-Generated Visual Content (AIGC), multi-modal LLM, and unified model. I received my bachelor's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I will persue my Ph.D. in Peking Univeristy advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1).
+I'm **Ye Tian (田野)**, an MS student at Peking University. My research interests mainly focus on AI-Generated Visual Content (AIGC), multi-modal LLM, and unified models. I received my bachelor's & master's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I will pursue my Ph.D. at Peking University advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1).
 
-My Wechat account: tyfeld66. Feel free to contact!
+My WeChat account: tyfeld66. Feel free to contact me!
 
 
 ---
@@ -47,6 +47,6 @@ Ling Yang*, Xinchen Zhang*, **Ye Tian**, Chenming Shang, Minghao Xu, Wentao Zhan
 
 
 # Internship 
-* Research Intern at [KLing](https://klingai.com/), Kuaishou Techology
+* Research Intern at [KLing](https://klingai.com/), Kuaishou Technology
 * Research Intern at [Aisphere](https://aishiai.com/), building [Pixverse V2.0](https://pixverse.org/pixverse-2-0/)
 * Research Intern at ByteDance. (Present)
