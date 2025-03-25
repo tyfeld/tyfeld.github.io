@@ -21,20 +21,28 @@ My Wechat account: tyfeld66. Feel free to contact!
 **Ye Tian**, Xin Xia, Yuxi Ren, Shanchuan Lin, Xing Wang, Xuefeng Xiao, Yunhai Tong, Ling Yang, Bin Cui
 [[Project Page](https://tyfeld.github.io/BottleneckSampling.github.io/)] [[arXiv](https://arxiv.org/abs/2503.18940)]
 
+
+
 <img src='./files/hermesflow.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **HermesFlow: Seamlessly Closing the Gap in Multimodal Understanding and Generation**
 **Ye Tian**, Ling Yang, Xinchen Zhang, Yunhai Tong, Mengdi Wang, Bin Cui
 [[arXiv](https://arxiv.org/abs/2502.12146)] [[Code](https://github.com/Gen-Verse/Diffusion-Sharpening)]
+
+
 
 <img src='./files/diffusion-sharpen.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **Diffusion-Sharpening: Fine-tuning Diffusion Models with Denoising Trajectory Sharpening**
 Ling Yang*, Xinchen Zhang*, **Ye Tian**, Chenming Shang, Minghao Xu, Wentao Zhang, Bin Cui
 [[arXiv](https://arxiv.org/abs/2502.12148)] [[Code](https://github.com/Gen-Verse/HermesFlow)]
 
+
+
 <img src='./files/videotetris.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **[NeurIPS 2024]VideoTetris: VideoTetris: Towards Compositional Text-To-Video Generation**    
 **Ye Tian**, [Ling Yang*](https://yangling0818.github.io), [Haotian Yang](https://scholar.google.com/citations?user=LH71RGkAAAAJ&hl=en),[Yuan Gao](https://videotetris.github.io/), [Yufan Deng](https://videotetris.github.io/), [Jingmin Chen](https://videotetris.github.io/), [Xintao Wang](https://xinntao.github.io), [Zhaochen Yu](https://videotetris.github.io/), [Pengfei Wan](https://scholar.google.com/citations?user=P6MraaYAAAAJ&hl=en),[Di Zhang](https://openreview.net/profile?id=~Di_ZHANG3), [Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) 
 [[Project Page](https://videotetris.github.io/)] [[arXiv](https://arxiv.org/abs/2406.04277)] [[Code](https://github.com/YangLing0818/VideoTetris)]
+
+
 
 <img src='./files/vqgraph.png' style='float:left;width:280px;height:160px;margin-left:20px;margin-right:20px'/>
 **[ICLR 2024]VQGraph: Rethinking Graph Representation Space for Bridging GNNs and MLPs**
