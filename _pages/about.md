@@ -21,14 +21,14 @@ My WeChat account: tyfeld66. Feel free to contact me!
 **Ye Tian**, Xin Xia, Yuxi Ren, Shanchuan Lin, Xing Wang, Xuefeng Xiao, Yunhai Tong, Ling Yang, Bin Cui   
 [[Project Page](https://tyfeld.github.io/BottleneckSampling.github.io/)] [[arXiv](https://arxiv.org/abs/2503.18940)]
 
-<img src='./files/hermesflow.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
-**HermesFlow: Seamlessly Closing the Gap in Multimodal Understanding and Generation**     
+<img src='./files/diffusion-sharpen.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
+**Diffusion-Sharpening: Fine-tuning Diffusion Models with Denoising Trajectory Sharpening**       
 **Ye Tian**, Ling Yang, Xinchen Zhang, Yunhai Tong, Mengdi Wang, Bin Cui     
 [[arXiv](https://arxiv.org/abs/2502.12146)] [[Code](https://github.com/Gen-Verse/Diffusion-Sharpening)]
 
 
-<img src='./files/diffusion-sharpen.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
-**Diffusion-Sharpening: Fine-tuning Diffusion Models with Denoising Trajectory Sharpening**     
+<img src='./files/hermesflow.png' style='float:left;width:280px;height:120px;margin-left:20px;margin-right:20px'/>
+**HermesFlow: Seamlessly Closing the Gap in Multimodal Understanding and Generation**     
 Ling Yang*, Xinchen Zhang*, **Ye Tian**, Chenming Shang, Minghao Xu, Wentao Zhang, Bin Cui     
 [[arXiv](https://arxiv.org/abs/2502.12148)] [[Code](https://github.com/Gen-Verse/HermesFlow)]
 
