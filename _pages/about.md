@@ -49,4 +49,4 @@ Ling Yang*, Xinchen Zhang*, **Ye Tian**, Chenming Shang, Minghao Xu, Wentao Zhan
 # Internship 
 * Research Intern at [KLing](https://klingai.com/), Kuaishou Technology, 2024.01~2024.06
 * Research Intern at [Aisphere](https://aishiai.com/), building [Pixverse V2.0](https://pixverse.org/pixverse-2-0/), 2024.07~2024.08
-* Research Intern at ByteDance. 2024.09~2025.03
+* Research Intern at ByteDance. 
