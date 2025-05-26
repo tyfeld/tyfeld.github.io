@@ -43,16 +43,8 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-a-simple-inline-announcement",
-          title: 'A simple inline announcement.',
-          description: "",
-          section: "News",},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
-          description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
-            },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
-          title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
+            },},{id: "news-mmada-is-released-and-i-serve-as-the-core-code-contributor-we-built-a-novel-unified-multimodal-understanding-and-generation-model-purely-with-a-discrete-diffusion-backbone",
+          title: 'MMaDA is released, and I serve as the core code contributor. We built...',
           description: "",
           section: "News",},{
         id: 'social-email',
