@@ -199,6 +199,7 @@ exclude:
   - _pages/people.md
   - _pages/repositories.md
   - _pages/dropdown.md
+  - _pages/profiles.md
   - _posts/
   - _projects/?_project.md
   - assets/jupyter/blog.ipynb
@@ -305,7 +306,7 @@ enable_publication_badges:
   dimensions: true # Dimensions badge (Customization options: https://badge.dimensions.ai/)
   google_scholar: true # Google Scholar badge (https://scholar.google.com/intl/en/scholar/citations.html)
   inspirehep: true # Inspire HEP badge (https://help.inspirehep.net/knowledge-base/citation-metrics/)
-
+  github_stars: true # Github stars badge (https://github.com/anuraghazra/github-readme-stats)
 # Filter out certain bibtex entry keywords used internally from the bib output
 filtered_bibtex_keywords:
   [
