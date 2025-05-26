@@ -9,9 +9,6 @@ profile:
   image: my.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
@@ -35,3 +32,4 @@ Link to your social media connections, too. This theme is set up to use [Font Aw
 
 I'm **Ye Tian (田野)**, an upcoming Ph.D. student at Peking University. My research interests mainly focus on AI-Generated Visual Content, multi-modal LLM, and unified models. I received my bachelor's & master's degree from Peking University, majoring in computer science at the School of Computer Science and Electronic Engineering. I worked closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/). I will pursue my Ph.D. at Peking University advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1).
 
+For any academic or industry collaborations, please reach out to tyfeld@gmail.com.
