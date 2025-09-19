@@ -46,6 +46,9 @@ ninja.data = [{
             },},{id: "news-mmada-is-released-and-i-serve-as-the-core-code-contributor-we-built-a-novel-unified-multimodal-understanding-and-generation-model-purely-with-a-discrete-diffusion-backbone",
           title: 'MMaDA is released, and I serve as the core code contributor. We built...',
           description: "",
+          section: "News",},{id: "news-mmada-is-accepted-by-neurips-2025",
+          title: 'MMaDA is accepted by NeurIPS 2025.',
+          description: "",
           section: "News",},{
         id: 'social-email',
         title: 'email',
