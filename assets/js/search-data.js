@@ -49,6 +49,9 @@ ninja.data = [{
           section: "News",},{id: "news-mmada-is-accepted-by-neurips-2025",
           title: 'MMaDA is accepted by NeurIPS 2025.',
           description: "",
+          section: "News",},{id: "news-i-developed-a-parallel-generation-framework-mmada-parallel-for-thinking-aware-editing-and-generation-check-out-the-project-page-for-more-details",
+          title: 'I developed a parallel generation framework MMaDA-Parallel for thinking-aware editing and generation. Check...',
+          description: "",
           section: "News",},{
         id: 'social-email',
         title: 'email',
