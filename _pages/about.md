@@ -31,8 +31,6 @@ Put your address / P.O. box / other info right below your picture. You can also 
 
 Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them. -->
 
-I'm **Ye Tian (田野)**, an incoming Ph.D. student at School of Intelligence Science and Technology, Peking University, advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1). My academic journey at Peking University also includes completing my bachelor's and master's degrees in Computer Science at the School of Computer Science and Electronic Engineering, where I had the privilege of collaborating closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/).
+I'm **Ye Tian (田野)**, a first-year Ph.D. student at School of Intelligence Science and Technology, Peking University, advised by [Prof. Yunhai Tong](https://openreview.net/profile?id=~Yunhai_Tong1). My academic journey at Peking University also includes completing my bachelor's and master's degrees in Computer Science at the School of Computer Science and Electronic Engineering, where I had the privilege of collaborating closely with [Prof. Bin Cui](https://cuibinpku.github.io/cuibin_cn.html) and [Ph.D. Ling Yang](https://yangling0818.github.io/).
 
-My research interests mainly focus on AI-Generated Visual Content, multi-modal LLM, and unified models. My current focus is dedicated to exploring and advancing diffusion-based language models, and we aim to develop state-of-the-art diffusion models for unified understanding and generation.
-
-I'm always open to academic or industry collaborations; please feel free to reach out at tyfeld@gmail.com.
+My research interests mainly focus on AI-Generated Visual Content, multi-modal LLM, and unified models. I'm currently working on diffusion-based language models, and I'm always open to academic or industry collaborations; please feel free to reach out at tyfeld@gmail.com.
